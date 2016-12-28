@@ -1,0 +1,12 @@
+#login-container {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 5px;
+    margin-top: 5%;
+    box-shadow: 5px 5px 10px rgba(0,0,0,0.5);
+    max-width: 500px;
+}
+body {
+    padding: 50px;
+    background-color: #003e76;
+}
