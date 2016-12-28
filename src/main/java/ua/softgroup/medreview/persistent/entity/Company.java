@@ -20,6 +20,13 @@ public class Company extends AbstractEntity<Long> {
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<User> users = new ArrayList<>();
 
+    public Company() {
+    }
+
+    public Company(String name) {
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }
