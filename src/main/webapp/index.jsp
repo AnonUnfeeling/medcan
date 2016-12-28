@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -11,7 +11,7 @@
 </head>
 <body>
 <div id="login-container" class="container">
-    <h3 class="text-center" style="margin-bottom: 30px;">Hello here!</h3>
+    <h3 class="text-center" style="margin-bottom: 50px;">MedRreview</h3>
     <form method="POST" action="/user/login">
         <div class="form-group">
             <input placeholder="Login" class="form-control" type="text">
@@ -19,10 +19,10 @@
         <div class="form-group">
             <input placeholder="Password" class="form-control" type="password">
         </div>
-        <div class="form-group">
+        <div class="form-group text-right">
             <a href="/">Forgot password?</a>
         </div>
-        <button class="btn btn-primary" type="submit">Login</button>
+        <button id="login" class="btn btn-primary center-block" type="submit">Login</button>
     </form>
 </div>
 </body>
