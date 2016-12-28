@@ -1,6 +1,7 @@
 package ua.softgroup.medreview.persistent.entity;
 
 import javax.persistence.*;
+
 /**
  * Created by Sergiy Perevyazko on 28.12.2016.
  */
