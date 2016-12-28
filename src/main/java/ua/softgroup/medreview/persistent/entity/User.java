@@ -12,7 +12,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Oleksandr Tyshkovets <sg.olexander@gmail.com>
@@ -31,6 +33,9 @@ public class User extends AbstractEntity<Long> implements UserDetails {
     @Column(nullable = false)
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<UserRole> roles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Record> records = new HashSet<>();
 
     @ManyToOne
     private Company company;
@@ -60,6 +65,14 @@ public class User extends AbstractEntity<Long> implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Set<Record> getRecords() {
+        return records;
+    }
+
+    public void setRecords(Set<Record> records) {
+        this.records = records;
     }
 
     public Company getCompany() {
