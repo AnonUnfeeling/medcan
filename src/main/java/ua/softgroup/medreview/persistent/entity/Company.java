@@ -14,7 +14,7 @@ import java.util.List;
 public class Company extends AbstractEntity<Long> {
     private static final long serialVersionUID = -931740164869822635L;
 
-    @Column
+    @Column(unique = true)
     private String name;
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
