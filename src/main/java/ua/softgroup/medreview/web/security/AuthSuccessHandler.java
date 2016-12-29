@@ -39,10 +39,10 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private String determineUrlByRoles(List<String> roles) {
         logger.debug("determineUrlByRoles: " + roles);
         if (roles.contains(Role.USER.name())) {
-            return "/";
+            return "/user";
         }
         if (roles.contains(Role.COMPANY.name())) {
-            return "/";
+            return "/company";
         }
         if (roles.contains(Role.ADMIN.name())) {
             return "/admin";
