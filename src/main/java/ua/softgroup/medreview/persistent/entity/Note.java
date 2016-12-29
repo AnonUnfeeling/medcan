@@ -1,5 +1,6 @@
 package ua.softgroup.medreview.persistent.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -47,6 +48,7 @@ public class Note extends AbstractEntity<Long> {
     @UpdateTimestamp
     private LocalDateTime updateDate;
 
+    @JsonIgnore
     @ManyToOne
     private Record record;
 
