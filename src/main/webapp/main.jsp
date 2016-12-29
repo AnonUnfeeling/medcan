@@ -8,10 +8,10 @@
     <link rel="stylesheet" href="resources/css/main.css">
     <script src="resources/javascript/jquery-3.1.1.min.js"></script>
     <script src="resources/javascript/bootstrap.min.js"></script>
+    <script src="resources/javascript/main.js"></script>
 </head>
 <body>
-<div class="container">
-
+<div id="table-container" class="container">
     <div class="table-responsive">
         <table class="table table-responsive">
             <thead>
@@ -20,28 +20,27 @@
                 <th>Title</th>
                 <th>Date added</th>
                 <th>Status</th>
-                <th></th>
+                <th> </th>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="table-body">
             <tr>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Date added</th>
-                <th>Status</th>
+                <th>1</th>
+                <th>Name 1</th>
+                <th>some date</th>
+                <th>false</th>
                 <th></th>
             </tr>
             <tr>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Date added</th>
-                <th>Status</th>
+                <th>2</th>
+                <th>Name 2</th>
+                <th>some date</th>
+                <th>true</th>
                 <th></th>
             </tr>
             </tbody>
         </table>
     </div>
 </div>
-
 </body>
 </html>

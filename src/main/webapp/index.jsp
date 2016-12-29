@@ -11,7 +11,8 @@
 </head>
 <body>
 <div id="login-container" class="container">
-    <h3 class="text-center" style="margin-bottom: 50px;">MedRreview</h3>
+    <h3 class="text-center" style="margin-bottom: 30px;">MedReview</h3>
+    <hr>
     <form method="POST" action="/user/login">
         <div class="form-group">
             <input placeholder="Login" class="form-control" type="text">
@@ -20,7 +21,7 @@
             <input placeholder="Password" class="form-control" type="password">
         </div>
         <div class="form-group text-right">
-            <a href="/">Forgot password?</a>
+            <a href="/main.jsp">Forgot password?</a>
         </div>
         <button id="login" class="btn btn-primary center-block" type="submit">Login</button>
     </form>
