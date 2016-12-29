@@ -1,10 +1,11 @@
 package ua.softgroup.medreview.web.controller.mvc;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import ua.softgroup.medreview.persistent.entity.Company;
 import ua.softgroup.medreview.persistent.repository.CompanyRepository;
@@ -24,7 +25,7 @@ public class CompanyController {
 
     //TODO: this link for admin
     @RequestMapping(value = "makeCompany", method = RequestMethod.POST)
-    public String makeCompany(String companyName) {
+    public @ResponseBody String makeCompany(@RequestParam String companyName) {
         try {
             companyRepository.save(new Company(companyName));
             logger.log(Level.SEVERE, "create new company");
@@ -43,7 +44,7 @@ public class CompanyController {
 
     //TODO: this link for admin
     @RequestMapping(value = "removeCompany", method = RequestMethod.POST)
-    public String removeCompany(String companyName){
+    public @ResponseBody String removeCompany(@RequestParam String companyName){
         try {
             companyRepository.delete(companyRepository.findByName(companyName));
             logger.log(Level.SEVERE, "remove company");
