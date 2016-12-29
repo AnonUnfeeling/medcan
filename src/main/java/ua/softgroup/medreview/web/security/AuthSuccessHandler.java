@@ -1,5 +1,7 @@
 package ua.softgroup.medreview.web.security;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
@@ -16,6 +18,7 @@ import java.util.List;
 
 @Component
 public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     @Override
@@ -34,16 +37,17 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     }
 
     private String determineUrlByRoles(List<String> roles) {
+        logger.debug("determineUrlByRoles: " + roles);
         if (roles.contains(Role.USER.name())) {
-            return "/hello";
+            return "/";
         }
         if (roles.contains(Role.COMPANY.name())) {
-            return "/company";
+            return "/";
         }
         if (roles.contains(Role.ADMIN.name())) {
             return "/admin";
         }
-        return "";
+        return "/error";
     }
 
     @Override
