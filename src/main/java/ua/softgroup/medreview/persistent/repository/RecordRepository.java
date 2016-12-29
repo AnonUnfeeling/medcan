@@ -2,6 +2,9 @@ package ua.softgroup.medreview.persistent.repository;
 
 import org.springframework.data.repository.CrudRepository;
 import ua.softgroup.medreview.persistent.entity.Record;
+import ua.softgroup.medreview.persistent.entity.User;
+
+import java.util.Set;
 
 /**
  * @author Oleksandr Tyshkovets <sg.olexander@gmail.com>
@@ -9,5 +12,7 @@ import ua.softgroup.medreview.persistent.entity.Record;
 public interface RecordRepository extends CrudRepository<Record, Long> {
 
     Record findByTitle(String name);
+
+    Set<Record> findByAuthor(User author);
 
 }
