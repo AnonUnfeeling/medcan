@@ -22,6 +22,7 @@ public class CompanyController {
     @Autowired
     CompanyRepository companyRepository;
 
+    //TODO: this link for admin and company role
     @RequestMapping(value = "makeCompany", method = RequestMethod.POST)
     public String makeCompany(String companyName) {
         try {
@@ -34,11 +35,13 @@ public class CompanyController {
         }
     }
 
+    //TODO: this link for admin
     @RequestMapping(value = "companies", method = RequestMethod.GET)
     public ModelAndView showAllCompanies(){
         return new ModelAndView("admin","companies",companyRepository.findAll());
     }
 
+    //TODO: this link for admin
     @RequestMapping(value = "removeCompany", method = RequestMethod.POST)
     public String removeCompany(String companyName){
         try {

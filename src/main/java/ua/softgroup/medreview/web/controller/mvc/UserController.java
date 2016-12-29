@@ -26,6 +26,7 @@ public class UserController {
     @Autowired
     CompanyRepository companyRepository;
 
+    //TODO: this link for admin and company role
     @RequestMapping(value = "user", method = RequestMethod.POST)
     public String makeUser(User user) {
         try {
