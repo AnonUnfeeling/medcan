@@ -11,8 +11,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import ua.softgroup.medreview.service.SecurityService;
 import ua.softgroup.medreview.web.security.AuthSuccessHandler;
+import ua.softgroup.medreview.web.security.AuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -22,6 +25,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private AuthSuccessHandler authSuccessHandler;
     @Autowired
     private UserDetailsService userDetailsService;
+    @Autowired
+    private SecurityService securityService;
 
     @Autowired
     public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
@@ -41,11 +46,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
+    public SecurityService securityService() {
+        return this.securityService;
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/**").permitAll()
+                .antMatchers("/test").hasAnyRole()
                 .and()
                 .formLogin()
                 .loginPage("/login").permitAll()
@@ -55,6 +65,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/login?logout")
                 .invalidateHttpSession(true)
-                .and().userDetailsService(this.userDetailsService());
+                .and()
+                .userDetailsService(this.userDetailsService());
     }
 }
