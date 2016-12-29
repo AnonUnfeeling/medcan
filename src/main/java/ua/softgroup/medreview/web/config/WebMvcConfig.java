@@ -1,4 +1,4 @@
-package ua.softgroup.medreview.persistent.config;
+package ua.softgroup.medreview.web.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
