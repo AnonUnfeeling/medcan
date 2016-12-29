@@ -73,10 +73,9 @@ public class User extends AbstractEntity<Long> implements UserDetails {
     public void setRoles(List<UserRole> roles) {
         this.roles.clear();
         if (roles != null) {
-            this.roles.forEach(userRole -> userRole.setUser(this));
+            roles.forEach(userRole -> userRole.setUser(this));
             this.roles.addAll(roles);
         }
-        this.roles = roles;
     }
 
     @Override
