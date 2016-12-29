@@ -12,3 +12,10 @@ body{
     border-radius: 5px;
     box-shadow: 5px 5px 10px rgba(0,0,0,0.5);
 }
+.glyphicon-remove-circle{
+    
+    color:	rgba(255,0,0,0.4);
+}
+.glyphicon-remove-circle:hover{
+    color: 	rgb(255,0,0);
+}

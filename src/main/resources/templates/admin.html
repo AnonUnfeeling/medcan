@@ -22,15 +22,17 @@
 </nav>
 <div class="container">
     <div class="table-responsive">
-        <table class="table table-responsive">
+        <table class="table table-responsive table-hover table-striped">
             <thead>
             <tr>
                 <th>Name</th>
+                <th> </th>
             </tr>
             </thead>
             <tbody id="table-body">
             <tr th:each="company : ${companies}">
                 <td th:text="${company.name}"></td>
+                <td><span th:attr="id=${company.name}" class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span></td>
             </tr>
             </tbody>
         </table>
