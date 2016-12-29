@@ -10,3 +10,6 @@ target/
 
 ### Logs ###
 logs/
+
+### Test DB ###
+*.db
