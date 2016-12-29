@@ -12,12 +12,28 @@ import ua.softgroup.medreview.service.SecurityService;
 public class SecurityServiceImpl implements SecurityService {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
-    private final SimpleGrantedAuthority adminAuthority = new SimpleGrantedAuthority(Role.ADMIN.toString());
+    private final SimpleGrantedAuthority adminAuthority = new SimpleGrantedAuthority(Role.ADMIN.name());
+    private final SimpleGrantedAuthority userAuthority = new SimpleGrantedAuthority(Role.USER.name());
+    private final SimpleGrantedAuthority companyAuthority = new SimpleGrantedAuthority(Role.COMPANY.name());
 
     @Override
     public Boolean hasAdminAccess() {
-        logger.debug("hasAdminAccess???");
+        logger.debug("hasAdminAccess?");
         return SecurityContextHolder.getContext()
                 .getAuthentication().getAuthorities().contains(adminAuthority);
+    }
+
+    @Override
+    public Boolean hasUserAccess() {
+        logger.debug("hasUserAccess?");
+        return SecurityContextHolder.getContext()
+                .getAuthentication().getAuthorities().contains(userAuthority);
+    }
+
+    @Override
+    public Boolean hasCompanyAccess() {
+        logger.debug("hasCompanyAccess?");
+        return SecurityContextHolder.getContext()
+                .getAuthentication().getAuthorities().contains(companyAuthority);
     }
 }
