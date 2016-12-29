@@ -26,9 +26,8 @@ public class UserController {
     @Autowired
     CompanyRepository companyRepository;
 
-    @RequestMapping(value = "makeUser", method = RequestMethod.GET)
-    public String makeUser() {
-        User user = new User("dsa2", "222", Role.ADMIN, companyRepository.findByName("123"));
+    @RequestMapping(value = "user", method = RequestMethod.POST)
+    public String makeUser(User user) {
         try {
             userRepository.save(user);
             logger.log(Level.SEVERE, "create new user");
@@ -42,5 +41,10 @@ public class UserController {
     @RequestMapping(value = "users", method = RequestMethod.POST)
     public ModelAndView showUserByCompany(String companyName) {
         return new ModelAndView("", "users", companyRepository.findByName(companyName).getUsers());
+    }
+
+    @RequestMapping(value = "users", method = RequestMethod.GET)
+    public ModelAndView showUser() {
+        return new ModelAndView("", "users", userRepository.findAll());
     }
 }
