@@ -5,6 +5,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.FetchType;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -16,7 +18,7 @@ import java.util.List;
 public class User extends AbstractEntity<Long> implements UserDetails {
     private static final long serialVersionUID = -5180634756313937659L;
 
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private String login;
 
     @Column(nullable = false)
@@ -47,6 +49,7 @@ public class User extends AbstractEntity<Long> implements UserDetails {
         this.login = login;
     }
 
+    @Override
     public String getPassword() {
         return password;
     }

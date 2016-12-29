@@ -14,11 +14,18 @@ import java.util.List;
 public class Company extends AbstractEntity<Long> {
     private static final long serialVersionUID = -931740164869822635L;
 
-    @Column
+    @Column(nullable = false, unique = true)
     private String name;
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<User> users = new ArrayList<>();
+
+    public Company() {
+    }
+
+    public Company(String name) {
+        this.name = name;
+    }
 
     public String getName() {
         return name;

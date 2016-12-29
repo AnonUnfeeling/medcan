@@ -2,11 +2,9 @@ package ua.softgroup.medreview.persistent.entity;
 
 import javax.persistence.*;
 
-/**
- * Created by Sergiy Perevyazko on 28.12.2016.
- */
 @Entity
 public class UserRole extends AbstractEntity<Long> {
+    private static final long serialVersionUID = 6555818250028218833L;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
