@@ -29,8 +29,8 @@
             </tr>
             </thead>
             <tbody id="table-body">
-            <tr th:each="record : ${companies}">
-                <td th:text="${companies.name}"></td>
+            <tr th:each="company : ${companies}">
+                <td th:text="${company.name}"></td>
             </tr>
             </tbody>
         </table>
