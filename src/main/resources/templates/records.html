@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>MedReview/main</title>
+    <link rel="stylesheet" href="../static/css/bootstrap.css"/>
+    <link rel="stylesheet" href="../static/css/main.css"/>
+    <script src="../static/javascript/jquery-3.1.1.min.js"></script>
+    <script src="../static/javascript/bootstrap.min.js"></script>
+    <script src="../static/javascript/main.js"></script>
+</head>
+<body>
+<div id="table-container" class="container">
+    <div class="table-responsive">
+        <table class="table table-responsive">
+            <thead>
+            <tr>
+                <th>Title</th>
+                <th>Type</th>
+                <th>Date added</th>
+                <th>Author</th>
+                <th> </th>
+            </tr>
+            </thead>
+            <tbody id="table-body">
+                <tr th:each="record : ${record}">
+                    <td th:text="${record.title}"> </td>
+                    <td th:text="${record.type}"> </td>
+                    <td th:text="${record.creationDate}"> </td>
+                    <td th:text="${record.author.login}"> </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
