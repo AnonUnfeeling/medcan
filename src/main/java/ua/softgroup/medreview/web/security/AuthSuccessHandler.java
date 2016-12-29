@@ -35,13 +35,13 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private String determineUrlByRoles(List<String> roles) {
         if (roles.contains(Role.USER.toString())) {
-            return "/user";
+            return "/hello";
         }
         if (roles.contains(Role.COMPANY.toString())) {
             return "/company";
         }
         if (roles.contains(Role.ADMIN.toString())) {
-            return "/admin";
+            return "/hello";
         }
         return "";
     }
