@@ -22,7 +22,7 @@ public class CompanyController {
     @Autowired
     CompanyRepository companyRepository;
 
-    //TODO: this link for admin and company role
+    //TODO: this link for admin
     @RequestMapping(value = "makeCompany", method = RequestMethod.POST)
     public String makeCompany(String companyName) {
         try {
