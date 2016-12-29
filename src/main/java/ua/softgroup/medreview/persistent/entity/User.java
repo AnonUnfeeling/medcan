@@ -4,12 +4,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.persistence.*;
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -18,7 +15,6 @@ import java.util.Set;
 
 /**
  * @author Oleksandr Tyshkovets <sg.olexander@gmail.com>
- * @author Sergiy Perevyazko
  */
 @Entity
 public class User extends AbstractEntity<Long> implements UserDetails {
@@ -90,10 +86,9 @@ public class User extends AbstractEntity<Long> implements UserDetails {
     public void setRoles(List<UserRole> roles) {
         this.roles.clear();
         if (roles != null) {
-            this.roles.forEach(userRole -> userRole.setUser(this));
+            roles.forEach(userRole -> userRole.setUser(this));
             this.roles.addAll(roles);
         }
-        this.roles = roles;
     }
 
     @Override
