@@ -1,4 +1,4 @@
-package ua.softgroup.medreview.persistent.config;
+package ua.softgroup.medreview.web.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +16,6 @@ import ua.softgroup.medreview.web.security.AuthSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
-@SuppressWarnings("SpringJavaAutowiringInspection")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
