@@ -11,11 +11,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import ua.softgroup.medreview.service.SecurityService;
 import ua.softgroup.medreview.web.security.AuthSuccessHandler;
-import ua.softgroup.medreview.web.security.AuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
