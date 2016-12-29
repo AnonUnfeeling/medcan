@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Admin page</title>
+    <link rel="stylesheet" href="/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/css/main.css"/>
+    <script src="/javascript/jquery-3.1.1.min.js"></script>
+    <script src="/javascript/bootstrap.min.js"></script>
+    <script src="/javascript/main.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+              <div class="navbar-header">
+                  <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/companies">Companies</a></li>
+                        <li><a href="/users">Users</a></li>
+                  </ul>
+              </div>
+        </div>
+</nav>
+<div class="container">
+    <div class="table-responsive">
+        <table class="table table-responsive">
+            <thead>
+            <tr>
+                <th>Name</th>
+            </tr>
+            </thead>
+            <tbody id="table-body">
+            <tr th:each="record : ${companies}">
+                <td th:text="${companies.name}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
