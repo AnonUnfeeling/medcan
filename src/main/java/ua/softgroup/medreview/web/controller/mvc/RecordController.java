@@ -3,7 +3,6 @@ package ua.softgroup.medreview.web.controller.mvc;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -21,8 +20,6 @@ import ua.softgroup.medreview.service.impl.AuthenticationServiceImpl;
 import ua.softgroup.medreview.web.form.RecordForm;
 
 import javax.validation.Valid;
-import java.util.Iterator;
-import java.util.logging.Level;
 
 /**
  * @author Oleksandr Tyshkovets <sg.olexander@gmail.com>

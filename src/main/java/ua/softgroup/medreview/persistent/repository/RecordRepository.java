@@ -7,8 +7,6 @@ import ua.softgroup.medreview.persistent.entity.Record;
 import ua.softgroup.medreview.persistent.entity.User;
 import ua.softgroup.medreview.persistent.repository.search.RecordRepositorySearch;
 
-import java.util.Set;
-
 /**
  * @author Oleksandr Tyshkovets <sg.olexander@gmail.com>
  */
