@@ -35,11 +35,11 @@ public class CompanyController {
     ResponseEntity makeCompany(@RequestParam String companyName) {
         if (companyName.isEmpty()) {
             logger.log(Level.SEVERE, "error by create company name is empty");
-            return new ResponseEntity(Keys.EMPTY.toString(), HttpStatus.FAILED_DEPENDENCY);
+            return new ResponseEntity(Keys.EMPTY.toString(), HttpStatus.OK);
         } else if (isCreate(companyName)) {
             return ResponseEntity.ok(HttpStatus.OK);
         } else {
-            return new ResponseEntity(Keys.FAIL.toString(), HttpStatus.FAILED_DEPENDENCY);
+            return new ResponseEntity(Keys.FAIL.toString(), HttpStatus.OK);
         }
     }
 
@@ -83,11 +83,11 @@ public class CompanyController {
     ResponseEntity removeCompany(@RequestParam String companyName) {
         if (companyName.isEmpty()) {
             logger.log(Level.SEVERE, "error by create company name is empty");
-            return new ResponseEntity(Keys.EMPTY.toString(), HttpStatus.FAILED_DEPENDENCY);
+            return new ResponseEntity(Keys.EMPTY.toString(), HttpStatus.OK);
         } else if (isDeleted(companyName)) {
             return ResponseEntity.ok(HttpStatus.OK);
         } else {
-            return new ResponseEntity(Keys.FAIL.toString(), HttpStatus.FAILED_DEPENDENCY);
+            return new ResponseEntity(Keys.FAIL.toString(), HttpStatus.OK);
         }
     }
 

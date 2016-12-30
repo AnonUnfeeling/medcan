@@ -37,11 +37,11 @@ public class NoteRestController {
     @ResponseBody
     ResponseEntity makeNewNote(@PathVariable Long id, @RequestParam Note note) {
         if (id == 0 && note == null) {
-            return new ResponseEntity(Keys.EMPTY.toString(), HttpStatus.FAILED_DEPENDENCY);
+            return new ResponseEntity(Keys.EMPTY.toString(), HttpStatus.OK);
         } else if (isCreate(id, note)) {
             return ResponseEntity.ok(HttpStatus.OK);
         } else {
-            return new ResponseEntity(Keys.FAIL.toString(), HttpStatus.FAILED_DEPENDENCY);
+            return new ResponseEntity(Keys.FAIL.toString(), HttpStatus.OK);
         }
     }
 
@@ -54,11 +54,11 @@ public class NoteRestController {
     @ResponseBody
     ResponseEntity removeNote(@PathVariable Long id, @RequestParam Note note) {
         if (id == 0 && note == null) {
-            return new ResponseEntity(Keys.EMPTY.toString(), HttpStatus.FAILED_DEPENDENCY);
+            return new ResponseEntity(Keys.EMPTY.toString(), HttpStatus.OK);
         } else if (isDeleted(id, note)) {
             return ResponseEntity.ok(HttpStatus.OK);
         } else {
-            return new ResponseEntity(Keys.FAIL.toString(), HttpStatus.FAILED_DEPENDENCY);
+            return new ResponseEntity(Keys.FAIL.toString(), HttpStatus.OK);
         }
     }
 
