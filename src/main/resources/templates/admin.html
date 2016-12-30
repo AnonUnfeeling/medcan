@@ -8,19 +8,25 @@
     <script src="/javascript/jquery-3.1.1.min.js"></script>
     <script src="/javascript/bootstrap.min.js"></script>
     <script src="/javascript/admin.js"></script>
+    <script src="/javascript/bootstrap-confirmation.js"></script>
 </head>
 <body>
 <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
               <div class="navbar-header">
                   <ul class="nav navbar-nav navbar-right">
-                        <li><a href="/companies">Companies</a></li>
-                        <li><a href="/users">Users</a></li>
+                      <li><a href="/companies">Companies</a></li>
+                      <li><a href="/users">Users</a></li>
                   </ul>
               </div>
+            <ul class="nav navbar-nav navbar-right" style="margin-right: 20px;">
+                <li><button  onclick="location.href = '/login?logout';" type="button" class="btn btn-danger navbar-btn btn-sm">Sign out</button></li>
+            </ul>
         </div>
 </nav>
 <div class="container">
+    <h3>All companies</h3>
+    <hr/>
     <div class="table-responsive">
         <table class="table table-responsive table-hover table-striped">
             <thead>
@@ -32,7 +38,7 @@
             <tbody id="table-body">
             <tr th:each="company : ${companies}">
                 <td th:text="${company.name}"></td>
-                <td><span th:attr="id=${company.name}" class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span></td>
+                <td class="text-right"><span th:attr="id=${company.name}" data-singleton="true" data-toggle="confirmation" class="glyphicon glyphicon-remove-circle company-control" aria-hidden="true"></span></td>
             </tr>
             </tbody>
         </table>
@@ -50,11 +56,11 @@
                 <div class="modal-body">
                     <input id="companyName" placeholder="Company name" type="text" class="form-control"/>
                     <br/>
-                    <div id="success" class="alert alert-danger" hidden="hidden">
-                        <strong>Success !</strong> Company was created.
+                    <div id="success" class="alert alert-success" hidden="hidden">
+                        <strong>Success!</strong> Company was created.
                     </div>
-                    <div id="error" class="alert alert-success" hidden="hidden">
-                        <strong>Error !</strong> Company with such name is already exist.
+                    <div id="error" class="alert  alert-danger" hidden="hidden">
+                        <strong>Error!</strong> Company with such name is already exist.
                     </div>
                 </div>
                 <div class="modal-footer">

@@ -11,8 +11,14 @@
 </head>
 <body>
 <div id="login-container" class="container">
-    <h3 class="text-center" style="margin-bottom: 30px;">MedReview</h3>
+    <h4 class="text-center" style="margin-bottom: 30px;"><span class="glyphicon glyphicon-grain"></span>MEDREVIEW</h4>
     <hr/>
+    <div class="alert alert-danger" th:if="${param.error}">
+        Invalid username or password.
+    </div>
+    <div class="alert alert-success" th:if="${param.logout}">
+        You have been logged out.
+    </div>
     <form  th:action="@{/login}" method="post">
         <div class="form-group">
             <input placeholder="Login" class="form-control" name="username" type="text"/>
@@ -20,17 +26,8 @@
         <div class="form-group">
             <input placeholder="Password" class="form-control"  name="password" type="password"/>
         </div>
-        <div class="form-group text-right">
-            <a href="/main.jsp">Forgot password?</a>
-        </div>
         <button id="login" class="btn btn-primary center-block" type="submit">Login</button>
     </form>
-    <div class="alert alert-danger" th:if="${param.error}">
-        Invalid username and password.
-    </div>
-    <div class="alert alert-success" th:if="${param.logout}">
-        You have been logged out.
-    </div>
 </div>
 </body>
 </html>
