@@ -3,8 +3,11 @@ package ua.softgroup.medreview.web.controller.mvc;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+<<<<<<< HEAD
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
+=======
+>>>>>>> develop
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,6 +32,9 @@ public class CompanyController {
 
     //TODO: this link for admin
     @RequestMapping(value = "makeCompany", method = RequestMethod.POST)
+<<<<<<< HEAD
+    public @ResponseBody String makeCompany(@RequestParam String companyName) {
+=======
     public
     @ResponseBody
     String makeCompany(@RequestParam String companyName) {
@@ -43,6 +49,7 @@ public class CompanyController {
     }
 
     private boolean isCreate(String companyName) {
+>>>>>>> 25bac786892338330448f77e98023bc0e78e2b59
         try {
             companyRepository.save(new Company(companyName));
             logger.log(Level.INFO, "create new company");
@@ -77,9 +84,16 @@ public class CompanyController {
 
     //TODO: this link for admin
     @RequestMapping(value = "removeCompany", method = RequestMethod.POST)
+<<<<<<< HEAD
     public
     @ResponseBody
     String removeCompany(@RequestParam String companyName) {
+=======
+<<<<<<< HEAD
+    public @ResponseBody String removeCompany(@RequestParam String companyName){
+=======
+    public @ResponseBody String removeCompany(@RequestParam String companyName) {
+>>>>>>> develop
         if (companyName.isEmpty()) {
             logger.log(Level.SEVERE, "error by create company name is empty");
             return Keys.EMPTY.toString();
@@ -91,6 +105,7 @@ public class CompanyController {
     }
 
     private boolean isDeleted(String companyName) {
+>>>>>>> 25bac786892338330448f77e98023bc0e78e2b59
         try {
             companyRepository.delete(companyRepository.findByName(companyName));
             logger.log(Level.SEVERE, "remove company");
