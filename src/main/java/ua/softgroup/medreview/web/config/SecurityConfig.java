@@ -15,10 +15,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import ua.softgroup.medreview.persistent.entity.Role;
-<<<<<<< HEAD
-import ua.softgroup.medreview.service.SecurityService;
-=======
->>>>>>> token_auth
 import ua.softgroup.medreview.web.security.AuthSuccessHandler;
 
 @EnableWebSecurity
@@ -50,6 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             return new BCryptPasswordEncoder();
         }
 
+
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http
@@ -75,25 +72,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         }
     }
 
-<<<<<<< HEAD
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                .antMatchers("/admin", "/companies", "/makeCompany", "/removeCompany").hasAuthority(Role.ADMIN.name())
-                .and()
-                .formLogin()
-                .loginPage("/login").permitAll()
-                .successHandler(this.authSuccessHandler)
-                .and()
-                .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/login?logout")
-                .invalidateHttpSession(true)
-                .and()
-                .userDetailsService(this.userDetailsService())
-                .csrf().disable();
-=======
     @Configuration
     @Order(2)
     public static class ApiWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
@@ -103,6 +81,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .csrf()
                     .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
         }
->>>>>>> token_auth
     }
 }
