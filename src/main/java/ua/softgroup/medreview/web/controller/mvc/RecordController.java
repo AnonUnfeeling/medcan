@@ -49,10 +49,12 @@ public class RecordController {
 
     //TODO secure this url
     @GetMapping(value = "/records")
-    public @ResponseBody String showPrincipalRecords(@RequestParam int page) {
+    public
+    @ResponseBody
+    String showPrincipalRecords(@RequestParam int page) {
         ObjectMapper mapper = new ObjectMapper();
         try {
-            return mapper.writeValueAsString(recordRepository.findByAuthor(authenticationService.getPrincipal(),new PageRequest(page, 10)));
+            return mapper.writeValueAsString(recordRepository.findByAuthor(authenticationService.getPrincipal(), new PageRequest(page - 1, 10)));
         } catch (JsonProcessingException e) {
             return "";
         }
@@ -66,10 +68,12 @@ public class RecordController {
 
     //TODO secure this url for admin only
     @GetMapping(value = "/records/alls")
-    public @ResponseBody String showAllRecords(@RequestParam int page) {
+    public
+    @ResponseBody
+    String showAllRecords(@RequestParam int page) {
         ObjectMapper mapper = new ObjectMapper();
         try {
-            return mapper.writeValueAsString(recordRepository.findAll(new PageRequest(page, 10)));
+            return mapper.writeValueAsString(recordRepository.findAll(new PageRequest(page - 1, 10)));
         } catch (JsonProcessingException e) {
             return "";
         }

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,14 +32,14 @@ public class CompanyController {
     @RequestMapping(value = "makeCompany", method = RequestMethod.POST)
     public
     @ResponseBody
-    String makeCompany(@RequestParam String companyName) {
+    ResponseEntity makeCompany(@RequestParam String companyName) {
         if (companyName.isEmpty()) {
             logger.log(Level.SEVERE, "error by create company name is empty");
-            return Keys.EMPTY.toString();
+            return new ResponseEntity(Keys.EMPTY.toString(), HttpStatus.FAILED_DEPENDENCY);
         } else if (isCreate(companyName)) {
-            return Keys.CREATED.toString();
+            return ResponseEntity.ok(HttpStatus.OK);
         } else {
-            return Keys.FAIL.toString();
+            return new ResponseEntity(Keys.FAIL.toString(), HttpStatus.FAILED_DEPENDENCY);
         }
     }
 
@@ -67,7 +69,7 @@ public class CompanyController {
         logger.log(Level.INFO, "get all companies");
         ObjectMapper mapper = new ObjectMapper();
         try {
-            return mapper.writeValueAsString(companyRepository.findAll(new PageRequest(page, 10)));
+            return mapper.writeValueAsString(companyRepository.findAll(new PageRequest(page - 1, 10)));
         } catch (JsonProcessingException e) {
             logger.log(Level.SEVERE, "error by create json");
             return "";
@@ -78,14 +80,14 @@ public class CompanyController {
     @RequestMapping(value = "removeCompany", method = RequestMethod.POST)
     public
     @ResponseBody
-    String removeCompany(@RequestParam String companyName) {
+    ResponseEntity removeCompany(@RequestParam String companyName) {
         if (companyName.isEmpty()) {
             logger.log(Level.SEVERE, "error by create company name is empty");
-            return Keys.EMPTY.toString();
+            return new ResponseEntity(Keys.EMPTY.toString(), HttpStatus.FAILED_DEPENDENCY);
         } else if (isDeleted(companyName)) {
-            return Keys.DELETED.toString();
+            return ResponseEntity.ok(HttpStatus.OK);
         } else {
-            return Keys.FAIL.toString();
+            return new ResponseEntity(Keys.FAIL.toString(), HttpStatus.FAILED_DEPENDENCY);
         }
     }
 
