@@ -19,3 +19,12 @@ body{
 .glyphicon-remove-circle:hover{
     color: 	rgb(255,0,0);
 }
+#create-company{
+    background: #6A5676;
+}
+#create-company:hover{
+    background: #493355;
+}
+#pagination-demo{
+    margin: 0;
+}
