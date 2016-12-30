@@ -13,6 +13,10 @@ import ua.softgroup.medreview.persistent.SpringDataConfig;
 import ua.softgroup.medreview.persistent.entity.Record;
 import ua.softgroup.medreview.persistent.repository.RecordRepository;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -29,11 +33,11 @@ public class RecordRepositoryImplTest {
 
     @Before
     public void setUp() throws Exception {
-        recordRepository.save(new Record("Search_search", "Type 1", null));
-        recordRepository.save(new Record("Google SEARCH", "Type 2", null));
-        recordRepository.save(new Record("Hibernate search", "Type 3", null));
-        recordRepository.save(new Record("Lucene Search", "Type 4", null));
-        recordRepository.save(new Record("Medical Cannabis", "Type 5", null));
+        createRecord("Search_search", LocalDateTime.now().minusDays(50));
+        createRecord("Google SEARCH", LocalDateTime.now().minusDays(100));
+        createRecord("Hibernate search", LocalDateTime.now().minusDays(5));
+        createRecord("Lucene Search", LocalDateTime.now());
+        createRecord("Medical Cannabis", LocalDateTime.now().minusDays(15));
     }
 
     @After
@@ -42,13 +46,26 @@ public class RecordRepositoryImplTest {
     }
 
     @Test
-    public void searchByKeyword() {
-        assertThat(recordRepository.searchByTitle("search, cannabis")).hasSize(4);
+    public void searchByTitle() {
+        assertThat(recordRepository.searchByTitle("search, cannabis", null, null)).hasSize(4);
     }
 
     @Test
-    public void searchByKeyword_notFound() {
-        assertThat(recordRepository.searchByTitle("apple")).hasSize(0);
+    public void searchByTitle_withDate() {
+        List<Record> recordList = recordRepository.searchByTitle("search, cannabis", LocalDate.now().minusDays(20), LocalDate.now());
+        assertThat(recordList).hasSize(3);
+    }
+
+    @Test
+    public void searchByTitle_notFound() {
+        assertThat(recordRepository.searchByTitle("apple", null, null)).hasSize(0);
+    }
+
+    private void createRecord(String title, LocalDateTime createdAt) {
+        Record record = new Record(title, "Type", null);
+        recordRepository.save(record);
+        record.setCreationDate(createdAt);
+        recordRepository.save(record);
     }
 
 }
