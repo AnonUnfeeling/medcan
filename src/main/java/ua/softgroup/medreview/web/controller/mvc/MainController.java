@@ -8,14 +8,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 public class MainController {
-    @RequestMapping(value = "/user")
+    @RequestMapping(value = "user")
     public String loginUser() {
-        return "redirect:records/all";
+        return "redirect:records";
     }
 
-    @RequestMapping(value = "/company")
+    @RequestMapping(value = "company")
     public String loginCompany() {
-        return "redirect:records/all";
+        return "redirect:records";
     }
 
     @RequestMapping(value = "admin")

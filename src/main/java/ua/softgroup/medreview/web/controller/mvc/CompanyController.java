@@ -26,33 +26,58 @@ public class CompanyController {
 
     //TODO: this link for admin
     @RequestMapping(value = "makeCompany", method = RequestMethod.POST)
-    public @ResponseBody String makeCompany(@RequestParam String companyName) {
+    public
+    @ResponseBody
+    String makeCompany(@RequestParam String companyName) {
+        if (companyName.isEmpty()) {
+            logger.log(Level.SEVERE, "error by create company name is empty");
+            return Keys.EMPTY.toString();
+        } else if (isCreate(companyName)) {
+            return Keys.CREATED.toString();
+        } else {
+            return Keys.FAIL.toString();
+        }
+    }
+
+    private boolean isCreate(String companyName) {
         try {
             companyRepository.save(new Company(companyName));
-            logger.log(Level.SEVERE, "create new company");
-            return Keys.CREATED.toString();
+            logger.log(Level.INFO, "create new company");
+            return true;
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "error by create company", e);
-            return Keys.FAIL.toString();
+            logger.log(Level.SEVERE, "create new company - error company is present");
+            return false;
         }
     }
 
     //TODO: this link for admin
     @RequestMapping(value = "companies", method = RequestMethod.GET)
-    public ModelAndView showAllCompanies(){
-        return new ModelAndView("admin","companies",companyRepository.findAll());
+    public ModelAndView showAllCompanies() {
+        logger.log(Level.INFO, "get all companies");
+        return new ModelAndView("admin", "companies", companyRepository.findAll());
     }
 
     //TODO: this link for admin
     @RequestMapping(value = "removeCompany", method = RequestMethod.POST)
-    public String removeCompany(String companyName){
+    public String removeCompany(String companyName) {
+        if (companyName.isEmpty()) {
+            logger.log(Level.SEVERE, "error by create company name is empty");
+            return Keys.EMPTY.toString();
+        } else if (isDeleted(companyName)) {
+            return Keys.DELETED.toString();
+        } else {
+            return Keys.FAIL.toString();
+        }
+    }
+
+    private boolean isDeleted(String companyName) {
         try {
             companyRepository.delete(companyRepository.findByName(companyName));
             logger.log(Level.SEVERE, "remove company");
-            return Keys.DELETED.toString();
-        }catch (Exception e){
+            return true;
+        } catch (Exception e) {
             logger.log(Level.SEVERE, "error by remove company", e);
-            return Keys.FAIL.toString();
+            return false;
         }
     }
 }

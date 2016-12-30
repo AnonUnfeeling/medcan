@@ -44,9 +44,7 @@ public class RecordController {
     //TODO secure this url for admin only
     @GetMapping(value = "/records/all")
     public ModelAndView showAllRecords() {
-        List<Record> records = new ArrayList<>();
-        recordRepository.findAll().forEach(records::add);
-        return new ModelAndView(RECORDS_VIEW, RECORDS_ATTRIBUTE, records);
+        return new ModelAndView(RECORDS_VIEW, RECORDS_ATTRIBUTE, recordRepository.findAll());
     }
 
     @PostMapping(value = "/records/add")
