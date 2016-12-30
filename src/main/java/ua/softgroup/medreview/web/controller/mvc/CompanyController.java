@@ -1,7 +1,10 @@
 package ua.softgroup.medreview.web.controller.mvc;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -54,12 +57,29 @@ public class CompanyController {
     @RequestMapping(value = "companies", method = RequestMethod.GET)
     public ModelAndView showAllCompanies() {
         logger.log(Level.INFO, "get all companies");
-        return new ModelAndView("admin", "companies", companyRepository.findAll());
+        return new ModelAndView("admin");
+    }
+
+    //TODO: this link for admin
+    @RequestMapping(value = "companies", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    String showAllCompanies(int page) {
+        logger.log(Level.INFO, "get all companies");
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(companyRepository.findAll(new PageRequest(page - 1, 10)));
+        } catch (JsonProcessingException e) {
+            logger.log(Level.SEVERE, "error by create json");
+            return "";
+        }
     }
 
     //TODO: this link for admin
     @RequestMapping(value = "removeCompany", method = RequestMethod.POST)
-    public @ResponseBody String removeCompany(@RequestParam String companyName) {
+    public
+    @ResponseBody
+    String removeCompany(@RequestParam String companyName) {
         if (companyName.isEmpty()) {
             logger.log(Level.SEVERE, "error by create company name is empty");
             return Keys.EMPTY.toString();

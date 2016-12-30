@@ -1,6 +1,8 @@
 package ua.softgroup.medreview.web.controller.mvc;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -14,8 +16,7 @@ import ua.softgroup.medreview.persistent.repository.RecordRepository;
 import ua.softgroup.medreview.web.form.RecordForm;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Iterator;
 
 /**
  * @author Oleksandr Tyshkovets <sg.olexander@gmail.com>
@@ -36,15 +37,15 @@ public class RecordController {
 
     //TODO secure this url
     @GetMapping(value = "/records")
-    public ModelAndView showPrincipalRecords() {
+    public ModelAndView showPrincipalRecords(int page) {
         User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return new ModelAndView(RECORDS_VIEW, RECORDS_ATTRIBUTE, recordRepository.findByAuthor(principal));
     }
 
     //TODO secure this url for admin only
     @GetMapping(value = "/records/all")
-    public ModelAndView showAllRecords() {
-        return new ModelAndView(RECORDS_VIEW, RECORDS_ATTRIBUTE, recordRepository.findAll());
+    public ModelAndView showAllRecords(int page) {
+        return new ModelAndView(RECORDS_VIEW, RECORDS_ATTRIBUTE, recordRepository.findAll(new PageRequest(page, 10)));
     }
 
     @PostMapping(value = "/records/add")
@@ -57,5 +58,4 @@ public class RecordController {
         recordRepository.save(record);
         return "redirect:/" + RECORDS_VIEW;
     }
-
 }
