@@ -59,7 +59,7 @@ public class CompanyController {
 
     //TODO: this link for admin
     @RequestMapping(value = "removeCompany", method = RequestMethod.POST)
-    public String removeCompany(String companyName) {
+    public @ResponseBody String removeCompany(@RequestParam String companyName) {
         if (companyName.isEmpty()) {
             logger.log(Level.SEVERE, "error by create company name is empty");
             return Keys.EMPTY.toString();
