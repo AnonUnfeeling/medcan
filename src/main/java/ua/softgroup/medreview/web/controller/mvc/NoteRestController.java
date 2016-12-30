@@ -48,4 +48,21 @@ public class NoteRestController {
     private boolean isCreate(long id, Note note) {
         return noteRepository.findByRecordId(id).add(note);
     }
+
+    @PostMapping("/records/{id}/remove")
+    public
+    @ResponseBody
+    String removeNote(@PathVariable Long id, @RequestParam Note note) {
+        if (id == 0 && note == null) {
+            return Keys.EMPTY.toString();
+        } else if (isDeleted(id, note)) {
+            return Keys.CREATED.toString();
+        } else {
+            return Keys.FAIL.toString();
+        }
+    }
+
+    private boolean isDeleted(long id, Note note) {
+        return noteRepository.findByRecordId(id).remove(note);
+    }
 }
