@@ -3,16 +3,13 @@ var header = $("meta[name='_csrf_header']").attr("content");
 
 $(document).ready(function () {
 
-    getCompanies(0);
-
     $('#pagination-demo').twbsPagination({
         totalPages: 35,
         visiblePages: 7,
         onPageClick: function (event, page) {
-           getCompanies(page);
+            getCompanies(page);
         }
     });
-
 });
 
 function getCompanies(page) {
@@ -25,7 +22,10 @@ function getCompanies(page) {
             'X-CSRF-TOKEN': token
         }
     }).done(function (data) {
+        console.log(data);
         var arr = data.content;
+        var pages = data.totalPages;
+
         var table = $('#table-body');
         table.find('tr').remove();
         $(arr).each(function () {
@@ -60,7 +60,7 @@ function deleteCompany(control) {
         headers: {
             'X-CSRF-TOKEN': token
         }
-    }).fail(function (data) {
+    }).done(function (data) {
         console.log(data);
     });
 }
@@ -77,15 +77,12 @@ function createCompany() {
             'X-CSRF-TOKEN': token
         }
     }).done(function (data) {
-        console.log(data);
-        if (data.responseText=='CREATED'){
-            success_msg.hide();
-            error_msg.hide();
-            success_msg.show();
-        } else{
-            success_msg.hide();
-            error_msg.hide();
-            error_msg.show();
-        }
+        success_msg.hide();
+        error_msg.hide();
+        success_msg.show();
+    }).fail(function (data) {
+        success_msg.hide();
+        error_msg.hide();
+        error_msg.show();
     });
 }
