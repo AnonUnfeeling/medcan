@@ -1,6 +1,11 @@
 package ua.softgroup.medreview.persistent.entity;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Store;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,10 +20,12 @@ import java.util.List;
  * @author Oleksandr Tyshkovets <sg.olexander@gmail.com>
  */
 @Entity
+@Indexed
 public class Record extends AbstractEntity<Long> {
     private static final long serialVersionUID = 5768370930485023928L;
 
     @Column(nullable = false, unique = true)
+    @Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
     private String title;
 
     @Column
