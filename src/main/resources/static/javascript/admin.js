@@ -76,7 +76,7 @@ function createCompany() {
         headers:{
             'X-CSRF-TOKEN': token
         }
-    }).fail(function (data) {
+    }).done(function (data) {
         console.log(data);
         if (data.responseText=='CREATED'){
             success_msg.hide();
