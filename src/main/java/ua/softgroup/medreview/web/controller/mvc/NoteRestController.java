@@ -35,13 +35,13 @@ public class NoteRestController {
     @PostMapping("/records/{id}/add")
     public
     @ResponseBody
-    String makeNewNote(@PathVariable Long id, @RequestParam Note note) {
+    ResponseEntity makeNewNote(@PathVariable Long id, @RequestParam Note note) {
         if (id == 0 && note == null) {
-            return Keys.EMPTY.toString();
+            return new ResponseEntity(Keys.EMPTY.toString(), HttpStatus.FAILED_DEPENDENCY);
         } else if (isCreate(id, note)) {
-            return Keys.CREATED.toString();
+            return ResponseEntity.ok(HttpStatus.OK);
         } else {
-            return Keys.FAIL.toString();
+            return new ResponseEntity(Keys.FAIL.toString(), HttpStatus.FAILED_DEPENDENCY);
         }
     }
 
@@ -52,13 +52,13 @@ public class NoteRestController {
     @PostMapping("/records/{id}/remove")
     public
     @ResponseBody
-    String removeNote(@PathVariable Long id, @RequestParam Note note) {
+    ResponseEntity removeNote(@PathVariable Long id, @RequestParam Note note) {
         if (id == 0 && note == null) {
-            return Keys.EMPTY.toString();
+            return new ResponseEntity(Keys.EMPTY.toString(), HttpStatus.FAILED_DEPENDENCY);
         } else if (isDeleted(id, note)) {
-            return Keys.CREATED.toString();
+            return ResponseEntity.ok(HttpStatus.OK);
         } else {
-            return Keys.FAIL.toString();
+            return new ResponseEntity(Keys.FAIL.toString(), HttpStatus.FAILED_DEPENDENCY);
         }
     }
 
