@@ -1,5 +1,7 @@
 package ua.softgroup.medreview.web.controller.mvc;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -9,14 +11,18 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import ua.softgroup.medreview.persistent.entity.Record;
 import ua.softgroup.medreview.persistent.entity.User;
 import ua.softgroup.medreview.persistent.repository.RecordRepository;
+import ua.softgroup.medreview.service.impl.AuthenticationServiceImpl;
 import ua.softgroup.medreview.web.form.RecordForm;
 
 import javax.validation.Valid;
 import java.util.Iterator;
+import java.util.logging.Level;
 
 /**
  * @author Oleksandr Tyshkovets <sg.olexander@gmail.com>
@@ -31,21 +37,45 @@ public class RecordController {
     private final RecordRepository recordRepository;
 
     @Autowired
+    private AuthenticationServiceImpl authenticationService;
+
+    @Autowired
     public RecordController(RecordRepository recordRepository) {
         this.recordRepository = recordRepository;
     }
 
     //TODO secure this url
+    @GetMapping(value = "/record")
+    public ModelAndView showPrincipalRecords() {
+        return new ModelAndView(RECORDS_VIEW);
+    }
+
+    //TODO secure this url
     @GetMapping(value = "/records")
-    public ModelAndView showPrincipalRecords(int page) {
-        User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return new ModelAndView(RECORDS_VIEW, RECORDS_ATTRIBUTE, recordRepository.findByAuthor(principal));
+    public @ResponseBody String showPrincipalRecords(@RequestParam int page) {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(recordRepository.findByAuthor(authenticationService.getPrincipal(),new PageRequest(page, 10)));
+        } catch (JsonProcessingException e) {
+            return "";
+        }
     }
 
     //TODO secure this url for admin only
     @GetMapping(value = "/records/all")
-    public ModelAndView showAllRecords(int page) {
-        return new ModelAndView(RECORDS_VIEW, RECORDS_ATTRIBUTE, recordRepository.findAll(new PageRequest(page, 10)));
+    public ModelAndView showAllRecords() {
+        return new ModelAndView(RECORDS_VIEW);
+    }
+
+    //TODO secure this url for admin only
+    @GetMapping(value = "/records/alls")
+    public @ResponseBody String showAllRecords(@RequestParam int page) {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(recordRepository.findAll(new PageRequest(page, 10)));
+        } catch (JsonProcessingException e) {
+            return "";
+        }
     }
 
     @PostMapping(value = "/records/add")

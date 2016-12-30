@@ -16,7 +16,7 @@ public interface RecordRepository extends CrudRepository<Record, Long>, RecordRe
 
     Record findByTitle(String name);
 
-    Set<Record> findByAuthor(User author);
+    Page<Record> findByAuthor(User author,Pageable pageable);
 
     Page<Record> findAll(Pageable pageable);
 

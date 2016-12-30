@@ -20,6 +20,6 @@ public class MainController {
 
     @RequestMapping(value = "admin")
     public String loginAdmin() {
-        return "redirect:companies";
+        return "redirect:company";
     }
 }

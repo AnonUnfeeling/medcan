@@ -67,7 +67,7 @@ public class CompanyController {
         logger.log(Level.INFO, "get all companies");
         ObjectMapper mapper = new ObjectMapper();
         try {
-            return mapper.writeValueAsString(companyRepository.findAll(new PageRequest(page - 1, 10)));
+            return mapper.writeValueAsString(companyRepository.findAll(new PageRequest(page, 10)));
         } catch (JsonProcessingException e) {
             logger.log(Level.SEVERE, "error by create json");
             return "";
