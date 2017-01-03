@@ -16,17 +16,17 @@
 </head>
 <body>
 <nav class="navbar navbar-default navbar-fixed-top">
-        <div class="container-fluid">
-              <div class="navbar-header">
-                  <ul class="nav navbar-nav navbar-right">
-                      <li><a href="/companies">Companies</a></li>
-                      <li><a href="/users">Users</a></li>
-                  </ul>
-              </div>
-            <ul class="nav navbar-nav navbar-right" style="margin-right: 20px;">
-                <li><button  onclick="location.href = '/login?logout';" type="button" class="btn btn-danger navbar-btn btn-sm">Sign out</button></li>
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/company">Companies</a></li>
+                <li><a href="/users">Users</a></li>
             </ul>
         </div>
+        <ul class="nav navbar-nav navbar-right" style="margin-right: 20px;">
+            <li><button  onclick="location.href = '/login?logout';" type="button" class="btn btn-danger navbar-btn btn-sm">Sign out</button></li>
+        </ul>
+    </div>
 </nav>
 <div class="container">
     <h3>All companies</h3>
@@ -45,7 +45,7 @@
     </div>
     <div class="container-fluid">
         <button id="create-company" type="button" class="btn btn-info" data-toggle="modal" data-target="#addCompanyModal">Add company</button>
-        <ul id="pagination-demo" class="pagination-sm"></ul>
+        <ul id="pagination" class="pagination-sm right"></ul>
     </div>
 
     <!-- Modal -->
