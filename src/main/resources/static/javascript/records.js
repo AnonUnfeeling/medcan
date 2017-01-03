@@ -13,22 +13,21 @@ var defaultOpts = {
 
 //Load pagination on page loaded
 $(document).ready(function () {
-   /* $pagination =$('#pagination');
-    $pagination.twbsPagination(defaultOpts);*/
+    $pagination = $('#pagination');
+    $pagination.twbsPagination(defaultOpts);
 });
 
 //Get data for table
 function getRecords(page) {
     $.ajax({
         method: "GET",
-        url: "/records",
+        url: "/records/all",
         data: {page: page},
         dataType: "json",
         headers: {
             'X-CSRF-TOKEN': token
         }
     }).done(function (data) {
-        console.log(data);
         var arr = data.content;
         var totalPages = data.totalPages;
         var currentPage = $pagination.twbsPagination('getCurrentPage');
@@ -43,7 +42,8 @@ function getRecords(page) {
         table.find('tr').remove();
         $(arr).each(function () {
             var record = $(this)[0];
-            table.append('<tr><td>' + record.name + '</td><td class="text-right"><span id=' + record.name + ' data-singleton="true" data-toggle="confirmation" class="glyphicon glyphicon-remove-circle records-control" aria-hidden="true"></span></td></tr>');
+            console.log(record);
+            //table.append('<tr><td>' + record.name + '</td><td></td><td class="text-right"><span id=' + record.name + ' data-singleton="true" data-toggle="confirmation" class="glyphicon glyphicon-remove-circle records-control" aria-hidden="true"></span></td></tr>');
         });
         manageCompany();
     }).fail(function (data) {
