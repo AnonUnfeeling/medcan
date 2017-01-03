@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Admin page</title>
+    <link rel="stylesheet" href="/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/css/main.css"/>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <!-- default header name is X-CSRF-TOKEN -->
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <script src="/javascript/jquery-3.1.1.min.js"></script>
+    <script src="/javascript/bootstrap.min.js"></script>
+    <script src="/javascript/user.js"></script>
+    <script src="/javascript/bootstrap-confirmation.js"></script>
+    <script src="/javascript/jquery.twbsPagination.min.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/companies">Companies</a></li>
+                <li><a href="/users">Users</a></li>
+            </ul>
+        </div>
+        <ul class="nav navbar-nav navbar-right" style="margin-right: 20px;">
+            <li>
+                <button onclick="location.href = '/login?logout';" type="button"
+                        class="btn btn-danger navbar-btn btn-sm">Sign out
+                </button>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container">
+    <h3>All companies</h3>
+    <hr/>
+    <div class="table-responsive">
+        <table class="table table-responsive table-hover table-striped">
+            <thead>
+            <tr>
+                <th>Login</th>
+                <th>Role</th>
+                <th>Company</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody id="table-body">
+            </tbody>
+        </table>
+    </div>
+    <div class="container-fluid">
+        <button id="create-company" type="button" class="btn btn-info" data-toggle="modal"
+                onclick="loadRole(); loadCompanies();" data-target="#addCompanyModal">Add new user
+        </button>
+        <ul id="pagination-demo" class="pagination-sm"></ul>
+    </div>
+
+    <!--Modal-->
+    <div class="modal fade" id="addCompanyModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Add user</h4>
+                </div>
+                <div class="modal-body">
+                    <input id="userLogin" placeholder="User Login" type="text" class="form-control"/> <br/>
+                    <input id="userPassword" placeholder="user password" type="text" class="form-control"/> <br/>
+                    <select id="userRole" class="form-control"></select> <br/>
+                    <select id="userCompany" class="form-control"></select> <br/>
+                    <div id="success" class="alert alert-success" hidden="hidden">
+                        <strong>Success!</strong> User was created.
+                    </div>
+                    <div id="error" class="alert  alert-danger" hidden="hidden">
+                        <strong>Error!</strong> User with such login is already exist.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" onclick="createUser();">Save</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

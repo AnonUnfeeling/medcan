@@ -1,6 +1,9 @@
 package ua.softgroup.medreview.persistent.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
+import ua.softgroup.medreview.persistent.entity.Record;
 import ua.softgroup.medreview.persistent.entity.User;
 
 /**
@@ -10,4 +13,5 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     User findByLogin(String login);
 
+    Page<User> findAll(Pageable pageable);
 }

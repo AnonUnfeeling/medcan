@@ -1,5 +1,7 @@
 package ua.softgroup.medreview.persistent.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +19,7 @@ public class Company extends AbstractEntity<Long> {
     @Column(nullable = false, unique = true)
     private String name;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<User> users = new ArrayList<>();
 
