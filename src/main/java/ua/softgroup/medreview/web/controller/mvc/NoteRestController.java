@@ -9,9 +9,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 import ua.softgroup.medreview.persistent.entity.Note;
 import ua.softgroup.medreview.persistent.repository.NoteRepository;
+import ua.softgroup.medreview.persistent.repository.RecordRepository;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 /**
@@ -23,30 +26,53 @@ public class NoteRestController {
     private final NoteRepository noteRepository;
 
     @Autowired
+    private RecordRepository recordRepository;
+
+    @Autowired
     public NoteRestController(NoteRepository noteRepository) {
         this.noteRepository = noteRepository;
     }
 
-    @GetMapping("/records/{id}/notes")
-    public ResponseEntity<Collection<Note>> getNotes(@PathVariable Long id) {
-        return new ResponseEntity<>(noteRepository.findByRecordId(id), HttpStatus.OK);
+    @GetMapping("/records/notes")
+    public ResponseEntity<Collection<Note>> getNotes(@RequestParam String title) {
+        return new ResponseEntity<>(noteRepository.findByRecordTitle(title), HttpStatus.OK);
     }
 
-    @PostMapping("/records/{id}/add")
+    @GetMapping(value = "/records/note")
+    public ModelAndView getNoteView(@RequestParam String title, @RequestParam String type) {
+        return new ModelAndView("note");
+    }
+
+    @PostMapping("/records/note/add")
     public
     @ResponseBody
-    ResponseEntity makeNewNote(@PathVariable Long id, @RequestParam Note note) {
-        if (id == 0 && note == null) {
-            return new ResponseEntity(Keys.EMPTY.toString(), HttpStatus.OK);
-        } else if (isCreate(id, note)) {
-            return ResponseEntity.ok(HttpStatus.OK);
-        } else {
-            return new ResponseEntity(Keys.FAIL.toString(), HttpStatus.OK);
-        }
-    }
+    ResponseEntity makeNewNote(@RequestParam String titleRecord,
+                               @RequestParam String description,
+                               @RequestParam String conclusion,
+                               @RequestParam String keywords,
+                               @RequestParam String subject,
+                               @RequestParam String subSubject,
+                               @RequestParam String country,
+                               @RequestParam String language) {
+//        if (title == null && note == null) {
+//            return new ResponseEntity(Keys.EMPTY.toString(), HttpStatus.OK);
+//        } else if (isCreate(id, note)) {
 
-    private boolean isCreate(long id, Note note) {
-        return noteRepository.findByRecordId(id).add(note);
+//        } else {
+        Note note = new Note();
+        note.setDescription(description);
+        note.setConclusion(conclusion);
+        note.setKeywords(keywords);
+        note.setStatus(subject);
+        note.setSubSubject(subSubject);
+        note.setCountry(country);
+        note.setLanguage(language);
+        note.setStatus("Test Status");
+        note.setCreationDate(LocalDateTime.now());
+        note.setRecord(recordRepository.findByTitle(titleRecord));
+        noteRepository.save(note);
+        return ResponseEntity.ok(HttpStatus.OK);
+//        }
     }
 
     @PostMapping("/records/{id}/remove")

@@ -42,7 +42,7 @@ function getRecords(page) {
         $(arr).each(function () {
             var record = $(this)[0];
             console.log(record);
-            table.append('<tr><td>' + record.title +
+            table.append('<tr onclick="showNote(this)"><td>' + record.title +
                 '<td>'+ record.type + '</td>'+
                 '<td>'+ record.creationDate + '</td>'+
                 '<td>'+ record.author.login + '</td>'+
@@ -53,6 +53,13 @@ function getRecords(page) {
         console.log(data);
     });
 }
+
+function showNote(record) {
+    window.location.href = "/records/note?title=" + $(record).find('td')[0].innerText + "&type=" + $(record).find('td')[1].innerText;
+}
+
+
+
 //Add delete button to last column in table
 function manageCompany() {
     var record_control = $('.records-control');

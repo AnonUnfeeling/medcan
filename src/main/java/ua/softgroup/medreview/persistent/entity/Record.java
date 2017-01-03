@@ -50,10 +50,11 @@ public class Record extends AbstractEntity<Long> {
     @Column
     private String type;
 
+    @JsonIgnore
     @Column
     @CreationTimestamp
     @Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
-    private Date creationDate;
+    private LocalDateTime creationDate;
 
     @ManyToOne
     private User author;
@@ -91,7 +92,7 @@ public class Record extends AbstractEntity<Long> {
         return dateFormat.format(creationDate);
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }
 

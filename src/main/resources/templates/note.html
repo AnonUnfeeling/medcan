@@ -13,7 +13,7 @@
     <script src="/javascript/bootstrap.min.js"></script>
     <script src="/javascript/bootstrap-confirmation.js"></script>
     <script src="/javascript/jquery.twbsPagination.min.js"></script>
-    <script src="/javascript/records.js"></script>
+    <script src="/javascript/note.js"></script>
 </head>
 <body>
 <nav class="navbar navbar-default navbar-fixed-top">
@@ -50,11 +50,15 @@
         <table class="table table-responsive">
             <thead>
             <tr>
-                <th>Title</th>
-                <th>Type</th>
-                <th>Date added</th>
-                <th>Author</th>
-                <th></th>
+                <th id="description">Description</th>
+                <th id="conclusion">Conclusion</th>
+                <th id="keywords">Keywords</th>
+                <th id="subject">Subject</th>
+                <th id="subSubject">SubSubject</th>
+                <th id="country">Country</th>
+                <th id="language">Language</th>
+                <th id="status">Status</th>
+                <th id="creationDate">Create date</th>
             </tr>
             </thead>
             <tbody id="table-body">
@@ -64,7 +68,7 @@
     <div class="row">
         <div class="col-md-6">
             <button type="button" class="btn btn-primary bottom-left" data-toggle="modal"
-                    data-target="#creteRecord">Add record
+                    data-target="#creteNote">Add note
             </button>
         </div>
         <div class="col-md-6 text-right">
@@ -72,8 +76,8 @@
         </div>
     </div>
 
-    <!--Modal for create record-->
-    <div id="creteRecord" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <!--Modal for create note-->
+    <div id="creteNote" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -82,30 +86,35 @@
                     <h3>Creating new record</h3>
                 </div>
                 <div class="modal-body">
-                    <div id="form-container">
-                        <form>
-                            <div id="record-data">
-                                <div class="form-group">
-                                    <label>Title:</label>
-                                    <input id="title" type="text" placeholder="Title" name="title"
-                                           class="form-control"/>
-                                </div>
-                                <div class="form-group">
-                                    <label>Type:</label>
-                                    <input id="type" placeholder="Type" type="text" name="type" class="form-control"/>
-                                </div>
-                            </div>
-                            <hr/>
-                            <div id="form-control" class="text-right">
-                                <button class="btn btn-danger" type="reset">CANCEL</button>
-                                <button class="btn btn-primary" type="submit" onclick="createRecord();">SUBMIT</button>
-                            </div>
-                        </form>
+                    <div class="modal-body">
+                        <!--<input id="titleNote" th:value="${param.title}"/>-->
+                        <input id="descriptionNote" placeholder="Description" type="text" class="form-control"/> <br/>
+                        <input id="conclusionNote" placeholder="Conclusion" type="text" class="form-control"/><br/>
+                        <input id="keywordsNote" placeholder="Keywords" type="text" class="form-control"/><br/>
+                        <input id="subjectNote" placeholder="Subject" type="text" class="form-control"/><br/>
+                        <input id="subSubjectNote" placeholder="SubSubject" type="text" class="form-control"/><br/>
+                        <input id="countryNote" placeholder="Country" type="text" class="form-control"/><br/>
+                        <input id="languageNote" placeholder="Language" type="text" class="form-control"/><br/>
+                        <div id="success" class="alert alert-success" hidden="hidden">
+                            <strong>Success!</strong> User was created.
+                        </div>
+                        <div id="error" class="alert  alert-danger" hidden="hidden">
+                            <strong>Error!</strong> User with such login is already exist.
+                        </div>
                     </div>
+                    <hr/>
+                    <div id="form-control" class="text-right">
+                        <button class="btn btn-danger" type="reset">CANCEL</button>
+                        <button class="btn btn-primary" type="submit" onclick="createNote();">SUBMIT</button>
+                    </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+</div>
+<input id="titleNote" th:value="${param.title}" hidden/>
+<input id="typeNote" th:value="${param.type}" hidden/>
 </body>
 </html>

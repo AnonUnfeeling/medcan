@@ -13,6 +13,7 @@ import org.hibernate.search.annotations.Store;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 
 /**
@@ -48,6 +49,7 @@ public class Note extends AbstractEntity<Long> {
     @Column
     private String status;
 
+    @JsonIgnore
     @Column
     @CreationTimestamp
     @Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
@@ -125,8 +127,9 @@ public class Note extends AbstractEntity<Long> {
         this.status = status;
     }
 
-    public LocalDateTime getCreationDate() {
-        return creationDate;
+    public String getCreationDate() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
+        return dateFormat.format(creationDate);
     }
 
     public void setCreationDate(LocalDateTime creationDate) {

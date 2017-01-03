@@ -13,4 +13,5 @@ public interface NoteRepository extends CrudRepository<Note, Long>, NoteReposito
 
     Set<Note> findByRecordId(Long recordId);
 
+    Set<Note> findByRecordTitle(String title);
 }
