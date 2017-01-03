@@ -3,6 +3,11 @@ package ua.softgroup.medreview.persistent.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Store;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +18,7 @@ import java.time.LocalDateTime;
  * @author Oleksandr Tyshkovets <sg.olexander@gmail.com>
  */
 @Entity
+@Indexed
 public class Note extends AbstractEntity<Long> {
     private static final long serialVersionUID = 6627846745698054192L;
 
@@ -23,6 +29,7 @@ public class Note extends AbstractEntity<Long> {
     private String conclusion;
 
     @Column
+    @Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
     private String keywords;
 
     @Column
@@ -42,6 +49,7 @@ public class Note extends AbstractEntity<Long> {
 
     @Column
     @CreationTimestamp
+    @Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
     private LocalDateTime creationDate;
 
     @Column

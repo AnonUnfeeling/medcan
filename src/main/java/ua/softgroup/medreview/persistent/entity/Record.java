@@ -33,6 +33,7 @@ public class Record extends AbstractEntity<Long> {
 
     @Column
     @CreationTimestamp
+    @Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
     private LocalDateTime creationDate;
 
     @ManyToOne

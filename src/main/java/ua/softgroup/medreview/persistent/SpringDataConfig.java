@@ -27,6 +27,7 @@ public class SpringDataConfig {
     private static final String PROPERTY_HIBERNATE_SHOW_SQL = "hibernate.show_sql";
     private static final String PROPERTY_HIBERNATE_HBM2DDL = "hibernate.hbm2ddl.auto";
     private static final String PROPERTY_HIBERNATE_NAMING_STRATEGY = "hibernate.physical_naming_strategy";
+    private static final String PROPERTY_HIBERNATE_SEARCH_LUCENE_VERSION = "hibernate.search.lucene_version";
     private static final String PROPERTY_HIBERNATE_SEARCH_DIRECTORY_PROVIDER = "hibernate.search.default.directory_provider";
     private static final String PROPERTY_HIBERNATE_SEARCH_INDEX_BASE = "hibernate.search.default.indexBase";
 
@@ -74,6 +75,7 @@ public class SpringDataConfig {
         properties.put(PROPERTY_HIBERNATE_NAMING_STRATEGY, env.getRequiredProperty("spring.jpa.hibernate.naming.physical-strategy"));
         properties.put(PROPERTY_HIBERNATE_SEARCH_DIRECTORY_PROVIDER, env.getRequiredProperty("spring.jpa.properties.hibernate.search.default.directory_provider"));
         properties.put(PROPERTY_HIBERNATE_SEARCH_INDEX_BASE, env.getRequiredProperty("spring.jpa.properties.hibernate.search.default.indexBase"));
+        properties.put(PROPERTY_HIBERNATE_SEARCH_LUCENE_VERSION, env.getRequiredProperty("spring.jpa.properties.hibernate.search.lucene_version"));
         return properties;
     }
 
