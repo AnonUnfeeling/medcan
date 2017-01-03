@@ -1,17 +1,23 @@
 package ua.softgroup.medreview.web.controller.mvc;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+<<<<<<< HEAD
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+=======
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+>>>>>>> 8d9cb6a3be36ac7847ee7264a32bde5c8b105197
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+<<<<<<< HEAD
 import ua.softgroup.medreview.persistent.entity.Company;
 import ua.softgroup.medreview.persistent.repository.CompanyRepository;
 
@@ -22,84 +28,49 @@ import java.util.logging.Logger;
  * Created by jdroidcoder on 28.12.2016.
  */
 @Controller
+=======
+import ua.softgroup.medreview.persistent.entity.Record;
+import ua.softgroup.medreview.service.CompanyService;
+
+@RestController
+>>>>>>> 8d9cb6a3be36ac7847ee7264a32bde5c8b105197
 public class CompanyController {
-    private Logger logger = Logger.getLogger(CompanyController.class.getName());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    CompanyRepository companyRepository;
+    private CompanyService companyService;
 
-    //TODO: this link for admin
-    @RequestMapping(value = "makeCompany", method = RequestMethod.POST)
-    public
-    @ResponseBody
-    ResponseEntity makeCompany(@RequestParam String companyName) {
-        if (companyName.isEmpty()) {
-            logger.log(Level.SEVERE, "error by create company name is empty");
-            return new ResponseEntity(Keys.EMPTY.toString(), HttpStatus.OK);
-        } else if (isCreate(companyName)) {
-            return ResponseEntity.ok(HttpStatus.OK);
-        } else {
-            return new ResponseEntity(Keys.FAIL.toString(), HttpStatus.OK);
-        }
-    }
-
-    private boolean isCreate(String companyName) {
+    @PostMapping(value = "makeCompany")
+    public ResponseEntity makeCompany(@RequestParam String companyName) {
+        logger.debug("makeCompany");
         try {
-            companyRepository.save(new Company(companyName));
-            logger.log(Level.INFO, "create new company");
-            return true;
+            companyService.createCompany(companyName);
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "create new company - error company is present");
-            return false;
+            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(String.format("Company '%s' has not been created.", companyName));
         }
+        return ResponseEntity.ok(null);
     }
 
-    //TODO: this link for admin
-    @RequestMapping(value = "company", method = RequestMethod.GET)
+    @GetMapping(value = "company")
     public ModelAndView showAllCompanies() {
-        logger.log(Level.INFO, "get all companies");
         return new ModelAndView("admin");
     }
 
-    //TODO: this link for admin
-    @RequestMapping(value = "companies", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    String showAllCompanies(int page) {
-        logger.log(Level.INFO, "get all companies");
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            return mapper.writeValueAsString(companyRepository.findAll(new PageRequest(page - 1, 10)));
-        } catch (JsonProcessingException e) {
-            logger.log(Level.SEVERE, "error by create json");
-            return "";
-        }
+    @GetMapping(value = "companies")
+    public ResponseEntity<Page<Record>> showAllCompanies(int page) {
+        logger.debug("show companies from page=" + page);
+        return ResponseEntity.ok(companyService.findAll(new PageRequest(page - 1, 10)));
     }
 
-    //TODO: this link for admin
-    @RequestMapping(value = "removeCompany", method = RequestMethod.POST)
-    public
-    @ResponseBody
-    ResponseEntity removeCompany(@RequestParam String companyName) {
-        if (companyName.isEmpty()) {
-            logger.log(Level.SEVERE, "error by create company name is empty");
-            return new ResponseEntity(Keys.EMPTY.toString(), HttpStatus.OK);
-        } else if (isDeleted(companyName)) {
-            return ResponseEntity.ok(HttpStatus.OK);
-        } else {
-            return new ResponseEntity(Keys.FAIL.toString(), HttpStatus.OK);
-        }
-    }
-
-    private boolean isDeleted(String companyName) {
+    @PostMapping(value = "removeCompany")
+    public ResponseEntity removeCompany(@RequestParam String companyName) {
+        logger.debug("removeCompany " + companyName);
         try {
-            companyRepository.delete(companyRepository.findByName(companyName));
-            logger.log(Level.SEVERE, "remove company");
-            return true;
+            companyService.deleteCompanyByName(companyName);
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "error by remove company", e);
-            return false;
+            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(null);
         }
+        return ResponseEntity.ok(null);
     }
 
     @RequestMapping(value = "getAllCompany")

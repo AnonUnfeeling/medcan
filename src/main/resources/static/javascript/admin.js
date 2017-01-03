@@ -1,15 +1,17 @@
 var token = $("meta[name='_csrf']").attr("content");
-var header = $("meta[name='_csrf_header']").attr("content");
+
+var $pagination;
+var defaultOpts = {
+    totalPages: 20,
+    visiblePages: 7,
+    onPageClick: function (event, page) {
+        getCompanies(page);
+    }
+};
 
 $(document).ready(function () {
-
-    $('#pagination-demo').twbsPagination({
-        totalPages: 35,
-        visiblePages: 7,
-        onPageClick: function (event, page) {
-            getCompanies(page);
-        }
-    });
+    $pagination =$('#pagination');
+    $pagination.twbsPagination(defaultOpts);
 });
 
 function getCompanies(page) {
@@ -24,7 +26,14 @@ function getCompanies(page) {
     }).done(function (data) {
         console.log(data);
         var arr = data.content;
-        var pages = data.totalPages;
+        var totalPages = data.totalPages;
+        var currentPage = $pagination.twbsPagination('getCurrentPage');
+        $pagination.twbsPagination('destroy');
+        $pagination.twbsPagination($.extend({}, defaultOpts, {
+            startPage: currentPage,
+            totalPages: totalPages,
+            initiateStartPageClick: false
+        }));
 
         var table = $('#table-body');
         table.find('tr').remove();
@@ -33,6 +42,8 @@ function getCompanies(page) {
             table.append('<tr><td>' + company.name + '</td><td class="text-right"><span id=' + company.name + ' data-singleton="true" data-toggle="confirmation" class="glyphicon glyphicon-remove-circle company-control" aria-hidden="true"></span></td></tr>');
         });
         manageCompany();
+    }).fail(function (data) {
+        console.log(data);
     });
 }
 

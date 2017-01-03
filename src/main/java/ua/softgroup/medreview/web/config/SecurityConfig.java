@@ -46,7 +46,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             return new BCryptPasswordEncoder();
         }
 
-
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http
@@ -54,8 +53,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/css/**", "/js/**", "/fonts/**").permitAll()
                     .antMatchers("/companies", "/makeCompany", "/removeCompany").hasAuthority(Role.ADMIN.name())
                     .antMatchers("/admin").hasAuthority(Role.ADMIN.name())
-                    .antMatchers("/records/all").hasAuthority(Role.ADMIN.name())
-                    .antMatchers("/user").hasAnyAuthority(Role.ADMIN.name(), Role.COMPANY.name())
+                    .antMatchers("/records/all/**").hasAuthority(Role.ADMIN.name())
+                    .antMatchers("/user/**").hasAnyAuthority(Role.ADMIN.name(), Role.COMPANY.name())
                     .anyRequest().authenticated()
                     .and()
                     .formLogin()
