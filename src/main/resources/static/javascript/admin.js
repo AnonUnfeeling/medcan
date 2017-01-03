@@ -77,8 +77,7 @@ function deleteCompany(control) {
 }
 
 function createCompany() {
-    var success_msg = $('#success');
-    var error_msg = $('#error');
+    var message = $('#message-container');
     $.ajax({
         method: "POST",
         url: "/makeCompany",
@@ -88,12 +87,10 @@ function createCompany() {
             'X-CSRF-TOKEN': token
         }
     }).done(function (data) {
-        success_msg.hide();
-        error_msg.hide();
-        success_msg.show();
+        $(message).children().remove();
+        message.append("<div id='success' class='alert alert-success'><strong>Success!</strong>'+ data+'</div>")
     }).fail(function (data) {
-        success_msg.hide();
-        error_msg.hide();
-        error_msg.show();
+        $(message).children().remove();
+        message.append("<div id='error' class='alert alert-danger'><strong>Error!</strong>+' data +'</div>")
     });
 }

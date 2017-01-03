@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"/>
     <title>Admin page</title>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -76,14 +75,11 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">Add company</h4>
                 </div>
-                <div class="modal-body">
+                <div id="modal-body" class="modal-body">
                     <input id="companyName" placeholder="Company name" type="text" class="form-control"/>
                     <br/>
-                    <div id="success" class="alert alert-success" hidden="hidden">
-                        <strong>Success!</strong> Company was created.
-                    </div>
-                    <div id="error" class="alert  alert-danger" hidden="hidden">
-                        <strong>Error!</strong> Company with such name is already exist.
+                    <div id="message-container">
+
                     </div>
                 </div>
                 <div class="modal-footer">
