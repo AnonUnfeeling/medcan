@@ -1,50 +1,46 @@
 package ua.softgroup.medreview.web.controller.mvc;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ua.softgroup.medreview.persistent.entity.User;
-import ua.softgroup.medreview.persistent.repository.CompanyRepository;
-import ua.softgroup.medreview.persistent.repository.UserRepository;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import ua.softgroup.medreview.service.CompanyService;
+import ua.softgroup.medreview.service.UserService;
 
 /**
  * Created by jdroidcoder on 28.12.2016.
  */
-@Controller
+@RestController
 public class UserController {
-    private Logger logger = Logger.getLogger(UserController.class.getName());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    UserRepository userRepository;
-
+    private UserService userService;
     @Autowired
-    CompanyRepository companyRepository;
+    private CompanyService companyservice;
 
-    //TODO: this link for admin and company role
-    @RequestMapping(value = "user", method = RequestMethod.POST)
-    public String makeUser(User user) {
+    @PostMapping(value = "user")
+    public ResponseEntity createUser(@RequestBody User user) {
         try {
-            userRepository.save(user);
-            logger.log(Level.SEVERE, "create new user");
-            return Keys.CREATED.toString();
+            userService.saveUser(user);
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "error by create user", e);
-            return Keys.FAIL.toString();
+            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(null);
         }
+        return ResponseEntity.ok(String.format("User '%s' has been created.", user.getUsername()));
     }
 
-    @RequestMapping(value = "users", method = RequestMethod.POST)
+    @PostMapping(value = "users")
     public ModelAndView showUserByCompany(String companyName) {
-        return new ModelAndView("", "users", companyRepository.findByName(companyName).getUsers());
+        return new ModelAndView("", "users", companyservice.findByName(companyName).getUsers());
     }
 
-    @RequestMapping(value = "users", method = RequestMethod.GET)
+    @GetMapping(value = "users")
     public ModelAndView showUser() {
-        return new ModelAndView("", "users", userRepository.findAll());
+        return new ModelAndView("", "users", userService.findAllUsers());
     }
 }
