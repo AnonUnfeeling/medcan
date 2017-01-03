@@ -33,8 +33,8 @@ public class RecordRepositoryImplTest {
 
     @Before
     public void setUp() throws Exception {
-        createRecord("Search_search", LocalDateTime.now().minusDays(50));
-        createRecord("Google SEARCH", LocalDateTime.now().minusDays(100));
+        createRecord("Search_search gay", LocalDateTime.now().minusDays(50));
+        createRecord("the Google SEARCH", LocalDateTime.now().minusDays(100));
         createRecord("Hibernate search", LocalDateTime.now().minusDays(5));
         createRecord("Lucene Search", LocalDateTime.now());
         createRecord("Medical Cannabis", LocalDateTime.now().minusDays(15));
@@ -48,6 +48,11 @@ public class RecordRepositoryImplTest {
     @Test
     public void searchByTitle() {
         assertThat(recordRepository.searchByTitle("search, cannabis", null, null)).hasSize(4);
+    }
+
+    @Test
+    public void searchByTitle_withStemming() {
+        assertThat(recordRepository.searchByTitle("gays", null, null)).hasSize(1);
     }
 
     @Test

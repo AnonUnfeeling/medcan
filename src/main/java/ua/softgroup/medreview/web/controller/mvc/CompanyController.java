@@ -1,32 +1,20 @@
 package ua.softgroup.medreview.web.controller.mvc;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import ua.softgroup.medreview.persistent.entity.Company;
-import ua.softgroup.medreview.persistent.repository.CompanyRepository;
-
-import java.util.logging.Level;
-
-import ua.softgroup.medreview.persistent.entity.Record;
 import ua.softgroup.medreview.service.CompanyService;
 
 /**
@@ -44,10 +32,10 @@ public class CompanyController {
         logger.debug("makeCompany");
         try {
             companyService.createCompany(companyName);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(String.format("Company '%s' has not been created.", companyName));
+        } catch (org.springframework.dao.DataIntegrityViolationException e) {
+            return ResponseEntity.badRequest().body(String.format("'%s' is already taken", companyName));
         }
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(String.format("Company '%s' has been created successfully.", companyName));
     }
 
     @GetMapping(value = "company")
@@ -64,19 +52,13 @@ public class CompanyController {
     @PostMapping(value = "removeCompany")
     public ResponseEntity removeCompany(@RequestParam String companyName) {
         logger.debug("removeCompany " + companyName);
-        try {
-            companyService.deleteCompanyByName(companyName);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(null);
-        }
-        return ResponseEntity.ok(null);
+        companyService.deleteCompanyByName(companyName);
+        return ResponseEntity.ok(String.format("Company '%s' has been deleted.", companyName));
     }
 
-    @RequestMapping(value = "getAllCompany")
-    public
-    @ResponseBody
-    Iterable<Company> getAllCompany() {
-        logger.info("get all company");
-        return companyService.findAll();
+    @GetMapping(value = "getAllCompany")
+    public ResponseEntity<Iterable<Company>> getAllCompany() {
+        logger.debug("get all company");
+        return ResponseEntity.ok(companyService.findAll());
     }
 }
