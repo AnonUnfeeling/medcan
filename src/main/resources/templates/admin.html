@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Admin page</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="/css/bootstrap.css"/>
     <link rel="stylesheet" href="/css/main.css"/>
     <meta name="_csrf" th:content="${_csrf.token}"/>
@@ -16,17 +18,29 @@
 </head>
 <body>
 <nav class="navbar navbar-default navbar-fixed-top">
-        <div class="container-fluid">
-              <div class="navbar-header">
-                  <ul class="nav navbar-nav navbar-right">
-                      <li><a href="/companies">Companies</a></li>
-                      <li><a href="/users">Users</a></li>
-                  </ul>
-              </div>
-            <ul class="nav navbar-nav navbar-right" style="margin-right: 20px;">
-                <li><button  onclick="location.href = '/login?logout';" type="button" class="btn btn-danger navbar-btn btn-sm">Sign out</button></li>
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-collapse-1" style="margin-right: 20px;">
+            <ul class="nav navbar-nav navbar-left">
+                <li><a href="/company">Companies</a></li>
+                <li><a href="/users">Users</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <button onclick="location.href = '/login?logout';" type="button"
+                            class="btn btn-danger navbar-btn btn-sm center-block">Sign out
+                    </button>
+                </li>
             </ul>
         </div>
+    </div>
 </nav>
 <div class="container">
     <h3>All companies</h3>
@@ -36,16 +50,22 @@
             <thead>
             <tr>
                 <th>Name</th>
-                <th> </th>
+                <th></th>
             </tr>
             </thead>
             <tbody id="table-body">
             </tbody>
         </table>
     </div>
-    <div class="container-fluid">
-        <button id="create-company" type="button" class="btn btn-info" data-toggle="modal" data-target="#addCompanyModal">Add company</button>
-        <ul id="pagination-demo" class="pagination-sm"></ul>
+    <div class="row">
+        <div class="col-md-6">
+            <button id="create-company" type="button" class="btn btn-info bottom-left" data-toggle="modal"
+                    data-target="#addCompanyModal">Add company
+            </button>
+        </div>
+        <div class="col-md-6 text-right">
+            <ul id="pagination" class="pagination-sm"></ul>
+        </div>
     </div>
 
     <!-- Modal -->
