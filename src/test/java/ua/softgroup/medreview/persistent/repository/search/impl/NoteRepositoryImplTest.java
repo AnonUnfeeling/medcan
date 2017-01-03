@@ -37,7 +37,7 @@ public class NoteRepositoryImplTest {
         createNote("Note2", "smoking, radiation, viruses", LocalDateTime.now().minusDays(50));
         createNote("Note3", "cancer causing chemicals, obesity", LocalDateTime.now().minusDays(10));
         createNote("Note4", "viruses, infection, bacteria", LocalDateTime.now());
-        createNote("Note5", "cancer, disease, pathology", LocalDateTime.now().minusDays(70));
+        createNote("Note5", "cancer, disease, pathology, sickness", LocalDateTime.now().minusDays(70));
     }
 
     @After
@@ -49,6 +49,11 @@ public class NoteRepositoryImplTest {
     public void searchByTitle() throws Exception {
         assertThat(noteRepository.searchByKeywords("cancer", null, null)).hasSize(3);
         assertThat(noteRepository.searchByKeywords("cancer, viruses", null, null)).hasSize(5);
+    }
+
+    @Test
+    public void searchByKeywords_withStemming() throws Exception {
+        assertThat(noteRepository.searchByKeywords("sick", null, null)).hasSize(1);
     }
 
     @Test
