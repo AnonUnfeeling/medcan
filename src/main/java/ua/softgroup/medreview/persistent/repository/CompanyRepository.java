@@ -17,5 +17,4 @@ public interface CompanyRepository extends CrudRepository<Company, Long> {
 
     @Transactional
     void deleteByName(String name);
-
 }
