@@ -17,6 +17,8 @@
         <mysql.version>6.0.5</mysql.version>
         <hibernate.version>5.2.4.Final</hibernate.version>
         <jersey.version>2.24.1</jersey.version>
+        <thymeleaf.version>3.0.2.RELEASE</thymeleaf.version>
+        <thymeleaf-layout-dialect.version>2.1.2</thymeleaf-layout-dialect.version>
 
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -77,6 +79,12 @@
             <groupId>com.ninja-squad</groupId>
             <artifactId>DbSetup</artifactId>
             <version>2.1.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.sourceforge.htmlunit</groupId>
+            <artifactId>htmlunit</artifactId>
+            <version>2.23</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
