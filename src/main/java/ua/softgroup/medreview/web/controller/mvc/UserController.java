@@ -25,6 +25,8 @@ import ua.softgroup.medreview.web.form.UserForm;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import ua.softgroup.medreview.service.CompanyService;
 import ua.softgroup.medreview.service.UserService;
@@ -77,15 +79,43 @@ public class UserController {
     }
 
     //TODO: this link for admin and company role
-    @RequestMapping(value = "usersByCompany", method = RequestMethod.POST)
-    public ModelAndView showUserByCompany(String companyName) {
-        return new ModelAndView("users", "users", companyservice.findByName(companyName).getUsers());
+    @RequestMapping(value = "usersByCompany", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    String showUserByCompany(String companyName, int page) {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            List<UserForm> userForms = new ArrayList<>();
+            Page<User> userPage = userService.findAll(new PageRequest(page - 1, 10));
+            for (User user : userPage) {
+                if (authenticationService.getPrincipal().getRoles().get(0).getRole().equals(Role.ADMIN)) {
+                    try {
+                        if (user.getCompany().getName().equals(companyName)) {
+                            userForms.add(new UserForm(user));
+                        }
+                    } catch (Exception e) {
+
+                    }
+                }
+            }
+            return mapper.writeValueAsString(userForms);
+        } catch (JsonProcessingException e) {
+            return "";
+        }
     }
 
 
     @RequestMapping(value = "users", method = RequestMethod.GET)
     public ModelAndView showUser() {
-        return new ModelAndView("users", "users", userService.findAllUsers());
+        return new ModelAndView("users");
+    }
+
+    @RequestMapping(value = "user", method = RequestMethod.GET)
+    public ModelAndView showUser(String companyName, int page) {
+        Map<String, String> map = new TreeMap<>();
+        map.put(companyName, companyName);
+        map.put("" + page, "" + page);
+        return new ModelAndView("users", map);
     }
 
     @RequestMapping(value = "users", method = RequestMethod.POST)
@@ -140,7 +170,7 @@ public class UserController {
     @GetMapping(value = "countPageUsers")
     private
     @ResponseBody
-    int countPageUsers(){
-        return  userService.findAll(new PageRequest(0, 10)).getTotalPages();
+    int countPageUsers() {
+        return userService.findAll(new PageRequest(0, 10)).getTotalPages();
     }
 }

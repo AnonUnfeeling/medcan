@@ -88,5 +88,13 @@
         </div>
     </div>
 </div>
+<input id="companyName" th:value="${param.companyName}" hidden/>
+<input id="page" th:value="${param.page}" hidden/>
+<script th:if="${param.companyName}">
+    getUsersByCompany();
+</script>
+<script th:unless="${param.companyName}">
+    loadAllUsers();
+</script>
 </body>
 </html>

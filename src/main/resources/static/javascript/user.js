@@ -1,6 +1,6 @@
 var token = $("meta[name='_csrf']").attr("content");
 
-$(document).ready(function () {
+function loadAllUsers() {
     $('#pagination-demo').twbsPagination({
         totalPages: 35,
         visiblePages: 7,
@@ -8,13 +8,50 @@ $(document).ready(function () {
             getUsers(page);
         }
     });
-});
+}
+
+function getUsersByCompany() {
+    console.log($('#companyName').val() +" "+ $('#page').val());
+    $.ajax({
+        method: "GET",
+        url: "/usersByCompany",
+        data: {
+            companyName: $('#companyName').val(),
+            page:  $('#page').val()
+        },
+        dataType: "json",
+        headers: {
+            'X-CSRF-TOKEN': token
+        }
+    }).done(function (data) {
+        var arr = data;
+
+        var table = $('#table-body');
+        table.find('tr').remove();
+        $(arr).each(function () {
+            var user = $(this)[0];
+            table.append('<tr><td>' + user.login + '</td><td>' + user.role + '</td>' +
+                '<td>' + user.company + '</td>' +
+                '<td class="text-right"><span id=' +
+                user.login + ' data-singleton="true"' +
+                ' data-toggle="edit" class="glyphicon glyphicon glyphicon-pencil user-control" ' +
+                'aria-hidden="true"></span>' +
+                '<td class="text-right"><span id=' + user.login + ' ' +
+                'data-singleton="true" data-toggle="confirmation" ' +
+                'class="glyphicon glyphicon-remove-circle users-control" ' +
+                'aria-hidden="true"></span></td>');
+        });
+        manageCompany();
+    });
+}
 
 function getUsers(page) {
     $.ajax({
         method: "POST",
         url: "/users",
-        data: {page: page},
+        data: {
+            page: page
+        },
         dataType: "json",
         headers: {
             'X-CSRF-TOKEN': token

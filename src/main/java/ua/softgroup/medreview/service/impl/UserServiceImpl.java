@@ -2,10 +2,12 @@ package ua.softgroup.medreview.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ua.softgroup.medreview.persistent.entity.User;
+import ua.softgroup.medreview.persistent.repository.CompanyRepository;
 import ua.softgroup.medreview.persistent.repository.UserRepository;
 import ua.softgroup.medreview.service.UserService;
 
@@ -19,6 +21,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private CompanyRepository companyRepository;
 
     @Override
     public void saveUser(User user) {

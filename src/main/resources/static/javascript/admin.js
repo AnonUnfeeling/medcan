@@ -10,7 +10,7 @@ var defaultOpts = {
 };
 
 $(document).ready(function () {
-    $pagination =$('#pagination');
+    $pagination = $('#pagination');
     $pagination.twbsPagination(defaultOpts);
 });
 
@@ -39,12 +39,16 @@ function getCompanies(page) {
         table.find('tr').remove();
         $(arr).each(function () {
             var company = $(this)[0];
-            table.append('<tr><td>' + company.name + '</td><td class="text-right"><span id=' + company.name + ' data-singleton="true" data-toggle="confirmation" class="glyphicon glyphicon-remove-circle company-control" aria-hidden="true"></span></td></tr>');
+            table.append('<tr onclick="showUserInCompany(this)"><td>' + company.name + '</td><td class="text-right"><span id=' + company.name + ' data-singleton="true" data-toggle="confirmation" class="glyphicon glyphicon-remove-circle company-control" aria-hidden="true"></span></td></tr>');
         });
         manageCompany();
     }).fail(function (data) {
         console.log(data);
     });
+}
+
+function showUserInCompany(companyName) {
+    window.location.href = "/user?companyName=" + $(companyName).find('td').first()[0].innerText + "&page=" + 1;
 }
 
 function manageCompany() {
@@ -66,7 +70,7 @@ function deleteCompany(control) {
     $.ajax({
         method: "POST",
         url: "/removeCompany",
-        data: { companyName: control.attr('id')},
+        data: {companyName: control.attr('id')},
         dataType: "json",
         headers: {
             'X-CSRF-TOKEN': token
@@ -81,9 +85,9 @@ function createCompany() {
     $.ajax({
         method: "POST",
         url: "/makeCompany",
-        data: { companyName: $('#companyName').val()},
+        data: {companyName: $('#companyName').val()},
         dataType: "json",
-        headers:{
+        headers: {
             'X-CSRF-TOKEN': token
         }
     }).done(function (data) {
