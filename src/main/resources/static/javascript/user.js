@@ -28,10 +28,14 @@ function getUsers(page) {
             var user = $(this)[0];
             table.append('<tr><td>' + user.login + '</td><td>' + user.role + '</td>' +
                 '<td>' + user.company + '</td>' +
+                '<td class="text-right"><span id=' +
+                user.login + ' data-singleton="true"' +
+                ' data-toggle="edit" class="glyphicon glyphicon glyphicon-pencil user-control" ' +
+                'aria-hidden="true"></span>' +
                 '<td class="text-right"><span id=' + user.login + ' ' +
                 'data-singleton="true" data-toggle="confirmation" ' +
                 'class="glyphicon glyphicon-remove-circle users-control" ' +
-                'aria-hidden="true"></span></td></tr>');
+                'aria-hidden="true"></span></td>');
         });
         manageCompany();
     });
@@ -49,6 +53,20 @@ function manageCompany() {
         control.confirmation('show');
         $('#table-body').on('confirmed.bs.confirmation', deleteUser(control));
     });
+
+    $('[data-toggle=confirmation]').confirmation({
+        rootSelector: '[data-toggle=edit]'
+    });
+
+    var edit = $('.user-control');
+    edit.click(function () {
+        var edit = $('#addCompanyModal');
+        var control = $(this);
+        $('#userLogin').val(control.attr('id'));
+        loadRole();
+        loadCompanies();
+        edit.modal('show');
+    })
 }
 
 function deleteUser(control) {
@@ -56,7 +74,7 @@ function deleteUser(control) {
     $.ajax({
         method: "POST",
         url: "/removeUser",
-        data: { userLogin: control.attr('id')},
+        data: {userLogin: control.attr('id')},
         dataType: "json",
         headers: {
             'X-CSRF-TOKEN': token
