@@ -1,6 +1,7 @@
 package ua.softgroup.medreview.persistent.repository;
 
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
 import ua.softgroup.medreview.persistent.entity.User;
 
 /**
@@ -10,4 +11,6 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     User findByLogin(String login);
 
+    @Transactional
+    void deleteByLogin(String login);
 }

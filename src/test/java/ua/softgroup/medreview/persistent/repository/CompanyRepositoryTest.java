@@ -29,7 +29,7 @@ import static org.junit.Assert.assertNull;
  * @author Oleksandr Tyshkovets <sg.olexander@gmail.com>
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { SpringDataConfig.class })
+@ContextConfiguration(classes = {SpringDataConfig.class})
 @ActiveProfiles("test")
 @SpringBootTest
 public class CompanyRepositoryTest {
@@ -56,6 +56,7 @@ public class CompanyRepositoryTest {
     public void setUp() throws Exception {
         new DbSetup(new DataSourceDestination(dataSource), sequenceOf(DELETE_ALL, INSERT_DATA)).launch();
     }
+
     @After
     public void tearDown() throws Exception {
         new DbSetup(new DataSourceDestination(dataSource), DELETE_ALL).launch();
@@ -73,4 +74,9 @@ public class CompanyRepositoryTest {
         assertNull(companyRepository.findByName(COMPANY_NAME_FIELD + COMPANY_COUNT + 42));
     }
 
+    @Test
+    public void deleteByName() {
+        int id = new Random().nextInt(COMPANY_COUNT - 1) + 1;
+        companyRepository.deleteByName(COMPANY_NAME_FIELD + id);
+    }
 }
