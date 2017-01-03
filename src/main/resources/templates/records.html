@@ -11,10 +11,37 @@
     <link rel="stylesheet" href="/css/main.css"/>
     <script src="/javascript/jquery-3.1.1.min.js"></script>
     <script src="/javascript/bootstrap.min.js"></script>
-    <script src="/javascript/main.js"></script>
+    <script src="/javascript/records.js"></script>
 </head>
 <body>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-collapse-1" style="margin-right: 20px;">
+            <ul class="nav navbar-nav navbar-left">
+                <li><a href="/company">Companies</a></li>
+                <li><a href="/users">Users</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <button onclick="location.href = '/login?logout';" type="button"
+                            class="btn btn-danger navbar-btn btn-sm center-block">Sign out
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
 <div id="table-container" class="container">
+    <h3>All records</h3>
+    <hr/>
     <div class="table-responsive">
         <table class="table table-responsive">
             <thead>
@@ -27,14 +54,49 @@
             </tr>
             </thead>
             <tbody id="table-body">
-                <tr th:each="record : ${records}">
-                    <td th:text="${record.title}"> </td>
-                    <td th:text="${record.type}"> </td>
-                    <td th:text="${record.creationDate}"> </td>
-                    <td th:text="${record.author.login}"> </td>
-                </tr>
             </tbody>
         </table>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <button type="button" class="btn btn-primary bottom-left" data-toggle="modal"
+                    data-target="#creteRecord">Add record</button>
+        </div>
+        <div class="col-md-6 text-right">
+            <ul id="pagination" class="pagination-sm"></ul>
+        </div>
+    </div>
+
+    <div id="creteRecord" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h3>Creating new record</h3>
+                </div>
+                <div class="modal-body">
+                    <div id="form-container">
+                        <form>
+                            <div id="record-data">
+                                <div class="form-group">
+                                    <label>Title:</label>
+                                    <input type="text" placeholder="Title" name="title" class="form-control"/>
+                                </div>
+                                <div class="form-group">
+                                    <label>Type</label>
+                                    <input  placeholder="Type" type="text" name="type" class="form-control"/>
+                                </div>
+                            </div>
+                            <hr/>
+                            <div id="form-control" class="text-right">
+                                <button class="btn btn-danger" type="reset">CANCEL</button>
+                                <button class="btn btn-primary" type="submit">SUBMIT</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </body>
