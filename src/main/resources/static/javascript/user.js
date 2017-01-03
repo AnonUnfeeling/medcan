@@ -32,9 +32,39 @@ function getUsers(page) {
                 '<td>' + user.company + '</td>' +
                 '<td class="text-right"><span id=' + user.login + ' ' +
                 'data-singleton="true" data-toggle="confirmation" ' +
-                'class="glyphicon glyphicon-remove-circle company-control" ' +
+                'class="glyphicon glyphicon-remove-circle users-control" ' +
                 'aria-hidden="true"></span></td></tr>');
         });
+        manageCompany();
+    });
+}
+
+function manageCompany() {
+    var company_control = $('.users-control');
+
+    $('[data-toggle=confirmation]').confirmation({
+        rootSelector: '[data-toggle=confirmation]'
+    });
+
+    company_control.click(function () {
+        var control = $(this);
+        control.confirmation('show');
+        $('#table-body').on('confirmed.bs.confirmation', deleteUser(control));
+    });
+}
+
+function deleteUser(control) {
+    $(control).parent().parent().remove();
+    $.ajax({
+        method: "POST",
+        url: "/removeUser",
+        data: { userLogin: control.attr('id')},
+        dataType: "json",
+        headers: {
+            'X-CSRF-TOKEN': token
+        }
+    }).done(function (data) {
+        console.log(data);
     });
 }
 

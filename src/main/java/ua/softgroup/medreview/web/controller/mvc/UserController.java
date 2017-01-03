@@ -112,4 +112,15 @@ public class UserController {
         roles.add(Role.USER.toString());
         return roles;
     }
+
+    @PostMapping(value = "removeUser")
+    public ResponseEntity removeUser(@RequestParam String userLogin) {
+        logger.debug("removeUser " + userLogin);
+        try {
+            userService.deleteUserByLogin(userLogin);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(null);
+        }
+        return ResponseEntity.ok(null);
+    }
 }
