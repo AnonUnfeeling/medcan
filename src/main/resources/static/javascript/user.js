@@ -1,8 +1,6 @@
 var token = $("meta[name='_csrf']").attr("content");
-var header = $("meta[name='_csrf_header']").attr("content");
 
 $(document).ready(function () {
-
     $('#pagination-demo').twbsPagination({
         totalPages: 35,
         visiblePages: 7,
@@ -129,6 +127,7 @@ function loadCompanies() {
         var arr = data;
 
         var select = $('#userCompany').empty();
+        select.append('<option value="Non Company">Non Company</option>');
         $(arr).each(function () {
             var company = $(this)[0];
             select.append('<option value="' + company.name + '">' +

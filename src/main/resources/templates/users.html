@@ -33,7 +33,7 @@
     </div>
 </nav>
 <div class="container">
-    <h3>All companies</h3>
+    <h3>All users</h3>
     <hr/>
     <div class="table-responsive">
         <table class="table table-responsive table-hover table-striped">
@@ -49,11 +49,15 @@
             </tbody>
         </table>
     </div>
-    <div class="container-fluid">
-        <button id="create-company" type="button" class="btn btn-info" data-toggle="modal"
-                onclick="loadRole(); loadCompanies();" data-target="#addCompanyModal">Add new user
-        </button>
-        <ul id="pagination-demo" class="pagination-sm"></ul>
+    <div class="row">
+        <div class="col-md-6">
+            <button id="create-company" type="button" class="btn btn-info" data-toggle="modal"
+                    onclick="loadRole(); loadCompanies();" data-target="#addCompanyModal">Add new user
+            </button>
+        </div>
+        <div class="col-md-6 text-right">
+            <ul id="pagination-demo" class="pagination-sm"></ul>
+        </div>
     </div>
 
     <!--Modal-->

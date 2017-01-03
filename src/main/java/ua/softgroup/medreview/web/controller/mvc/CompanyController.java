@@ -32,7 +32,6 @@ import ua.softgroup.medreview.service.CompanyService;
 /**
  * Created by jdroidcoder on 28.12.2016.
  */
-
 @RestController
 public class CompanyController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());

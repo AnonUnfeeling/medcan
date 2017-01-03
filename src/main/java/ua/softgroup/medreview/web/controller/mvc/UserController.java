@@ -20,6 +20,7 @@ import ua.softgroup.medreview.persistent.entity.Role;
 import ua.softgroup.medreview.persistent.entity.User;
 
 import ua.softgroup.medreview.persistent.entity.UserRole;
+import ua.softgroup.medreview.service.AuthenticationService;
 import ua.softgroup.medreview.web.form.UserForm;
 
 import java.util.ArrayList;
@@ -35,6 +36,8 @@ import ua.softgroup.medreview.service.UserService;
 public class UserController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    @Autowired
+    private AuthenticationService authenticationService;
     @Autowired
     private UserService userService;
     @Autowired
@@ -55,13 +58,13 @@ public class UserController {
             user.setLogin(login);
             user.setPassword(password);
             List<UserRole> roles = new ArrayList<>();
-            if(Role.ADMIN.toString().equals(role)){
-                roles.add(new UserRole(Role.ADMIN,user));
-                roles.add(new UserRole(Role.COMPANY,user));
-            }else if(Role.COMPANY.equals(role)){
-                roles.add(new UserRole(Role.COMPANY,user));
-            }else {
-                roles.add(new UserRole(Role.USER,user));
+            if (Role.ADMIN.toString().equals(role)) {
+                roles.add(new UserRole(Role.ADMIN, user));
+                roles.add(new UserRole(Role.COMPANY, user));
+            } else if (Role.COMPANY.toString().equals(role)) {
+                roles.add(new UserRole(Role.COMPANY, user));
+            } else {
+                roles.add(new UserRole(Role.USER, user));
             }
             user.setRoles(roles);
             user.setCompany(companyservice.findByName(company));
@@ -94,7 +97,17 @@ public class UserController {
             List<UserForm> userForms = new ArrayList<>();
             Page<User> userPage = userService.findAll(new PageRequest(page - 1, 10));
             for (User user : userPage) {
-                userForms.add(new UserForm(user));
+                if (authenticationService.getPrincipal().getRoles().get(0).getRole().equals(Role.ADMIN)) {
+                    userForms.add(new UserForm(user));
+                } else if (authenticationService.getPrincipal().getRoles().get(0).getRole().equals(Role.COMPANY)) {
+                    try {
+                        if (authenticationService.getPrincipal().getCompany().getName().equals(user.getCompany().getName())) {
+                            userForms.add(new UserForm(user));
+                        }
+                    } catch (Exception e) {
+
+                    }
+                }
             }
             return mapper.writeValueAsString(userForms);
         } catch (JsonProcessingException e) {
@@ -122,5 +135,12 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(null);
         }
         return ResponseEntity.ok(null);
+    }
+
+    @GetMapping(value = "countPageUsers")
+    private
+    @ResponseBody
+    int countPageUsers(){
+        return  userService.findAll(new PageRequest(0, 10)).getTotalPages();
     }
 }
