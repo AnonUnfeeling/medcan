@@ -43,25 +43,19 @@ public class RecordController {
     }
 
     //TODO secure this url
-    @GetMapping(value = "/all")
+    @GetMapping(value = "all")
     public ResponseEntity<?> showPrincipalRecords(@RequestParam int page) {
         return ResponseEntity.ok(recordService.getRecordsByAuthorities(new PageRequest(page - 1, 10)));
     }
 
 //    //TODO secure this url for admin only
-//    @GetMapping(value = "/records/all")
-//    public ModelAndView showAllRecords() {
-//        return new ModelAndView(RECORDS_VIEW);
-//    }
-
-//    //TODO secure this url for admin only
-//    @GetMapping(value = "/records/alls")
+//    @GetMapping(value = "/all")
 //    public
 //    @ResponseBody
 //    String showAllRecords(@RequestParam int page) {
 //        ObjectMapper mapper = new ObjectMapper();
 //        try {
-//            return mapper.writeValueAsString(recordRepository.getAll(new PageRequest(page - 1, 10)));
+//            return mapper.writeValueAsString(recordService.getAll(new PageRequest(page - 1, 10)));
 //        } catch (JsonProcessingException e) {
 //            return "";
 //        }

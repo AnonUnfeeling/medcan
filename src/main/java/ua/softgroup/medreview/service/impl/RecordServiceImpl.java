@@ -55,12 +55,13 @@ public class RecordServiceImpl implements RecordService {
         User currentUser = authenticationService.getPrincipal();
         Collection<? extends GrantedAuthority> authorities = currentUser.getAuthorities();
         if (authorities.contains(adminAuthority)) {
-            return getAll(pageable);
+            return recordRepository.findAll(pageable);
         }
-        if (authorities.contains(companyAuthority)) {
-            return recordRepository.findByAuthorCompany(currentUser.getCompany(), pageable);
-        } else
-            return recordRepository.findByAuthor(currentUser, pageable);
+//        if (authorities.contains(companyAuthority)) {
+//            return recordRepository.findByAuthorCompany(currentUser.getCompany(), pageable);
+//        } else
+//            return recordRepository.findByAuthor(currentUser, pageable);
+        return null;
     }
 
     @Override

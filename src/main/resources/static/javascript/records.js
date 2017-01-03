@@ -83,8 +83,10 @@ function createRecord() {
     var message = $('#message-container');
     $.ajax({
         method: "POST",
-        url: "/makeCompany",
-        data: { companyName: $('#companyName').val()},
+        url: "/records/add",
+        data: { title: $('#title').val(),
+            type:$('#type').val()
+        },
         dataType: "json",
         headers:{
             'X-CSRF-TOKEN': token

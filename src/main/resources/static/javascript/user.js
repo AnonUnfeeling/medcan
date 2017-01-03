@@ -11,7 +11,6 @@ function loadAllUsers() {
 }
 
 function getUsersByCompany() {
-    console.log($('#companyName').val() +" "+ $('#page').val());
     $.ajax({
         method: "GET",
         url: "/usersByCompany",
@@ -158,7 +157,6 @@ function loadRole() {
             'X-CSRF-TOKEN': token
         }
     }).done(function (data) {
-        console.log(data);
         var arr = data;
 
         var select = $('#userRole').empty();
@@ -178,7 +176,6 @@ function loadCompanies() {
             'X-CSRF-TOKEN': token
         }
     }).done(function (data) {
-        console.log(data);
         var arr = data;
 
         var select = $('#userCompany').empty();
