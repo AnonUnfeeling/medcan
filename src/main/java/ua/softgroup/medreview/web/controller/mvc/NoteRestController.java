@@ -65,4 +65,16 @@ public class NoteRestController {
     private boolean isDeleted(long id, Note note) {
         return noteRepository.findByRecordId(id).remove(note);
     }
+
+    @PostMapping("/records/{id}/chengeStatus")
+    public
+    @ResponseBody
+    ResponseEntity chengeStatus(@PathVariable Long id, @RequestParam Note note, @RequestParam String status) {
+        if (status != null && note != null) {
+            noteRepository.findByRecordId(id).stream().filter(n -> note.getDescription().equals(n.getDescription())).findFirst().get().setStatus(status);
+            return ResponseEntity.ok(HttpStatus.OK);
+        } else {
+            return new ResponseEntity(Keys.FAIL.toString(), HttpStatus.OK);
+        }
+    }
 }
