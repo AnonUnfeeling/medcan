@@ -1,5 +1,7 @@
 package ua.softgroup.medreview.persistent.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -10,6 +12,7 @@ public class UserRole extends AbstractEntity<Long> {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @JsonIgnore
     @ManyToOne
     private User user;
 

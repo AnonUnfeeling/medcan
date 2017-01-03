@@ -56,17 +56,23 @@ public class RecordServiceImpl implements RecordService {
         Collection<? extends GrantedAuthority> authorities = currentUser.getAuthorities();
         if (authorities.contains(adminAuthority)) {
             return recordRepository.findAll(pageable);
-        }
+//        }
 //        if (authorities.contains(companyAuthority)) {
 //            return recordRepository.findByAuthorCompany(currentUser.getCompany(), pageable);
-//        } else
-//            return recordRepository.findByAuthor(currentUser, pageable);
-        return null;
+        } else {
+            return recordRepository.findByAuthor(currentUser, pageable);
+        }
+//        return null;
     }
 
     @Override
-    public void saveRecord(RecordForm recordForm) {
+    public void saveRecord(Record recordForm) {
         User currentUser = authenticationService.getPrincipal();
         recordRepository.save(new Record(recordForm.getTitle(), recordForm.getType(), currentUser));
+    }
+
+    @Override
+    public void deleteRecordByName(String name) {
+        recordRepository.delete(recordRepository.findByTitle(name));
     }
 }

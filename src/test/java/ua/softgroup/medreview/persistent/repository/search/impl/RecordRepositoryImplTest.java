@@ -15,6 +15,7 @@ import ua.softgroup.medreview.persistent.repository.RecordRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -69,7 +70,7 @@ public class RecordRepositoryImplTest {
     private void createRecord(String title, LocalDateTime createdAt) {
         Record record = new Record(title, "Type", null);
         recordRepository.save(record);
-        record.setCreationDate(createdAt);
+//        record.setCreationDate(createdAt);
         recordRepository.save(record);
     }
 

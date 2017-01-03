@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -27,8 +28,6 @@ import javax.validation.Valid;
 public class RecordController {
 
     private static final String RECORDS_VIEW = "records";
-    private static final String ADD_RECORD_VIEW = "addRecord";
-    private static final String RECORDS_ATTRIBUTE = "records";
     private RecordService recordService;
 
     @Autowired
@@ -48,28 +47,21 @@ public class RecordController {
         return ResponseEntity.ok(recordService.getRecordsByAuthorities(new PageRequest(page - 1, 10)));
     }
 
-//    //TODO secure this url for admin only
-//    @GetMapping(value = "/all")
-//    public
-//    @ResponseBody
-//    String showAllRecords(@RequestParam int page) {
-//        ObjectMapper mapper = new ObjectMapper();
-//        try {
-//            return mapper.writeValueAsString(recordService.getAll(new PageRequest(page - 1, 10)));
-//        } catch (JsonProcessingException e) {
-//            return "";
-//        }
-//    }
-
     @PostMapping(value = "/add")
-    public String createRecord(@ModelAttribute("recordForm") @Valid RecordForm recordForm, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return ADD_RECORD_VIEW;
-        }
-//        User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        Record record = new Record(recordForm.getTitle(), recordForm.getType(), principal);
-//        recordRepository.save(record);
-        recordService.saveRecord(recordForm);
+    public String createRecord(@Valid RecordForm recordForm, BindingResult bindingResult) {
+        User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Record record = new Record(recordForm.getTitle(), recordForm.getType(), principal);
+        recordService.saveRecord(record);
         return "redirect:/" + RECORDS_VIEW;
+    }
+
+    @PostMapping(value = "/removeRecord")
+    public ResponseEntity removeRecord(@RequestParam String recordTitle){
+        try {
+            recordService.deleteRecordByName(recordTitle);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(null);
+        }
+        return ResponseEntity.ok(null);
     }
 }

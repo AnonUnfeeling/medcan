@@ -1,5 +1,6 @@
 package ua.softgroup.medreview.persistent.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
 import org.apache.lucene.analysis.snowball.SnowballPorterFilterFactory;
 import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
@@ -20,8 +21,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -50,7 +53,7 @@ public class Record extends AbstractEntity<Long> {
     @Column
     @CreationTimestamp
     @Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
-    private LocalDateTime creationDate;
+    private Date creationDate;
 
     @ManyToOne
     private User author;
@@ -83,11 +86,12 @@ public class Record extends AbstractEntity<Long> {
         this.type = type;
     }
 
-    public LocalDateTime getCreationDate() {
-        return creationDate;
+    public String getCreationDate() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
+        return dateFormat.format(creationDate);
     }
 
-    public void setCreationDate(LocalDateTime creationDate) {
+    public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
 

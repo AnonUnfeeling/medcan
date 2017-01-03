@@ -19,5 +19,7 @@ public interface RecordService {
 
     Page<Record> getRecordsByAuthorities(Pageable pageable);
 
-    void saveRecord(RecordForm recordForm);
+    void saveRecord(Record recordForm);
+
+    void deleteRecordByName(String name);
 }

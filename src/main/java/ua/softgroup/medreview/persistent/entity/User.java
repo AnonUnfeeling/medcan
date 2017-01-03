@@ -31,6 +31,7 @@ public class User extends AbstractEntity<Long> implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<UserRole> roles = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Record> records = new HashSet<>();
 
