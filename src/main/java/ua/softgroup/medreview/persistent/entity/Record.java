@@ -1,11 +1,19 @@
 package ua.softgroup.medreview.persistent.entity;
 
+import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
+import org.apache.lucene.analysis.snowball.SnowballPorterFilterFactory;
+import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Analyzer;
+import org.hibernate.search.annotations.AnalyzerDef;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Parameter;
 import org.hibernate.search.annotations.Store;
+import org.hibernate.search.annotations.TokenFilterDef;
+import org.hibernate.search.annotations.TokenizerDef;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -21,11 +29,19 @@ import java.util.List;
  */
 @Entity
 @Indexed
+@AnalyzerDef(name = "en",
+        tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
+        filters = {
+                @TokenFilterDef(factory = LowerCaseFilterFactory.class),
+                @TokenFilterDef(factory = SnowballPorterFilterFactory.class, params = {
+                        @Parameter(name = "language", value = "English")
+                })
+        })
 public class Record extends AbstractEntity<Long> {
     private static final long serialVersionUID = 5768370930485023928L;
 
     @Column(nullable = false, unique = true)
-    @Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
+    @Field(analyzer = @Analyzer(definition = "en"))
     private String title;
 
     @Column

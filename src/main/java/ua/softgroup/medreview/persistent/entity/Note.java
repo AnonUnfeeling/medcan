@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
@@ -29,7 +30,7 @@ public class Note extends AbstractEntity<Long> {
     private String conclusion;
 
     @Column
-    @Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
+    @Field(analyzer = @Analyzer(definition = "en"))
     private String keywords;
 
     @Column
