@@ -1,5 +1,7 @@
 package ua.softgroup.medreview.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import ua.softgroup.medreview.persistent.entity.User;
 
 import java.util.List;
@@ -16,6 +18,8 @@ public interface UserService {
     void deleteUserById(Long id);
 
     void deleteUserByLogin(String login);
+
+    Page<User> findAll(Pageable pageable);
 
     List<User> findAllUsers();
 }

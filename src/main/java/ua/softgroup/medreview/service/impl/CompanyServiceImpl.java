@@ -29,12 +29,17 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    public Iterable<Company> findAll() {
+        return companyRepository.findAll();
+    }
+
+    @Override
     public Company findByName(String name) {
         return companyRepository.findByName(name);
     }
 
     @Override
-    public Page<Record> findAll(Pageable pageable) {
+    public Page<Company> findAll(Pageable pageable) {
         return companyRepository.findAll(pageable);
     }
 }

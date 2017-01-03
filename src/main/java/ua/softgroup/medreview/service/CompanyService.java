@@ -5,6 +5,8 @@ import org.springframework.data.domain.Pageable;
 import ua.softgroup.medreview.persistent.entity.Company;
 import ua.softgroup.medreview.persistent.entity.Record;
 
+import java.util.Iterator;
+
 /**
  * @author Sergiy Perevyazko <sg.sergiyp@gmail.com>
  */
@@ -14,8 +16,10 @@ public interface CompanyService {
 
     void deleteCompanyByName(String name);
 
+    Iterable<Company> findAll();
+
     Company findByName(String name);
 
-    Page<Record> findAll(Pageable pageable);
+    Page<Company> findAll(Pageable pageable);
 }
 

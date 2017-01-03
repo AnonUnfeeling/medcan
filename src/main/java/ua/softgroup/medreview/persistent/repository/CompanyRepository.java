@@ -13,12 +13,9 @@ public interface CompanyRepository extends CrudRepository<Company, Long> {
 
     Company findByName(String name);
 
-<<<<<<< HEAD
     Page<Company> findAll(Pageable pageable);
-=======
-    Page<Record> findAll(Pageable pageable);
 
     @Transactional
     void deleteByName(String name);
->>>>>>> 8d9cb6a3be36ac7847ee7264a32bde5c8b105197
+
 }
