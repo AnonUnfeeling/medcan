@@ -6,15 +6,12 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Store;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
 
@@ -26,14 +23,12 @@ import java.time.LocalDateTime;
 public class Note extends AbstractEntity<Long> {
     private static final long serialVersionUID = 6627846745698054192L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
     @Column
+    @Field(analyzer = @Analyzer(definition = "en"))
     private String description;
 
     @Column
+    @Field(analyzer = @Analyzer(definition = "en"))
     private String conclusion;
 
     @Column
@@ -41,24 +36,29 @@ public class Note extends AbstractEntity<Long> {
     private String keywords;
 
     @Column
+    @Field(analyzer = @Analyzer(definition = "en"))
     private String subject;
 
     @Column
+    @Field(analyzer = @Analyzer(definition = "en"))
     private String subSubject;
 
     @Column
+    @Field(analyzer = @Analyzer(definition = "en"))
     private String country;
 
     @Column
+    @Field(analyzer = @Analyzer(definition = "en"))
     private String language;
 
     @Column
+    @Field(analyzer = @Analyzer(definition = "en"))
     private String status;
 
     @JsonIgnore
     @Column
     @CreationTimestamp
-    @Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+    @Field(analyze = Analyze.NO, store = Store.YES)
     private LocalDateTime creationDate;
 
     @Column
@@ -67,14 +67,22 @@ public class Note extends AbstractEntity<Long> {
 
     @JsonIgnore
     @ManyToOne
+    @IndexedEmbedded
     private Record record;
 
-    public Long getId() {
-        return id;
+    public Note() {
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Note(String description, String conclusion, String keywords, String subject, String subSubject,
+                String country, String language, String status) {
+        this.description = description;
+        this.conclusion = conclusion;
+        this.keywords = keywords;
+        this.subject = subject;
+        this.subSubject = subSubject;
+        this.country = country;
+        this.language = language;
+        this.status = status;
     }
 
     public String getDescription() {
