@@ -49,6 +49,5 @@ public class Subject extends AbstractEntity<Long> {
             subSubjects.forEach(subSubject -> subSubject.setSubject(this));
             this.subSubjects.addAll(subSubjects);
         }
-        this.subSubjects = subSubjects;
     }
 }
