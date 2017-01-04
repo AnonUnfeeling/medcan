@@ -45,6 +45,35 @@ public abstract class SearchableRepository<T> {
                 .getResultList();
     }
 
+    protected List<T> searchByKeywordsAndAuthorAndDateRange(FullTextEntityManager fullTextEntityManager,
+                                                            String username, String usernameField,
+                                                            LocalDate from, LocalDate to, String dateField,
+                                                            String text, List<String> fields) {
+
+        QueryBuilder queryBuilder = getQueryBuilder(fullTextEntityManager);
+        BooleanJunction<BooleanJunction> junction = queryBuilder.bool();
+        junction.must(queryBuilder
+                .keyword()
+                .onField(usernameField)
+                .matching(username)
+                .createQuery());
+        Optional.ofNullable(from)
+                .map(date -> aboveRangeQuery(queryBuilder, date, dateField))
+                .ifPresent(junction::must);
+        Optional.ofNullable(from)
+                .map(date -> aboveBelowQuery(queryBuilder, to, dateField))
+                .ifPresent(junction::must);
+        junction.must(queryBuilder
+                .keyword()
+                .onFields(fields.toArray(new String[fields.size()]))
+                .matching(text)
+                .createQuery());
+
+        return fullTextEntityManager
+                .createFullTextQuery(junction.createQuery(), clazz)
+                .getResultList();
+    }
+
     private QueryBuilder getQueryBuilder(FullTextEntityManager fullTextEntityManager) {
         return fullTextEntityManager.getSearchFactory()
                 .buildQueryBuilder()

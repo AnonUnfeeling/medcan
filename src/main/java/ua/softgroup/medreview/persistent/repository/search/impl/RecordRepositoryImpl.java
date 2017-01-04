@@ -7,6 +7,7 @@ import ua.softgroup.medreview.persistent.repository.search.RecordRepositorySearc
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -16,6 +17,7 @@ public class RecordRepositoryImpl extends SearchableRepository<Record> implement
 
     private static final String RECORD_TITLE_FIELD = "title";
     private static final String RECORD_CREATION_DATE_FIELD = "creationDate";
+    private static final String RECORD_AUTHOR_USERNAME_FIELD = "author.login";
 
     private final EntityManager entityManager;
 
@@ -30,6 +32,17 @@ public class RecordRepositoryImpl extends SearchableRepository<Record> implement
                 Search.getFullTextEntityManager(entityManager),
                 from, to, RECORD_CREATION_DATE_FIELD,
                 keywords, RECORD_TITLE_FIELD
+        );
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Record> searchByTitleAndAuthor(String username, String text, LocalDate from, LocalDate to) {
+        return searchByKeywordsAndAuthorAndDateRange(
+                Search.getFullTextEntityManager(entityManager),
+                username, RECORD_AUTHOR_USERNAME_FIELD,
+                from, to, RECORD_CREATION_DATE_FIELD,
+                text, Collections.singletonList(RECORD_TITLE_FIELD)
         );
     }
 
