@@ -24,6 +24,7 @@ public class NoteRepositoryImpl extends SearchableRepository<Note> implements No
     private static final String NOTE_LANGUAGE_FIELD = "language";
     private static final String NOTE_STATUS_FIELD = "status";
     private static final String NOTE_CREATION_DATE_FIELD = "creationDate";
+    private static final String NOTE_AUTHOR_USERNAME_FIELD = "record.author.login";
 
     private final EntityManager entityManager;
 
@@ -32,7 +33,7 @@ public class NoteRepositoryImpl extends SearchableRepository<Note> implements No
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Deprecated
     public List<Note> searchByKeywords(String text, LocalDate from, LocalDate to) {
         return searchByKeywords(
                 Search.getFullTextEntityManager(entityManager),
@@ -52,6 +53,19 @@ public class NoteRepositoryImpl extends SearchableRepository<Note> implements No
                 text, Arrays.asList(NOTE_DESCRIPTION_FIELD, NOTE_CONCLUSION_FIELD, NOTE_KEYWORDS_FIELD,
                         NOTE_SUBJECT_FIELD, NOTE_SUB_SUBJECT_FIELD, NOTE_COUNTRY_FIELD,
                         NOTE_LANGUAGE_FIELD, NOTE_STATUS_FIELD)
+        );
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Note> searchByAllFieldsAndAuthor(String username, String text, LocalDate from, LocalDate to) {
+        return searchByKeywordsAndAuthorAndDateRange(
+                Search.getFullTextEntityManager(entityManager),
+                username, NOTE_AUTHOR_USERNAME_FIELD,
+                from, to, NOTE_CREATION_DATE_FIELD,
+                text, Arrays.asList(NOTE_DESCRIPTION_FIELD, NOTE_CONCLUSION_FIELD, NOTE_KEYWORDS_FIELD,
+                                    NOTE_SUBJECT_FIELD, NOTE_SUB_SUBJECT_FIELD, NOTE_COUNTRY_FIELD,
+                                    NOTE_LANGUAGE_FIELD, NOTE_STATUS_FIELD)
         );
     }
 

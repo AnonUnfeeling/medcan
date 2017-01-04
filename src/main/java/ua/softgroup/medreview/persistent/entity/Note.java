@@ -7,6 +7,7 @@ import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Store;
 
 import javax.persistence.Column;
@@ -66,6 +67,7 @@ public class Note extends AbstractEntity<Long> {
 
     @JsonIgnore
     @ManyToOne
+    @IndexedEmbedded
     private Record record;
 
     public Note() {
