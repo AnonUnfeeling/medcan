@@ -1,22 +1,50 @@
 var token = $("meta[name='_csrf']").attr("content");
 
+var defaultOpts = {
+    totalPages: 20,
+    visiblePages: 7,
+    onPageClick: function (event, page) {
+        getUsers(page);
+    }
+};
+
 function loadAllUsers() {
-    $('#pagination-demo').twbsPagination({
-        totalPages: 35,
-        visiblePages: 7,
-        onPageClick: function (event, page) {
-            getUsers(page);
-        }
-    });
+    $pagination = $('#pagination');
+    $pagination.twbsPagination(defaultOpts);
 }
 
 function getUsersByCompany() {
+    $pagination = $('#pagination');
+    $pagination.twbsPagination($.extend({}, defaultOpts, {
+        onPageClick: function (event, page) {
+            getUsersByCompanyName(page);
+        }
+    }));
+}
+
+function getTotalUsersPages() {
+    var totalPages = 1;
+    $.ajax({
+        method: "GET",
+        url: "/countPageUsers",
+        dataType: "json",
+        headers: {
+            'X-CSRF-TOKEN': token
+        }
+    }).done(function (data) {
+        console.log(data);
+        totalPages = data;
+    });
+    return totalPages;
+}
+
+function getUsersByCompanyName(page) {
     $.ajax({
         method: "GET",
         url: "/usersByCompany",
         data: {
             companyName: $('#companyName').val(),
-            page:  $('#page').val()
+            page:  page
         },
         dataType: "json",
         headers: {
@@ -24,6 +52,17 @@ function getUsersByCompany() {
         }
     }).done(function (data) {
         var arr = data;
+        console.log("By company");
+        console.log(data);
+        
+        var totalPages = data.totalPages;
+        var currentPage = $pagination.twbsPagination('getCurrentPage');
+        $pagination.twbsPagination('destroy');
+        $pagination.twbsPagination($.extend({}, defaultOpts, {
+            startPage: (currentPage!=null)?currentPage:0,
+            totalPages: totalPages,
+            initiateStartPageClick: false
+        }));
 
         var table = $('#table-body');
         table.find('tr').remove();
@@ -62,7 +101,14 @@ function getUsers(page) {
         }
     }).done(function (data) {
         var arr = data;
-
+        //var totalPages = data.totalPages;
+        var currentPage = $pagination.twbsPagination('getCurrentPage');
+        $pagination.twbsPagination('destroy');
+        $pagination.twbsPagination($.extend({}, defaultOpts, {
+            startPage: (currentPage!=null)?currentPage:0,
+            totalPages: getTotalUsersPages(),
+            initiateStartPageClick: false
+        }));
         var table = $('#table-body');
         table.find('tr').remove();
         $(arr).each(function () {

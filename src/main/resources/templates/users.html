@@ -59,7 +59,7 @@
             </button>
         </div>
         <div class="col-md-6 text-right">
-            <ul id="pagination-demo" class="pagination-sm"></ul>
+            <ul id="pagination" class="pagination-sm"></ul>
         </div>
     </div>
 
@@ -92,7 +92,6 @@
     </div>
 </div>
 <input id="companyName" th:value="${param.companyName}" hidden/>
-<input id="page" th:value="${param.page}" hidden/>
 <script th:if="${param.companyName}">
     getUsersByCompany();
 </script>
