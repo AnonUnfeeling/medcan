@@ -10,23 +10,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ua.softgroup.medreview.persistent.entity.Record;
 import ua.softgroup.medreview.persistent.entity.User;
-<<<<<<< HEAD
-import ua.softgroup.medreview.persistent.repository.RecordRepository;
 import ua.softgroup.medreview.service.AuthenticationService;
 import ua.softgroup.medreview.service.RecordService;
 import ua.softgroup.medreview.service.UserService;
-import ua.softgroup.medreview.service.impl.AuthenticationServiceImpl;
 import ua.softgroup.medreview.web.form.RecordForm;
-
 import javax.validation.Valid;
 import java.util.ArrayList;
-=======
-import ua.softgroup.medreview.service.RecordService;
 import ua.softgroup.medreview.service.SearchService;
-import ua.softgroup.medreview.web.form.RecordForm;
-
-import javax.validation.Valid;
->>>>>>> frontend_search
 import java.util.List;
 
 /**
@@ -37,23 +27,19 @@ import java.util.List;
 public class RecordController {
 
     private static final String RECORDS_VIEW = "records";
-<<<<<<< HEAD
-    private RecordService recordService;
-    @Autowired
     private AuthenticationService authenticationService;
-    @Autowired
     private UserService userService;
-=======
-    private static final String SEARCH_RESULTS_VIEW = "results";
+    private static final String SEARCH_RESULTS_VIEW = "searchResult";
     private static final int NUMBER_OF_PAGES = 10;
     private final RecordService recordService;
     private final SearchService searchService;
->>>>>>> frontend_search
 
     @Autowired
-    public RecordController(RecordService recordService, SearchService searchService) {
+    public RecordController(RecordService recordService, SearchService searchService, UserService userService, AuthenticationService authenticationService) {
         this.recordService = recordService;
         this.searchService = searchService;
+        this.userService = userService;
+        this.authenticationService = authenticationService;
     }
 
     //TODO secure this url
@@ -73,7 +59,7 @@ public class RecordController {
         User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Record record = new Record(recordForm.getTitle(), recordForm.getType(), principal);
         recordService.saveRecord(record);
-        return "redirect:/" + RECORDS_VIEW ;
+        return "redirect:/" + RECORDS_VIEW;
     }
 
     @PostMapping(value = "/removeRecord")
@@ -86,7 +72,6 @@ public class RecordController {
         return ResponseEntity.ok(null);
     }
 
-<<<<<<< HEAD
     @PostMapping(value = "/getRecordByUser")
     public ResponseEntity<?> getRecordByUser(@RequestParam String userName, @RequestParam int page) {
         try {
@@ -102,7 +87,7 @@ public class RecordController {
     }
 
     @PostMapping(value = "/getRecord")
-    private boolean getRecord(@RequestParam String recordName){
+    private boolean getRecord(@RequestParam String recordName) {
         return recordService.getByTitle(recordName).getAuthor().getLogin().equals(authenticationService.getPrincipal().getLogin());
     }
 
@@ -115,11 +100,12 @@ public class RecordController {
         type.add("Website");
         type.add("Doctor");
         return type;
-=======
-    @GetMapping(value = "/{id}")
-    public ResponseEntity showRecordById(@PathVariable("id") long id) {
-        return ResponseEntity.ok(recordService.getById(id));
     }
+
+//    @GetMapping(value = "/{id}")
+//    public ResponseEntity showRecordById(@PathVariable("id") long id) {
+//        return ResponseEntity.ok(recordService.getById(id));
+//    }
 
     @GetMapping(value = "/search")
     public ResponseEntity<List<Record>> findRecordsByKeywords(@RequestParam String keyword) {
@@ -129,6 +115,5 @@ public class RecordController {
     @GetMapping(value = "/results")
     public ModelAndView showSearchResults() {
         return new ModelAndView(SEARCH_RESULTS_VIEW);
->>>>>>> frontend_search
     }
 }
