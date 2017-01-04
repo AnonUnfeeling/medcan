@@ -13,22 +13,35 @@ body{
     box-shadow: 5px 5px 10px rgba(0,0,0,0.5);
 }
 .glyphicon-remove-circle{
-    
     color:	rgba(255,0,0,0.4);
 }
 .glyphicon-remove-circle:hover{
     color: 	rgb(255,0,0);
 }
-#create-company{
-    background: #6A5676;
-    margin: 20px 0 20px 50px;
+.glyphicon-pencil{
+    color: rgba(0,0,255,0.2);
 }
-#create-company:hover{
-    background: #493355;
+.glyphicon-pencil:hover{
+    color: rgba(0,0,255,0.7);
+}
+#create-company{
+    margin: 20px 0 20px 50px;
 }
 .pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus{
     background-color: #493355;
 }
 #pagination{
     margin-right: 50px;
+}
+.btn-info{
+    background: #6A5676;
+    border-color: rgba(255,255,255,0.5);
+}
+.btn-info:hover{
+    background: #493355;
+    border-color: rgba(255,255,255,0.5);
+}
+.btn-info:focus{
+    background: #493355;
+    border-color: rgba(0,0,0,0.2);
 }
