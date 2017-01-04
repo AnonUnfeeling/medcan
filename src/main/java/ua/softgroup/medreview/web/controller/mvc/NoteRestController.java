@@ -14,6 +14,8 @@ import org.springframework.web.servlet.ModelAndView;
 import ua.softgroup.medreview.persistent.entity.Note;
 import ua.softgroup.medreview.persistent.repository.NoteRepository;
 import ua.softgroup.medreview.persistent.repository.RecordRepository;
+import ua.softgroup.medreview.service.SubSubjectService;
+import ua.softgroup.medreview.service.SubjectService;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,6 +31,12 @@ public class NoteRestController {
 
     @Autowired
     private RecordRepository recordRepository;
+
+    @Autowired
+    private SubjectService subjectService;
+
+    @Autowired
+    private SubSubjectService subSubjectService;
 
     @Autowired
     public NoteRestController(NoteRepository noteRepository) {
