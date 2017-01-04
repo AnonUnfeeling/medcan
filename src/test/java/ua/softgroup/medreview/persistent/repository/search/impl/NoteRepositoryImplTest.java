@@ -72,7 +72,7 @@ public class NoteRepositoryImplTest {
         note.setDescription(description);
         note.setKeywords(keywords);
         noteRepository.save(note);
-//        note.setCreationDate(createdAt);
+        note.setCreationDate(createdAt);
         noteRepository.save(note);
     }
 
