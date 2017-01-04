@@ -9,7 +9,6 @@ $(document).ready(function () {
             'X-CSRF-TOKEN': token
         }
     }).done(function (data) {
-        console.log(data);
         if (data == "COMPANY") {
             $('#companyLink').hide();
             if($('#statusNote')!=null){

@@ -63,12 +63,11 @@ public class NoteRestController {
             note.setDescription(description);
             note.setConclusion(conclusion);
             note.setKeywords(keywords);
-            note.setStatus(subject);
+            note.setSubject(subject);
             note.setSubSubject(subSubject);
             note.setCountry(country);
             note.setLanguage(language);
             note.setStatus("In review");
-            note.setCreationDate(LocalDateTime.now());
             note.setRecord(recordRepository.findByTitle(titleRecord));
             noteRepository.save(note);
             return ResponseEntity.ok(HttpStatus.OK);
@@ -95,12 +94,11 @@ public class NoteRestController {
             note.setDescription(description);
             note.setConclusion(conclusion);
             note.setKeywords(keywords);
-            note.setStatus(subject);
+            note.setSubject(subject);
             note.setSubSubject(subSubject);
             note.setCountry(country);
             note.setLanguage(language);
             note.setStatus(status);
-            note.setCreationDate(LocalDateTime.now());
             note.setRecord(recordRepository.findByTitle(titleRecord));
             noteRepository.save(note);
             return ResponseEntity.ok(HttpStatus.OK);

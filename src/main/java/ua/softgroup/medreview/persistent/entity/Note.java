@@ -142,9 +142,8 @@ public class Note extends AbstractEntity<Long> {
         this.status = status;
     }
 
-    public String getCreationDate() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
-        return dateFormat.format(creationDate);
+    public LocalDateTime getCreationDate() {
+        return creationDate;
     }
 
     public void setCreationDate(LocalDateTime creationDate) {
