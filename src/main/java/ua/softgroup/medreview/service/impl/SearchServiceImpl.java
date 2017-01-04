@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import ua.softgroup.medreview.persistent.entity.Note;
 import ua.softgroup.medreview.persistent.entity.Record;
 import ua.softgroup.medreview.persistent.repository.RecordRepository;
-import ua.softgroup.medreview.persistent.repository.search.NoteRepository;
+import ua.softgroup.medreview.persistent.repository.NoteRepository;
 import ua.softgroup.medreview.service.SearchService;
 
 import java.time.LocalDate;

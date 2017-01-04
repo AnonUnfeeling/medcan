@@ -12,9 +12,8 @@
     <script src="/javascript/jquery-3.1.1.min.js"></script>
     <script src="/javascript/bootstrap.min.js"></script>
     <script src="/javascript/checkRole.js"></script>
-    <script src="/javascript/bootstrap-confirmation.js"></script>
     <script src="/javascript/jquery.twbsPagination.min.js"></script>
-    <script src="/javascript/records.js"></script>
+    <script src="/javascript/search.js"></script>
 </head>
 <body>
 <nav class="navbar navbar-default navbar-fixed-top">
@@ -36,10 +35,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <input type="text" class="form-control center-block" placeholder="Search"/>
-                </li>
-                <li>
-                    <button onclick="location.href = '/login?logout';" type="button"
+                    <button onclick="location.href = '/logout';" type="button"
                             class="btn btn-danger navbar-btn btn-sm center-block">Sign out
                     </button>
                 </li>
@@ -50,10 +46,10 @@
 <div id="table-container" class="container">
     <h3>Results</h3>
     <hr/>
-    <div class="result-container">
+    <div hidden id="keyword" th:text="${param.keyword}"></div>
+    <div id="result-container">
 
     </div>
-
 </div>
 </body>
 </html>
