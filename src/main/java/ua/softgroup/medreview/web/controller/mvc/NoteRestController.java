@@ -6,16 +6,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import ua.softgroup.medreview.persistent.entity.Note;
+import ua.softgroup.medreview.persistent.entity.Role;
 import ua.softgroup.medreview.persistent.repository.NoteRepository;
 import ua.softgroup.medreview.persistent.repository.RecordRepository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Oleksandr Tyshkovets <sg.olexander@gmail.com>
@@ -63,7 +67,7 @@ public class NoteRestController {
             note.setSubSubject(subSubject);
             note.setCountry(country);
             note.setLanguage(language);
-            note.setStatus("Test Status");
+            note.setStatus("In review");
             note.setCreationDate(LocalDateTime.now());
             note.setRecord(recordRepository.findByTitle(titleRecord));
             noteRepository.save(note);
@@ -84,7 +88,8 @@ public class NoteRestController {
                             @RequestParam String subject,
                             @RequestParam String subSubject,
                             @RequestParam String country,
-                            @RequestParam String language) {
+                            @RequestParam String language,
+                            @RequestParam String status) {
         try {
             Note note = noteRepository.findOne(Long.parseLong(id));
             note.setDescription(description);
@@ -94,7 +99,7 @@ public class NoteRestController {
             note.setSubSubject(subSubject);
             note.setCountry(country);
             note.setLanguage(language);
-            note.setStatus("Test Status");
+            note.setStatus(status);
             note.setCreationDate(LocalDateTime.now());
             note.setRecord(recordRepository.findByTitle(titleRecord));
             noteRepository.save(note);
@@ -137,5 +142,17 @@ public class NoteRestController {
         } else {
             return new ResponseEntity(Keys.FAIL.toString(), HttpStatus.OK);
         }
+    }
+
+    @RequestMapping(value = "getStatus")
+    public
+    @ResponseBody
+    List<String> getAllRoles() {
+        List<String> status = new ArrayList<>();
+        status.add("In review");
+        status.add("Approved");
+        status.add("Disapproved");
+        status.add("Removed");
+        return status;
     }
 }

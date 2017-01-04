@@ -68,7 +68,7 @@
     </div>
     <div class="row">
         <div class="col-md-6">
-            <button type="button" class="btn btn-primary bottom-left" data-toggle="modal"
+            <button type="button" onclick="loadStatus();" class="btn btn-primary bottom-left" data-toggle="modal"
                     data-target="#creteNote">Add note
             </button>
         </div>
@@ -93,6 +93,7 @@
                         <input id="keywordsNote" placeholder="Keywords" type="text" class="form-control"/><br/>
                         <input id="subjectNote" placeholder="Subject" type="text" class="form-control"/><br/>
                         <input id="subSubjectNote" placeholder="SubSubject" type="text" class="form-control"/><br/>
+                        <select id="statusNote" class="form-control"></select> <br/>
                         <input id="countryNote" placeholder="Country" type="text" class="form-control"/><br/>
                         <input id="languageNote" placeholder="Language" type="text" class="form-control"/><br/>
                         <div id="success" class="alert alert-success" hidden="hidden">

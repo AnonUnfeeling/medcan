@@ -66,6 +66,7 @@ function manageCompany() {
         var edit = $('#creteNote');
         var control = $(this);
         editId = control.attr('id');
+        loadStatus();
         loadNote();
         edit.modal('show');
     });
@@ -180,7 +181,8 @@ function update() {
             subject: $('#subjectNote').val(),
             subSubject: $('#subSubjectNote').val(),
             country: $('#countryNote').val(),
-            language: $('#languageNote').val()
+            language: $('#languageNote').val(),
+            status: $('#statusNote').val()
         },
         headers: {
             'X-CSRF-TOKEN': token
@@ -191,5 +193,24 @@ function update() {
     }).fail(function (data) {
         // $(message).children().remove();
         // message.append("<div id='error' class='alert alert-danger'><strong>Error!</strong>+' data +'</div>")
+    });
+}
+
+function loadStatus() {
+    $.ajax({
+        method: "GET",
+        url: "/getStatus",
+        dataType: "json",
+        headers: {
+            'X-CSRF-TOKEN': token
+        }
+    }).done(function (data) {
+        var arr = data;
+
+        var select = $('#statusNote').empty();
+        Object.keys(arr).forEach(function (key) {
+            select.append('<option value="' + arr[key] + '">' +
+                '' + arr[key] + '</option>');
+        });
     });
 }

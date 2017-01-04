@@ -12,10 +12,16 @@ $(document).ready(function () {
         console.log(data);
         if (data == "COMPANY") {
             $('#companyLink').hide();
+            if($('#statusNote')!=null){
+                $('#statusNote').hide();
+            }
         }
         if(data=="USER"){
             $('#companyLink').hide();
             $('#userLink').hide();
+            if($('#statusNote')!=null){
+                $('#statusNote').hide();
+            }
         }
     })
 });
