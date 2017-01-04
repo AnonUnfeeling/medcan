@@ -31,7 +31,7 @@ public class RecordRepositoryImpl extends SearchableRepository<Record> implement
         return searchByKeywords(
                 Search.getFullTextEntityManager(entityManager),
                 from, to, RECORD_CREATION_DATE_FIELD,
-                keywords, RECORD_TITLE_FIELD
+                keywords, Collections.singletonList(RECORD_TITLE_FIELD)
         );
     }
 

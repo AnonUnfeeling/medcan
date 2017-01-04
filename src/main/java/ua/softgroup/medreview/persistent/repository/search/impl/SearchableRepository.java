@@ -24,7 +24,7 @@ public abstract class SearchableRepository<T> {
 
     protected List<T> searchByKeywords(FullTextEntityManager fullTextEntityManager,
                                        LocalDate from, LocalDate to, String dateField,
-                                       String keywords, String... fields) {
+                                       String text, List<String> fields) {
 
         QueryBuilder queryBuilder = getQueryBuilder(fullTextEntityManager);
         BooleanJunction<BooleanJunction> junction = queryBuilder.bool();
@@ -36,8 +36,8 @@ public abstract class SearchableRepository<T> {
                 .ifPresent(junction::must);
         junction.must(queryBuilder
                 .keyword()
-                .onFields(fields)
-                .matching(keywords)
+                .onFields(fields.toArray(new String[fields.size()]))
+                .matching(text)
                 .createQuery());
 
         return fullTextEntityManager
