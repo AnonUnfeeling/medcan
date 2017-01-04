@@ -52,6 +52,13 @@ public class UserController {
         return authenticationService.getPrincipal().getRoles().get(0).getRole().toString();
     }
 
+    @PostMapping("/checkUser")
+    public
+    @ResponseBody
+    String checkUser() {
+        return authenticationService.getPrincipal().getRoles().get(0).getUser().getLogin();
+    }
+
     //TODO: this link for admin and company role
     @RequestMapping(value = "user", method = RequestMethod.POST)
     public

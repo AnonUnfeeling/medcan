@@ -74,4 +74,9 @@ public class RecordServiceImpl implements RecordService {
     public void deleteRecordByName(String name) {
         recordRepository.delete(recordRepository.findByTitle(name));
     }
+
+    @Override
+    public Record getRecordByTitle(String title) {
+        return recordRepository.findByTitle(title);
+    }
 }

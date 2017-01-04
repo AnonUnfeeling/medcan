@@ -18,11 +18,12 @@ function loadAllRecords() {
 }
 
 function loadRecordByUser() {
+    $('#addRecordButton').hide();
     $.ajax({
         method: "POST",
         url: "/records/getRecordByUser",
         data: {
-            userName:$('#userName').val(),
+            userName: $('#userName').val(),
             page: 1
         },
         dataType: "json",
@@ -37,9 +38,10 @@ function loadRecordByUser() {
             var record = $(this)[0];
             console.log(record);
             table.append('<tr onclick="showNote(this)"><td>' + record.title +
-                '<td>'+ record.type + '</td>'+
-                '<td>'+ record.creationDate + '</td>'+
-                '<td>'+ record.author.login + '</td>'+
+                '<td>' + record.type + '</td>' +
+                '<td>' + (new Date(record.updateDate).getUTCFullYear() + '-' + (new Date(record.updateDate).getUTCMonth() + 1) +
+                '-' + (new Date(record.updateDate).getUTCDay() + 1)) + '</td>' +
+                '<td>' + record.author.login + '</td>' +
                 '</td><td></td><td class="text-right"><span id=' + record.title + ' data-singleton="true" data-toggle="confirmation" class="glyphicon glyphicon-remove-circle records-control" aria-hidden="true"></span></td></tr>');
         });
         manageCompany();
@@ -60,33 +62,42 @@ function getRecords(page) {
         }
     }).done(function (data) {
         var arr = data.content;
-        var totalPages = data.totalPages;
-        var currentPage = $pagination.twbsPagination('getCurrentPage');
-        $pagination.twbsPagination('destroy');
-        $pagination.twbsPagination($.extend({}, defaultOpts, {
-            startPage: (currentPage!=null)?currentPage:0,
-            totalPages: totalPages,
-            initiateStartPageClick: false
-        }));
+        // var totalPages = data.totalPages;
+        // var currentPage = $pagination.twbsPagination('getCurrentPage');
+        // $pagination.twbsPagination('destroy');
+        // $pagination.twbsPagination($.extend({}, defaultOpts, {
+        //     startPage: (currentPage!=null)?currentPage:0,
+        //     totalPages: totalPages,
+        //     initiateStartPageClick: false
+        // }));
         var table = $('#table-body');
         table.find('tr').remove();
         $(arr).each(function () {
             var record = $(this)[0];
-            console.log(record);
-            table.append('<tr onclick="showNote(this)"><td>' + record.title +
-                '<td>'+ record.type + '</td>'+
-                '<td>'+ record.creationDate + '</td>'+
-                '<td>'+ record.author.login + '</td>'+
+            table.append('<tr onclick="showNote(event,this)"><td>' + record.title +
+                '<td>' + record.type + '</td>' +
+                '<td>' + record.creationDate + '</td>' +
+                '<td>' + record.author.login + '</td>' +
                 '</td><td></td><td class="text-right"><span id=' + record.title + ' data-singleton="true" data-toggle="confirmation" class="glyphicon glyphicon-remove-circle records-control" aria-hidden="true"></span></td></tr>');
         });
         manageCompany();
     }).fail(function (data) {
-        console.log(data);
+
     });
 }
 
-function showNote(record) {
-    window.location.href = "/records/note?title=" + $(record).find('td')[0].innerText + "&type=" + $(record).find('td')[1].innerText;
+function showNote(event, record){
+    var e = event || window.event,
+        elm = e.target || e.srcElement,
+        allTDs = record.getElementsByTagName('td');
+
+    while (elm.nodeName.toLowerCase() !== 'td' && elm !== record) {
+        elm = elm.parentNode;
+    }
+
+    if (elm !== allTDs[4] && elm !== record) {
+        window.location.href = "/records/note?title=" + $(record).find('td')[0].innerText + "&type=" + $(record).find('td')[1].innerText;
+    }
 }
 
 //Add delete button to last column in table
@@ -107,7 +118,7 @@ function deleteRecord(control) {
     $.ajax({
         method: "POST",
         url: "/records/removeRecord",
-        data: { recordTitle: control.attr('id')},
+        data: {recordTitle: control.attr('id')},
         dataType: "json",
         headers: {
             'X-CSRF-TOKEN': token
@@ -123,11 +134,12 @@ function createRecord() {
     $.ajax({
         method: "POST",
         url: "/records/add",
-        data: { title: $('#title').val(),
-            type:$('#type').val()
+        data: {
+            title: $('#title').val(),
+            type: $('#type').val()
         },
         dataType: "json",
-        headers:{
+        headers: {
             'X-CSRF-TOKEN': token
         }
     }).done(function (data) {

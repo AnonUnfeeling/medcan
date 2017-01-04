@@ -22,4 +22,6 @@ public interface RecordService {
     void saveRecord(Record recordForm);
 
     void deleteRecordByName(String name);
+
+    Record getRecordByTitle(String title);
 }

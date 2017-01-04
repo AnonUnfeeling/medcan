@@ -30,4 +30,5 @@ public class RecordForm {
     public void setTitle(String title) {
         this.title = title;
     }
+
 }

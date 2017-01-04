@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import ua.softgroup.medreview.persistent.entity.Record;
 import ua.softgroup.medreview.persistent.entity.User;
 import ua.softgroup.medreview.persistent.repository.RecordRepository;
+import ua.softgroup.medreview.service.AuthenticationService;
 import ua.softgroup.medreview.service.RecordService;
 import ua.softgroup.medreview.service.UserService;
 import ua.softgroup.medreview.service.impl.AuthenticationServiceImpl;
@@ -30,7 +31,8 @@ public class RecordController {
 
     private static final String RECORDS_VIEW = "records";
     private RecordService recordService;
-
+    @Autowired
+    private AuthenticationService authenticationService;
     @Autowired
     private UserService userService;
 
@@ -56,11 +58,11 @@ public class RecordController {
         User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Record record = new Record(recordForm.getTitle(), recordForm.getType(), principal);
         recordService.saveRecord(record);
-        return "redirect:/" + RECORDS_VIEW;
+        return "redirect:/" + RECORDS_VIEW ;
     }
 
     @PostMapping(value = "/removeRecord")
-    public ResponseEntity removeRecord(@RequestParam String recordTitle){
+    public ResponseEntity removeRecord(@RequestParam String recordTitle) {
         try {
             recordService.deleteRecordByName(recordTitle);
         } catch (Exception e) {
@@ -70,7 +72,7 @@ public class RecordController {
     }
 
     @PostMapping(value = "/getRecordByUser")
-    public ResponseEntity<?> getRecordByUser(@RequestParam String userName, @RequestParam int page){
+    public ResponseEntity<?> getRecordByUser(@RequestParam String userName, @RequestParam int page) {
         try {
             return ResponseEntity.ok(recordService.getByAuthor(userService.findUserByLogin(userName), new PageRequest(page - 1, 10)));
         } catch (Exception e) {
@@ -81,5 +83,10 @@ public class RecordController {
     @GetMapping(value = "/record")
     public ModelAndView getRecordView(@RequestParam String username) {
         return new ModelAndView(RECORDS_VIEW);
+    }
+
+    @PostMapping(value = "/getRecord")
+    private boolean getRecord(@RequestParam String recordName){
+        return recordService.getByTitle(recordName).getAuthor().getLogin().equals(authenticationService.getPrincipal().getLogin());
     }
 }

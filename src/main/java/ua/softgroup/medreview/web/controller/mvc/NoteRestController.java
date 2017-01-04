@@ -19,6 +19,7 @@ import ua.softgroup.medreview.persistent.repository.RecordRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -68,6 +69,8 @@ public class NoteRestController {
             note.setCountry(country);
             note.setLanguage(language);
             note.setStatus("In review");
+            note.setUpdateDate(new Date());
+            note.setCreationDate(new Date());
             note.setRecord(recordRepository.findByTitle(titleRecord));
             noteRepository.save(note);
             return ResponseEntity.ok(HttpStatus.OK);
@@ -99,6 +102,8 @@ public class NoteRestController {
             note.setCountry(country);
             note.setLanguage(language);
             note.setStatus(status);
+            note.setUpdateDate(new Date());
+            note.setCreationDate(note.getCreationDate());
             note.setRecord(recordRepository.findByTitle(titleRecord));
             noteRepository.save(note);
             return ResponseEntity.ok(HttpStatus.OK);

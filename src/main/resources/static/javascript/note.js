@@ -5,8 +5,25 @@
 var token = $("meta[name='_csrf']").attr("content");
 
 $(document).ready(function () {
+    checkUser();
     loadNotes();
 });
+
+function checkUser() {
+    $.ajax({
+        method: "GET",
+        url: "/records/getRecord",
+        data: {recordName: $('#titleNote').val()},
+        dataType: "json",
+        headers: {
+            'X-CSRF-TOKEN': token
+        }
+    }).done(function (data) {
+        if(data==false){
+            $('#addNoteButton').hide();
+        }
+    });
+}
 
 function loadNotes() {
     $.ajax({
@@ -31,8 +48,8 @@ function loadNotes() {
                 '<td>' + note.country + '</td>' +
                 '<td>' + note.language + '</td>' +
                 '<td>' + note.status + '</td>' +
-                '<td>' + (new Date(note.updateDate).getUTCFullYear() + '-' + (new Date(note.updateDate).getUTCMonth() + 1) +
-                '-' + (new Date(note.updateDate).getUTCDay() + 1)) +
+                '<td>' + (new Date(note.creationDate).getUTCFullYear() + '-' + (new Date(note.creationDate).getUTCMonth() + 1) +
+                '-' + (new Date(note.creationDate).getUTCDay() + 1)) +
                 '</td></td><td></td><td class="text-right"><span id=' +
                 note.id + ' data-singleton="true"' +
                 ' data-toggle="edit" class="glyphicon glyphicon glyphicon-pencil user-control" ' +
@@ -76,7 +93,6 @@ function manageCompany() {
 
 $('#creteNote').on('hidden', function () {
     editId.val(null);
-    console.log("yes");
     $('#descriptionNote').val("");
     $('#conclusionNote').val(null);
     $('#keywordsNote').val(null);
