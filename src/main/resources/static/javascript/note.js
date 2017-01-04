@@ -40,7 +40,7 @@ function loadNotes() {
         table.find('tr').remove();
         $(arr).each(function () {
             var note = $(this)[0];
-            table.append('<tr onclick="loadPreNote('+$(this)[0].id+');"><td>' + note.description.slice(0, 8) + '</td>' +
+            table.append('<tr onclick="loadPreNote(' + $(this)[0].id + ');"><td>' + note.description.slice(0, 8) + '</td>' +
                 '<td>' + note.conclusion.slice(0, 8) + '</td>' +
                 '<td>' + note.keywords.slice(0, 8) + '</td>' +
                 '<td>' + note.subject.slice(0, 8) + '</td>' +
@@ -48,8 +48,8 @@ function loadNotes() {
                 '<td>' + note.country.slice(0, 8) + '</td>' +
                 '<td>' + note.language.slice(0, 8) + '</td>' +
                 '<td>' + note.status.slice(0, 8) + '</td>' +
-                '<td>' + (new Date(note.creationDate).getUTCFullYear() + '-' + (new Date(note.creationDate).getUTCMonth() + 1) +
-                '-' + (new Date(note.creationDate).getUTCDay() + 1)) +
+                '<td>' + note.updateDate.dayOfMonth + ' ' + note.updateDate.month +
+                ' ' + note.updateDate.year +
                 '</td></td><td></td><td class="text-right"><span id=' +
                 note.id + ' data-singleton="true"' +
                 ' data-toggle="edit" class="glyphicon glyphicon glyphicon-pencil user-control" ' +
@@ -180,11 +180,7 @@ function create() {
             'X-CSRF-TOKEN': token
         }
     }).done(function (data) {
-        // $(message).children().remove();
-        // message.append("<div id='success' class='alert alert-success'><strong>Success!</strong>'+ data+'</div>")
     }).fail(function (data) {
-        // $(message).children().remove();
-        // message.append("<div id='error' class='alert alert-danger'><strong>Error!</strong>+' data +'</div>")
     });
 }
 
@@ -208,11 +204,8 @@ function update() {
             'X-CSRF-TOKEN': token
         }
     }).done(function (data) {
-        // $(message).children().remove();
-        // message.append("<div id='success' class='alert alert-success'><strong>Success!</strong>'+ data+'</div>")
+       
     }).fail(function (data) {
-        // $(message).children().remove();
-        // message.append("<div id='error' class='alert alert-danger'><strong>Error!</strong>+' data +'</div>")
     });
 }
 

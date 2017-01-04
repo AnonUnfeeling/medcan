@@ -54,8 +54,6 @@ function gerRecordsByUser(page) {
             var record = $(this)[0];
             table.append('<tr onclick="showNote(this)"><td>' + record.title +
                 '<td>' + record.type + '</td>' +
-                '<td>' + (new Date(record.updateDate).getUTCFullYear() + '-' + (new Date(record.updateDate).getUTCMonth() + 1) +
-                '-' + (new Date(record.updateDate).getUTCDay() + 1)) + '</td>' +
                 '<td>' + record.author.login + '</td>' +
                 '</td><td></td><td class="text-right"><span id=' + record.title + ' data-singleton="true" data-toggle="confirmation" class="glyphicon glyphicon-remove-circle records-control" aria-hidden="true"></span></td></tr>');
         });
@@ -79,6 +77,7 @@ function getRecords(page) {
         console.log("Get ALL:");
         console.log(data);
         var arr = data.content;
+
         var totalPages = data.totalPages;
         var currentPage = $pagination.twbsPagination('getCurrentPage');
         $pagination.twbsPagination('destroy');
@@ -91,9 +90,9 @@ function getRecords(page) {
         table.find('tr').remove();
         $(arr).each(function () {
             var record = $(this)[0];
+            console.log(record);
             table.append('<tr onclick="showNote(event,this)"><td>' + record.title +
-                '<td>' + record.type + '</td>' +
-                '<td>' + record.creationDate + '</td>' +
+                '<td>' + record.type + '</td>' + 
                 '<td>' + record.author.login + '</td>' +
                 '</td><td></td><td class="text-right"><span id=' + record.title + ' data-singleton="true" data-toggle="confirmation" class="glyphicon glyphicon-remove-circle records-control" aria-hidden="true"></span></td></tr>');
         });
