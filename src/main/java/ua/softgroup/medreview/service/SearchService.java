@@ -1,6 +1,5 @@
 package ua.softgroup.medreview.service;
 
-import ua.softgroup.medreview.persistent.entity.Note;
 import ua.softgroup.medreview.persistent.entity.Record;
 
 import java.time.LocalDate;
@@ -11,7 +10,5 @@ import java.util.List;
  */
 public interface SearchService {
 
-    List<Note> searchByKeywords(String keywords, LocalDate from, LocalDate to);
-
-    List<Record> searchByTitle(String keywords, LocalDate from, LocalDate to);
+    List<Record> searchByTitle(String text, LocalDate from, LocalDate to);
 }

@@ -14,6 +14,8 @@ import org.springframework.web.servlet.ModelAndView;
 import ua.softgroup.medreview.persistent.entity.Note;
 import ua.softgroup.medreview.persistent.repository.NoteRepository;
 import ua.softgroup.medreview.persistent.repository.RecordRepository;
+import ua.softgroup.medreview.service.SubSubjectService;
+import ua.softgroup.medreview.service.SubjectService;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,6 +31,12 @@ public class NoteRestController {
 
     @Autowired
     private RecordRepository recordRepository;
+
+    @Autowired
+    private SubjectService subjectService;
+
+    @Autowired
+    private SubSubjectService subSubjectService;
 
     @Autowired
     public NoteRestController(NoteRepository noteRepository) {
@@ -150,5 +158,31 @@ public class NoteRestController {
         status.add("Disapproved");
         status.add("Removed");
         return status;
+    }
+
+    @GetMapping("/getSubject")
+    public
+    @ResponseBody
+    List<String> getSubject() {
+        System.out.println("getSubject");
+//        List<String> status = new ArrayList<>();
+//        status.add("In review");
+//        status.add("Approved");
+//        status.add("Disapproved");
+//        status.add("Removed");
+        return null;
+    }
+
+    @GetMapping("/getSubSubject")
+    public
+    @ResponseBody
+    List<String> getSubSubject() {
+        System.out.println("getSubSubject");
+//        List<String> status = new ArrayList<>();
+//        status.add("In review");
+//        status.add("Approved");
+//        status.add("Disapproved");
+//        status.add("Removed");
+        return null;
     }
 }
