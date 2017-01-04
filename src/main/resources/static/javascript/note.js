@@ -23,7 +23,6 @@ function loadNotes() {
         table.find('tr').remove();
         $(arr).each(function () {
             var note = $(this)[0];
-            console.log(note);
             table.append('<tr><td id="desc">' + note.description + '</td>' +
                 '<td id="concl">' + note.conclusion + '</td>' +
                 '<td>' + note.keywords + '</td>' +
@@ -32,7 +31,8 @@ function loadNotes() {
                 '<td>' + note.country + '</td>' +
                 '<td>' + note.language + '</td>' +
                 '<td>' + note.status + '</td>' +
-                '<td>' + note.updateDate + '' +
+                '<td>' + (new Date(note.updateDate).getUTCFullYear() + '-' + (new Date(note.updateDate).getUTCMonth() + 1) +
+                '-' + (new Date(note.updateDate).getUTCDay() + 1)) +
                 '</td></td><td></td><td class="text-right"><span id=' +
                 note.id + ' data-singleton="true"' +
                 ' data-toggle="edit" class="glyphicon glyphicon glyphicon-pencil user-control" ' +

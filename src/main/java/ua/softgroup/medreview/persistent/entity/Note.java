@@ -18,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * @author Oleksandr Tyshkovets <sg.olexander@gmail.com>
@@ -60,11 +61,11 @@ public class Note extends AbstractEntity<Long> {
     @Column
     @CreationTimestamp
     @Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
-    private LocalDateTime creationDate;
+    private Date creationDate;
 
     @Column
     @UpdateTimestamp
-    private LocalDateTime updateDate;
+    private Date updateDate;
 
     @JsonIgnore
     @ManyToOne
@@ -142,19 +143,19 @@ public class Note extends AbstractEntity<Long> {
         this.status = status;
     }
 
-    public LocalDateTime getCreationDate() {
+    public Date getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(LocalDateTime creationDate) {
+    public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
 
-    public LocalDateTime getUpdateDate() {
+    public Date getUpdateDate() {
         return updateDate;
     }
 
-    public void setUpdateDate(LocalDateTime updateDate) {
+    public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
     }
 
