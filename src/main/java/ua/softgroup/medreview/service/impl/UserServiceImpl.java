@@ -2,10 +2,9 @@ package ua.softgroup.medreview.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import ua.softgroup.medreview.persistent.entity.Company;
 import ua.softgroup.medreview.persistent.entity.User;
 import ua.softgroup.medreview.persistent.repository.CompanyRepository;
 import ua.softgroup.medreview.persistent.repository.UserRepository;
@@ -50,7 +49,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Page<User> getUsersByCompany(Company company, Pageable pageable) {
+        return userRepository.findByCompany(company, pageable);
+    }
+
+    @Override
     public List<User> findAllUsers() {
         return (List<User>) userRepository.findAll();
     }
+
 }

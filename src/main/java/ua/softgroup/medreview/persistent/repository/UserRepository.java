@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import ua.softgroup.medreview.persistent.entity.Company;
 import ua.softgroup.medreview.persistent.entity.User;
 
 /**
@@ -15,8 +16,9 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     User findByLogin(String login);
 
-
     Page<User> findAll(Pageable pageable);
+
+    Page<User> findByCompany(Company company, Pageable pageable);
 
     @Transactional
     void deleteByLogin(String login);

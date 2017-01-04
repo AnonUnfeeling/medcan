@@ -123,30 +123,35 @@ public class UserController {
         }
     }
 
-    //TODO: this link for admin and company role
+//    //TODO: this link for admin and company role
+//    @RequestMapping(value = "usersByCompany", method = RequestMethod.GET)
+//    public
+//    @ResponseBody
+//    String showUserByCompany(String companyName, int page) {
+//        ObjectMapper mapper = new ObjectMapper();
+//        try {
+//            List<UserForm> userForms = new ArrayList<>();
+//            Page<User> userPage = userService.findAll(new PageRequest(page - 1, 10));
+//            for (User user : userPage) {
+//                if (authenticationService.getPrincipal().getRoles().get(0).getRole().equals(Role.ADMIN)) {
+//                    try {
+//                        if (user.getCompany().getName().equals(companyName)) {
+//                            userForms.add(new UserForm(user));
+//                        }
+//                    } catch (Exception e) {
+//
+//                    }
+//                }
+//            }
+//            return mapper.writeValueAsString(userForms);
+//        } catch (JsonProcessingException e) {
+//            return "";
+//        }
+//    }
     @RequestMapping(value = "usersByCompany", method = RequestMethod.GET)
-    public
     @ResponseBody
-    String showUserByCompany(String companyName, int page) {
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            List<UserForm> userForms = new ArrayList<>();
-            Page<User> userPage = userService.findAll(new PageRequest(page - 1, 10));
-            for (User user : userPage) {
-                if (authenticationService.getPrincipal().getRoles().get(0).getRole().equals(Role.ADMIN)) {
-                    try {
-                        if (user.getCompany().getName().equals(companyName)) {
-                            userForms.add(new UserForm(user));
-                        }
-                    } catch (Exception e) {
-
-                    }
-                }
-            }
-            return mapper.writeValueAsString(userForms);
-        } catch (JsonProcessingException e) {
-            return "";
-        }
+    public ResponseEntity<Page<User>> showUsersByCompany(@RequestParam String companyName, @RequestParam int page) {
+        return ResponseEntity.ok(userService.getUsersByCompany(companyservice.findByName(companyName), new PageRequest(page - 1, 10)));
     }
 
 

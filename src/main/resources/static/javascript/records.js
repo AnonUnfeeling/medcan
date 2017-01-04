@@ -16,15 +16,23 @@ function loadAllRecords() {
     $pagination = $('#pagination');
     $pagination.twbsPagination(defaultOpts);
 }
-
 function loadRecordByUser() {
+    $pagination = $('#pagination');
+    $pagination.twbsPagination($.extend({}, defaultOpts, {
+        onPageClick: function (event, page) {
+            gerRecordsByUser(page);
+        }
+    }));
+}
+
+function gerRecordsByUser(page) {
     $('#addRecordButton').hide();
     $.ajax({
         method: "POST",
         url: "/records/getRecordByUser",
         data: {
             userName: $('#userName').val(),
-            page: 1
+            page: page
         },
         dataType: "json",
         headers: {
@@ -33,10 +41,17 @@ function loadRecordByUser() {
     }).done(function (data) {
         var arr = data.content;
         var table = $('#table-body');
+        var totalPages = data.totalPages;
+        var currentPage = $pagination.twbsPagination('getCurrentPage');
+        $pagination.twbsPagination('destroy');
+        $pagination.twbsPagination($.extend({}, defaultOpts, {
+            startPage: (currentPage!=null)?currentPage:0,
+            totalPages: totalPages,
+            initiateStartPageClick: false
+        }));
         table.find('tr').remove();
         $(arr).each(function () {
             var record = $(this)[0];
-            console.log(record);
             table.append('<tr onclick="showNote(this)"><td>' + record.title +
                 '<td>' + record.type + '</td>' +
                 '<td>' + (new Date(record.updateDate).getUTCFullYear() + '-' + (new Date(record.updateDate).getUTCMonth() + 1) +
@@ -61,15 +76,17 @@ function getRecords(page) {
             'X-CSRF-TOKEN': token
         }
     }).done(function (data) {
+        console.log("Get ALL:");
+        console.log(data);
         var arr = data.content;
-        // var totalPages = data.totalPages;
-        // var currentPage = $pagination.twbsPagination('getCurrentPage');
-        // $pagination.twbsPagination('destroy');
-        // $pagination.twbsPagination($.extend({}, defaultOpts, {
-        //     startPage: (currentPage!=null)?currentPage:0,
-        //     totalPages: totalPages,
-        //     initiateStartPageClick: false
-        // }));
+        var totalPages = data.totalPages;
+        var currentPage = $pagination.twbsPagination('getCurrentPage');
+        $pagination.twbsPagination('destroy');
+        $pagination.twbsPagination($.extend({}, defaultOpts, {
+            startPage: (currentPage!=null)?currentPage:1,
+            totalPages: totalPages,
+            initiateStartPageClick: false
+        }));
         var table = $('#table-body');
         table.find('tr').remove();
         $(arr).each(function () {
