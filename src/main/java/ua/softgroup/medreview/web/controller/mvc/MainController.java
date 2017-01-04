@@ -8,17 +8,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 public class MainController {
-    @RequestMapping(value = "user")
+    @RequestMapping(value = "userLogin")
     public String loginUser() {
         return "redirect:records";
     }
 
-    @RequestMapping(value = "company")
+    @RequestMapping(value = "companyLogin")
     public String loginCompany() {
-        return "redirect:records";
+        return "redirect:users";
     }
 
-    @RequestMapping(value = "admin")
+    @RequestMapping(value = "adminLogin")
     public String loginAdmin() {
         return "redirect:company";
     }

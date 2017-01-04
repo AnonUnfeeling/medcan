@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/css/main.css"/>
     <script src="/javascript/jquery-3.1.1.min.js"></script>
     <script src="/javascript/bootstrap.min.js"></script>
+    <script src="/javascript/checkRole.js"></script>
     <script src="/javascript/bootstrap-confirmation.js"></script>
     <script src="/javascript/jquery.twbsPagination.min.js"></script>
     <script src="/javascript/note.js"></script>
@@ -29,9 +30,9 @@
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse-1" style="margin-right: 20px;">
             <ul class="nav navbar-nav navbar-left">
-                <li><a href="/company">Companies</a></li>
-                <li><a href="/users">Users</a></li>
-                <li><a href="/records">Records</a></li>
+                <li><a href="/company" id="companyLink">Companies</a></li>
+                <li><a href="/users" id="userLink">Users</a></li>
+                <li><a href="/records" id="recordLink">Records</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>
@@ -83,11 +84,10 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
-                    <h3>Creating new record</h3>
+                    <h3>Creating new note</h3>
                 </div>
                 <div class="modal-body">
                     <div class="modal-body">
-                        <!--<input id="titleNote" th:value="${param.title}"/>-->
                         <input id="descriptionNote" placeholder="Description" type="text" class="form-control"/> <br/>
                         <input id="conclusionNote" placeholder="Conclusion" type="text" class="form-control"/><br/>
                         <input id="keywordsNote" placeholder="Keywords" type="text" class="form-control"/><br/>

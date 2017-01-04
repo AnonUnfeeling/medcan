@@ -45,6 +45,12 @@ public class UserController {
     @Autowired
     private CompanyService companyservice;
 
+    @PostMapping("/checkRole")
+    public
+    @ResponseBody
+    String checkrole() {
+        return authenticationService.getPrincipal().getRoles().get(0).getRole().toString();
+    }
 
     //TODO: this link for admin and company role
     @RequestMapping(value = "user", method = RequestMethod.POST)
@@ -57,6 +63,38 @@ public class UserController {
              @RequestParam("company") String company) {
         try {
             User user = new User();
+            user.setLogin(login);
+            user.setPassword(password);
+            List<UserRole> roles = new ArrayList<>();
+            if (Role.ADMIN.toString().equals(role)) {
+                roles.add(new UserRole(Role.ADMIN, user));
+                roles.add(new UserRole(Role.COMPANY, user));
+            } else if (Role.COMPANY.toString().equals(role)) {
+                roles.add(new UserRole(Role.COMPANY, user));
+            } else {
+                roles.add(new UserRole(Role.USER, user));
+            }
+            user.setRoles(roles);
+            user.setCompany(companyservice.findByName(company));
+            userService.saveUser(user);
+
+            return ResponseEntity.ok(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(Keys.FAIL.toString(), HttpStatus.OK);
+        }
+    }
+
+    @RequestMapping(value = "user/edit", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    ResponseEntity
+    editUser(@RequestParam("preLogin") String preLogin,
+             @RequestParam("login") String login,
+             @RequestParam("password") String password,
+             @RequestParam("role") String role,
+             @RequestParam("company") String company) {
+        try {
+            User user = userService.findUserByLogin(preLogin);
             user.setLogin(login);
             user.setPassword(password);
             List<UserRole> roles = new ArrayList<>();

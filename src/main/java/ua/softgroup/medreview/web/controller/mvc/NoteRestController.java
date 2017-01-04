@@ -54,38 +54,73 @@ public class NoteRestController {
                                @RequestParam String subSubject,
                                @RequestParam String country,
                                @RequestParam String language) {
-//        if (title == null && note == null) {
-//            return new ResponseEntity(Keys.EMPTY.toString(), HttpStatus.OK);
-//        } else if (isCreate(id, note)) {
-
-//        } else {
-        Note note = new Note();
-        note.setDescription(description);
-        note.setConclusion(conclusion);
-        note.setKeywords(keywords);
-        note.setStatus(subject);
-        note.setSubSubject(subSubject);
-        note.setCountry(country);
-        note.setLanguage(language);
-        note.setStatus("Test Status");
-        note.setCreationDate(LocalDateTime.now());
-        note.setRecord(recordRepository.findByTitle(titleRecord));
-        noteRepository.save(note);
-        return ResponseEntity.ok(HttpStatus.OK);
-//        }
+        try {
+            Note note = new Note();
+            note.setDescription(description);
+            note.setConclusion(conclusion);
+            note.setKeywords(keywords);
+            note.setStatus(subject);
+            note.setSubSubject(subSubject);
+            note.setCountry(country);
+            note.setLanguage(language);
+            note.setStatus("Test Status");
+            note.setCreationDate(LocalDateTime.now());
+            note.setRecord(recordRepository.findByTitle(titleRecord));
+            noteRepository.save(note);
+            return ResponseEntity.ok(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(Keys.EMPTY.toString(), HttpStatus.OK);
+        }
     }
 
-    @PostMapping("/records/{id}/remove")
+    @PostMapping("/records/note/edit")
     public
     @ResponseBody
-    ResponseEntity removeNote(@PathVariable Long id, @RequestParam Note note) {
-        if (id == 0 && note == null) {
-            return new ResponseEntity(Keys.EMPTY.toString(), HttpStatus.OK);
-        } else if (isDeleted(id, note)) {
+    ResponseEntity editNote(@RequestParam String id,
+                            @RequestParam String titleRecord,
+                            @RequestParam String description,
+                            @RequestParam String conclusion,
+                            @RequestParam String keywords,
+                            @RequestParam String subject,
+                            @RequestParam String subSubject,
+                            @RequestParam String country,
+                            @RequestParam String language) {
+        try {
+            Note note = noteRepository.findOne(Long.parseLong(id));
+            note.setDescription(description);
+            note.setConclusion(conclusion);
+            note.setKeywords(keywords);
+            note.setStatus(subject);
+            note.setSubSubject(subSubject);
+            note.setCountry(country);
+            note.setLanguage(language);
+            note.setStatus("Test Status");
+            note.setCreationDate(LocalDateTime.now());
+            note.setRecord(recordRepository.findByTitle(titleRecord));
+            noteRepository.save(note);
             return ResponseEntity.ok(HttpStatus.OK);
-        } else {
+        } catch (Exception e) {
+            return new ResponseEntity(Keys.EMPTY.toString(), HttpStatus.OK);
+        }
+    }
+
+    @PostMapping("/records/note/remove")
+    public
+    @ResponseBody
+    ResponseEntity removeNote(@RequestParam String id) {
+        try {
+            noteRepository.delete(Long.parseLong(id));
+            return ResponseEntity.ok(HttpStatus.OK);
+        } catch (Exception e) {
             return new ResponseEntity(Keys.FAIL.toString(), HttpStatus.OK);
         }
+    }
+
+    @PostMapping("/records/note/get")
+    public
+    @ResponseBody
+    Note getNote(@RequestParam String id) {
+        return noteRepository.findOne(Long.parseLong(id));
     }
 
     private boolean isDeleted(long id, Note note) {

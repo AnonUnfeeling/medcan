@@ -55,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/admin").hasAuthority(Role.ADMIN.name())
                     .antMatchers("/records/all/**").hasAuthority(Role.ADMIN.name())
                     .antMatchers("/user/**").hasAnyAuthority(Role.ADMIN.name(), Role.COMPANY.name())
-                    .antMatchers("/records/**").hasAnyAuthority(Role.ADMIN.name(), Role.COMPANY.name())
+                    .antMatchers("/records/**").hasAnyAuthority(Role.ADMIN.name(), Role.COMPANY.name(), Role.USER.name())
                     .anyRequest().authenticated()
                     .and()
                     .formLogin()

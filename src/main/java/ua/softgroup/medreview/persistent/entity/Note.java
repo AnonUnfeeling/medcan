@@ -12,6 +12,9 @@ import org.hibernate.search.annotations.Store;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -23,6 +26,10 @@ import java.time.LocalDateTime;
 @Indexed
 public class Note extends AbstractEntity<Long> {
     private static final long serialVersionUID = 6627846745698054192L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     @Column
     private String description;
@@ -62,6 +69,14 @@ public class Note extends AbstractEntity<Long> {
     @JsonIgnore
     @ManyToOne
     private Record record;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getDescription() {
         return description;

@@ -77,6 +77,8 @@ function getUsers(page) {
     });
 }
 
+var userLogin;
+
 function manageCompany() {
     var company_control = $('.users-control');
 
@@ -99,10 +101,11 @@ function manageCompany() {
         var edit = $('#addCompanyModal');
         var control = $(this);
         $('#userLogin').val(control.attr('id'));
+        userLogin=control.attr('id');
         loadRole();
         loadCompanies();
         edit.modal('show');
-    })
+    });
 }
 
 function deleteUser(control) {
@@ -121,6 +124,14 @@ function deleteUser(control) {
 }
 
 function createUser() {
+    if(userLogin==null){
+        create();
+    }else {
+        updateUser();
+    }
+}
+
+function create() {
     var success_msg = $('#success');
     var error_msg = $('#error');
     $.ajax({
@@ -147,6 +158,33 @@ function createUser() {
     });
 }
 
+function updateUser() {
+    var success_msg = $('#success');
+    var error_msg = $('#error');
+    $.ajax({
+        method: "POST",
+        url: "/user/edit",
+        data: {
+            preLogin:userLogin,
+            login: $('#userLogin').val(),
+            password: $('#userPassword').val(),
+            role: $('#userRole').val(),
+            company: $('#userCompany').val()
+        },
+        dataType: "json",
+        headers: {
+            'X-CSRF-TOKEN': token
+        }
+    }).done(function (data) {
+        success_msg.hide();
+        error_msg.hide();
+        success_msg.show();
+    }).fail(function (data) {
+        success_msg.hide();
+        error_msg.hide();
+        error_msg.show();
+    });
+}
 
 function loadRole() {
     $.ajax({
