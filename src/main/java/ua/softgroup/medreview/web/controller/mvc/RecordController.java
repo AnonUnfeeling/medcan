@@ -1,18 +1,16 @@
 package ua.softgroup.medreview.web.controller.mvc;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ua.softgroup.medreview.persistent.entity.Record;
 import ua.softgroup.medreview.persistent.entity.User;
+<<<<<<< HEAD
 import ua.softgroup.medreview.persistent.repository.RecordRepository;
 import ua.softgroup.medreview.service.AuthenticationService;
 import ua.softgroup.medreview.service.RecordService;
@@ -22,6 +20,13 @@ import ua.softgroup.medreview.web.form.RecordForm;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+=======
+import ua.softgroup.medreview.service.RecordService;
+import ua.softgroup.medreview.service.SearchService;
+import ua.softgroup.medreview.web.form.RecordForm;
+
+import javax.validation.Valid;
+>>>>>>> frontend_search
 import java.util.List;
 
 /**
@@ -32,15 +37,23 @@ import java.util.List;
 public class RecordController {
 
     private static final String RECORDS_VIEW = "records";
+<<<<<<< HEAD
     private RecordService recordService;
     @Autowired
     private AuthenticationService authenticationService;
     @Autowired
     private UserService userService;
+=======
+    private static final String SEARCH_RESULTS_VIEW = "results";
+    private static final int NUMBER_OF_PAGES = 10;
+    private final RecordService recordService;
+    private final SearchService searchService;
+>>>>>>> frontend_search
 
     @Autowired
-    public RecordController(RecordService recordService) {
+    public RecordController(RecordService recordService, SearchService searchService) {
         this.recordService = recordService;
+        this.searchService = searchService;
     }
 
     //TODO secure this url
@@ -52,7 +65,7 @@ public class RecordController {
     //TODO secure this url
     @GetMapping(value = "all")
     public ResponseEntity<?> showPrincipalRecords(@RequestParam int page) {
-        return ResponseEntity.ok(recordService.getRecordsByAuthorities(new PageRequest(page - 1, 10)));
+        return ResponseEntity.ok(recordService.getRecordsByAuthorities(new PageRequest(page - 1, NUMBER_OF_PAGES)));
     }
 
     @PostMapping(value = "/add")
@@ -73,6 +86,7 @@ public class RecordController {
         return ResponseEntity.ok(null);
     }
 
+<<<<<<< HEAD
     @PostMapping(value = "/getRecordByUser")
     public ResponseEntity<?> getRecordByUser(@RequestParam String userName, @RequestParam int page) {
         try {
@@ -101,5 +115,20 @@ public class RecordController {
         type.add("Website");
         type.add("Doctor");
         return type;
+=======
+    @GetMapping(value = "/{id}")
+    public ResponseEntity showRecordById(@PathVariable("id") long id) {
+        return ResponseEntity.ok(recordService.getById(id));
+    }
+
+    @GetMapping(value = "/search")
+    public ResponseEntity<List<Record>> findRecordsByKeywords(@RequestParam String keyword) {
+        return ResponseEntity.ok(searchService.searchByTitle(keyword, null, null));
+    }
+
+    @GetMapping(value = "/results")
+    public ModelAndView showSearchResults() {
+        return new ModelAndView(SEARCH_RESULTS_VIEW);
+>>>>>>> frontend_search
     }
 }
