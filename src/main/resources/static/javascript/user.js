@@ -67,7 +67,7 @@ function getUsersByCompanyName(page) {
         table.find('tr').remove();
         $(arr).each(function () {
             var user = $(this)[0];
-            table.append('<tr onclick="showRecord(this)"><td>' + user.login + '</td><td>' + user.roles[0].role + '</td>' +
+            table.append('<tr onclick="showRecord(event,this)"><td>' + user.login + '</td><td>' + user.roles[0].role + '</td>' +
                 '<td>' + user.company.name + '</td>' +
                 '<td class="text-right"><span id=' +
                 user.login + ' data-singleton="true"' +
@@ -82,9 +82,19 @@ function getUsersByCompanyName(page) {
     });
 }
 
-function showRecord(record) {
-    console.log($(record).find('td')[0].innerText);
-    window.location.href = "/records/record?username=" + $(record).find('td')[0].innerText;
+function showRecord(event,record) {
+
+    var e = event || window.event,
+        elm = e.target || e.srcElement,
+        allTDs = record.getElementsByTagName('td');
+
+    while (elm.nodeName.toLowerCase() !== 'td' && elm !== record) {
+        elm = elm.parentNode;
+    }
+
+    if (elm !== allTDs[4] && elm!==allTDs[5] && elm !== record) {
+        window.location.href = "/records/record?username=" + $(record).find('td')[0].innerText;
+    }
 }
 
 function getUsers(page) {

@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/css/main.css"/>
     <script src="/javascript/jquery-3.1.1.min.js"></script>
     <script src="/javascript/bootstrap.min.js"></script>
+    <script src="/javascript/bootstrap-confirmation.js"></script>
     <script src="/javascript/checkRole.js"></script>
     <script src="/javascript/jquery.twbsPagination.min.js"></script>
     <script src="/javascript/search.js"></script>
@@ -47,9 +48,18 @@
     <h3>Results</h3>
     <hr/>
     <div hidden id="keyword" th:text="${param.keyword}"></div>
-    <div id="result-container">
-
-    </div>
+    <table class="table table-responsive">
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Type</th>
+            <th>Author</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody id="table-body">
+        </tbody>
+    </table>
 </div>
 </body>
 </html>
