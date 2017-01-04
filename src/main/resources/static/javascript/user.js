@@ -54,7 +54,6 @@ function getUsersByCompanyName(page) {
         var arr = data;
         console.log("By company");
         console.log(data);
-        
         var totalPages = data.totalPages;
         var currentPage = $pagination.twbsPagination('getCurrentPage');
         $pagination.twbsPagination('destroy');

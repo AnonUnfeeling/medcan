@@ -148,7 +148,8 @@ public class UserController {
 //            return "";
 //        }
 //    }
-
+    @RequestMapping(value = "usersByCompany", method = RequestMethod.GET)
+    @ResponseBody
     public ResponseEntity<Page<User>> showUsersByCompany(@RequestParam String companyName, @RequestParam int page) {
         return ResponseEntity.ok(userService.getUsersByCompany(companyservice.findByName(companyName), new PageRequest(page - 1, 10)));
     }

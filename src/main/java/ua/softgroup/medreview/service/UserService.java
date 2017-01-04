@@ -4,7 +4,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import ua.softgroup.medreview.persistent.entity.Company;
 import ua.softgroup.medreview.persistent.entity.User;
-import ua.softgroup.medreview.web.dto.UserDto;
 
 import java.util.List;
 
@@ -27,7 +26,4 @@ public interface UserService {
 
     List<User> findAllUsers();
 
-    Page<UserDto> getUserDtos(Pageable pageable);
-
-    List<UserDto> getAllUserDtos();
 }
