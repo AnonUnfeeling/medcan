@@ -7,5 +7,7 @@ import ua.softgroup.medreview.persistent.entity.User;
  */
 public interface AuthenticationService {
 
-    public User getPrincipal();
+    User getPrincipal();
+
+    String determineHomeUrlByRole();
 }

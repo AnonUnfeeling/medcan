@@ -50,12 +50,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         protected void configure(HttpSecurity http) throws Exception {
             http
                     .authorizeRequests()
-                    .antMatchers("/css/**", "/js/**", "/fonts/**").permitAll()
+                    .antMatchers("/css/**", "/javascript/**", "/fonts/**").permitAll()
                     .antMatchers("/companies", "/makeCompany", "/removeCompany").hasAuthority(Role.ADMIN.name())
                     .antMatchers("/admin").hasAuthority(Role.ADMIN.name())
-                    .antMatchers("/records/all/**").hasAnyAuthority(Role.ADMIN.name(),Role.COMPANY.name())
+                    .antMatchers("/records/all/**").hasAnyAuthority(Role.ADMIN.name(), Role.COMPANY.name())
                     .antMatchers("/user/**").hasAnyAuthority(Role.ADMIN.name(), Role.COMPANY.name())
-                    .antMatchers("/records/**").hasAnyAuthority(Role.ADMIN.name(), Role.COMPANY.name(), Role.USER.name())
                     .anyRequest().authenticated()
                     .and()
                     .formLogin()
