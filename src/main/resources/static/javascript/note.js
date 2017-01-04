@@ -246,8 +246,8 @@ function loadSubject() {
         var arr = data;
         var select = $('#subjectNote').empty();
         Object.keys(arr).forEach(function (key) {
-            select.append('<option value="' + arr[key] + '">' +
-                '' + arr[key] + '</option>');
+            select.append('<option value="' + arr[key].name + '">' +
+                '' + arr[key].name + '</option>');
         });
     });
 }
@@ -264,8 +264,8 @@ function loadSubSubject() {
         var arr = data;
         var select = $('#subSubjectNote').empty();
         Object.keys(arr).forEach(function (key) {
-            select.append('<option value="' + arr[key] + '">' +
-                '' + arr[key] + '</option>');
+            select.append('<option value="' + arr[key].name + '">' +
+                '' + arr[key].name + '</option>');
         });
     });
 }

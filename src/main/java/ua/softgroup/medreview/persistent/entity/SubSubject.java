@@ -1,5 +1,7 @@
 package ua.softgroup.medreview.persistent.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 /**
@@ -16,6 +18,7 @@ public class SubSubject extends AbstractEntity<Long> {
     @Column
     private String name;
 
+    @JsonIgnore
     @ManyToOne
     private Subject subject;
 

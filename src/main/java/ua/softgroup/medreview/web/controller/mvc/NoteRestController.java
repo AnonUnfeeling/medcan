@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import ua.softgroup.medreview.persistent.entity.Note;
+import ua.softgroup.medreview.persistent.entity.SubSubject;
+import ua.softgroup.medreview.persistent.entity.Subject;
 import ua.softgroup.medreview.persistent.repository.NoteRepository;
 import ua.softgroup.medreview.persistent.repository.RecordRepository;
 import ua.softgroup.medreview.service.SubSubjectService;
@@ -163,26 +165,14 @@ public class NoteRestController {
     @GetMapping("/getSubject")
     public
     @ResponseBody
-    List<String> getSubject() {
-        System.out.println("getSubject");
-//        List<String> status = new ArrayList<>();
-//        status.add("In review");
-//        status.add("Approved");
-//        status.add("Disapproved");
-//        status.add("Removed");
-        return null;
+    List<Subject> getSubject() {
+        return subjectService.getAll();
     }
 
     @GetMapping("/getSubSubject")
     public
     @ResponseBody
-    List<String> getSubSubject() {
-        System.out.println("getSubSubject");
-//        List<String> status = new ArrayList<>();
-//        status.add("In review");
-//        status.add("Approved");
-//        status.add("Disapproved");
-//        status.add("Removed");
-        return null;
+    List<SubSubject> getSubSubject() {
+        return subSubjectService.getAll();
     }
 }
