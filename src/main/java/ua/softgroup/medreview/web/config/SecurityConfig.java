@@ -53,7 +53,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/css/**", "/javascript/**", "/fonts/**").permitAll()
                     .antMatchers("/companies", "/makeCompany", "/removeCompany").hasAuthority(Role.ADMIN.name())
                     .antMatchers("/admin").hasAuthority(Role.ADMIN.name())
-                    .antMatchers("/records/all/**").hasAnyAuthority(Role.ADMIN.name(), Role.COMPANY.name())
                     .antMatchers("/user/**").hasAnyAuthority(Role.ADMIN.name(), Role.COMPANY.name())
                     .anyRequest().authenticated()
                     .and()
