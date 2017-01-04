@@ -108,5 +108,12 @@
         </div>
     </div>
 </div>
+<input id="userName" th:value="${param.username}" hidden/>
+<script th:if="${param.username}">
+    loadRecordByUser();
+</script>
+<script th:unless="${param.username}">
+    loadAllRecords();
+</script>
 </body>
 </html>

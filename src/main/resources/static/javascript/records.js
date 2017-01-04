@@ -12,10 +12,41 @@ var defaultOpts = {
 };
 
 //Load pagination on page loaded
-$(document).ready(function () {
+function loadAllRecords() {
     $pagination = $('#pagination');
     $pagination.twbsPagination(defaultOpts);
-});
+}
+
+function loadRecordByUser() {
+    $.ajax({
+        method: "POST",
+        url: "/records/getRecordByUser",
+        data: {
+            userName:$('#userName').val(),
+            page: 1
+        },
+        dataType: "json",
+        headers: {
+            'X-CSRF-TOKEN': token
+        }
+    }).done(function (data) {
+        var arr = data.content;
+        var table = $('#table-body');
+        table.find('tr').remove();
+        $(arr).each(function () {
+            var record = $(this)[0];
+            console.log(record);
+            table.append('<tr onclick="showNote(this)"><td>' + record.title +
+                '<td>'+ record.type + '</td>'+
+                '<td>'+ record.creationDate + '</td>'+
+                '<td>'+ record.author.login + '</td>'+
+                '</td><td></td><td class="text-right"><span id=' + record.title + ' data-singleton="true" data-toggle="confirmation" class="glyphicon glyphicon-remove-circle records-control" aria-hidden="true"></span></td></tr>');
+        });
+        manageCompany();
+    }).fail(function (data) {
+        console.log(data);
+    });
+}
 
 //Get data for table
 function getRecords(page) {
@@ -57,8 +88,6 @@ function getRecords(page) {
 function showNote(record) {
     window.location.href = "/records/note?title=" + $(record).find('td')[0].innerText + "&type=" + $(record).find('td')[1].innerText;
 }
-
-
 
 //Add delete button to last column in table
 function manageCompany() {

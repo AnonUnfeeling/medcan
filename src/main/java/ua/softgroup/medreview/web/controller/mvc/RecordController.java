@@ -15,6 +15,7 @@ import ua.softgroup.medreview.persistent.entity.Record;
 import ua.softgroup.medreview.persistent.entity.User;
 import ua.softgroup.medreview.persistent.repository.RecordRepository;
 import ua.softgroup.medreview.service.RecordService;
+import ua.softgroup.medreview.service.UserService;
 import ua.softgroup.medreview.service.impl.AuthenticationServiceImpl;
 import ua.softgroup.medreview.web.form.RecordForm;
 
@@ -29,6 +30,9 @@ public class RecordController {
 
     private static final String RECORDS_VIEW = "records";
     private RecordService recordService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     public RecordController(RecordService recordService) {
@@ -63,5 +67,19 @@ public class RecordController {
             return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(null);
         }
         return ResponseEntity.ok(null);
+    }
+
+    @PostMapping(value = "/getRecordByUser")
+    public ResponseEntity<?> getRecordByUser(@RequestParam String userName, @RequestParam int page){
+        try {
+            return ResponseEntity.ok(recordService.getByAuthor(userService.findUserByLogin(userName), new PageRequest(page - 1, 10)));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(null);
+        }
+    }
+
+    @GetMapping(value = "/record")
+    public ModelAndView getRecordView(@RequestParam String username) {
+        return new ModelAndView(RECORDS_VIEW);
     }
 }

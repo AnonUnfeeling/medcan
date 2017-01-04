@@ -29,7 +29,7 @@ function getUsersByCompany() {
         table.find('tr').remove();
         $(arr).each(function () {
             var user = $(this)[0];
-            table.append('<tr><td>' + user.login + '</td><td>' + user.role + '</td>' +
+            table.append('<tr onclick="showRecord(this)"><td>' + user.login + '</td><td>' + user.role + '</td>' +
                 '<td>' + user.company + '</td>' +
                 '<td class="text-right"><span id=' +
                 user.login + ' data-singleton="true"' +
@@ -42,6 +42,11 @@ function getUsersByCompany() {
         });
         manageCompany();
     });
+}
+
+function showRecord(record) {
+    console.log($(record).find('td')[0].innerText);
+    window.location.href = "/records/record?username=" + $(record).find('td')[0].innerText;
 }
 
 function getUsers(page) {
@@ -62,7 +67,7 @@ function getUsers(page) {
         table.find('tr').remove();
         $(arr).each(function () {
             var user = $(this)[0];
-            table.append('<tr><td>' + user.login + '</td><td>' + user.role + '</td>' +
+            table.append('<tr onclick="showRecord(this)"><td>' + user.login + '</td><td>' + user.role + '</td>' +
                 '<td>' + user.company + '</td>' +
                 '<td class="text-right"><span id=' +
                 user.login + ' data-singleton="true"' +
