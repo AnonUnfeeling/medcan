@@ -40,14 +40,14 @@ function loadNotes() {
         table.find('tr').remove();
         $(arr).each(function () {
             var note = $(this)[0];
-            table.append('<tr><td id="desc">' + note.description + '</td>' +
-                '<td id="concl">' + note.conclusion + '</td>' +
-                '<td>' + note.keywords + '</td>' +
-                '<td>' + note.subject + '</td>' +
-                '<td>' + note.subSubject + '</td>' +
-                '<td>' + note.country + '</td>' +
-                '<td>' + note.language + '</td>' +
-                '<td>' + note.status + '</td>' +
+            table.append('<tr onclick="loadPreNote('+$(this)[0].id+');"><td>' + note.description.slice(0, 8) + '</td>' +
+                '<td>' + note.conclusion.slice(0, 8) + '</td>' +
+                '<td>' + note.keywords.slice(0, 8) + '</td>' +
+                '<td>' + note.subject.slice(0, 8) + '</td>' +
+                '<td>' + note.subSubject.slice(0, 8) + '</td>' +
+                '<td>' + note.country.slice(0, 8) + '</td>' +
+                '<td>' + note.language.slice(0, 8) + '</td>' +
+                '<td>' + note.status.slice(0, 8) + '</td>' +
                 '<td>' + (new Date(note.creationDate).getUTCFullYear() + '-' + (new Date(note.creationDate).getUTCMonth() + 1) +
                 '-' + (new Date(note.creationDate).getUTCDay() + 1)) +
                 '</td></td><td></td><td class="text-right"><span id=' +
@@ -64,6 +64,13 @@ function loadNotes() {
 }
 
 var editId;
+
+function loadPreNote(id) {
+    editId = id;
+    loadNote();
+    var edit = $('#creteNote');
+    edit.modal('show');
+}
 
 function manageCompany() {
     var record_control = $('.users-control');
@@ -93,6 +100,7 @@ function manageCompany() {
 
 $(document).on('hide.bs.modal', '#creteNote', function () {
     editId = null;
+    $('#submitButton').show();
     $('#descriptionNote').val("");
     $('#conclusionNote').val(null);
     $('#keywordsNote').val(null);
@@ -112,6 +120,10 @@ function loadNote() {
             'X-CSRF-TOKEN': token
         }
     }).done(function (data) {
+        $('#submitButton').hide();
+        var select = $('#statusNote').empty();
+        select.append('<option value="' + data.status + '">' +
+            '' + data.status + '</option>');
         $('#descriptionNote').val(data.description);
         $('#conclusionNote').val(data.conclusion);
         $('#keywordsNote').val(data.keywords);
@@ -141,8 +153,10 @@ function deleteNote(control) {
 function createNote() {
     if (editId == null) {
         create();
+        $('#creteNote').modal('hide');
     } else {
         update();
+        $('#creteNote').modal('hide');
     }
 }
 
