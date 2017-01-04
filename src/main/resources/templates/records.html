@@ -64,7 +64,8 @@
     </div>
     <div class="row">
         <div class="col-md-6">
-            <button id="addRecordButton" type="button" class="btn btn-primary bottom-left" data-toggle="modal"
+            <button id="addRecordButton" onclick="loadType();" type="button" class="btn btn-primary bottom-left"
+                    data-toggle="modal"
                     data-target="#creteRecord">Add record
             </button>
         </div>
@@ -93,7 +94,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Type:</label>
-                                    <input id="type" placeholder="Type" type="text" name="type" class="form-control"/>
+                                    <select id="type" class="form-control"></select> <br/>
+                                    <!--<input id="type" placeholder="Type" type="text" name="type" class="form-control"/>-->
                                 </div>
                             </div>
                             <hr/>

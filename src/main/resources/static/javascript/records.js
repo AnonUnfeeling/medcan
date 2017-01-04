@@ -86,7 +86,7 @@ function getRecords(page) {
     });
 }
 
-function showNote(event, record){
+function showNote(event, record) {
     var e = event || window.event,
         elm = e.target || e.srcElement,
         allTDs = record.getElementsByTagName('td');
@@ -148,5 +148,25 @@ function createRecord() {
     }).fail(function (data) {
         $(message).children().remove();
         message.append("<div id='error' class='alert alert-danger'><strong>Error!</strong>+' data +'</div>")
+    });
+}
+
+
+function loadType() {
+    $.ajax({
+        method: "GET",
+        url: "/records/getTypeRecord",
+        dataType: "json",
+        headers: {
+            'X-CSRF-TOKEN': token
+        }
+    }).done(function (data) {
+        var arr = data;
+
+        var select = $('#type').empty();
+        Object.keys(arr).forEach(function (key) {
+            select.append('<option value="' + arr[key] + '">' +
+                '' + arr[key] + '</option>');
+        });
     });
 }

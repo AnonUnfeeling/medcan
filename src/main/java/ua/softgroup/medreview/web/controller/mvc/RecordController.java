@@ -21,6 +21,8 @@ import ua.softgroup.medreview.service.impl.AuthenticationServiceImpl;
 import ua.softgroup.medreview.web.form.RecordForm;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Oleksandr Tyshkovets <sg.olexander@gmail.com>
@@ -88,5 +90,16 @@ public class RecordController {
     @PostMapping(value = "/getRecord")
     private boolean getRecord(@RequestParam String recordName){
         return recordService.getByTitle(recordName).getAuthor().getLogin().equals(authenticationService.getPrincipal().getLogin());
+    }
+
+    @RequestMapping(value = "getTypeRecord")
+    public
+    @ResponseBody
+    List<String> getAllRoles() {
+        List<String> type = new ArrayList<>();
+        type.add("Book");
+        type.add("Website");
+        type.add("Doctor");
+        return type;
     }
 }
