@@ -12,18 +12,16 @@ html, body {
 body{
     padding: 10%;
     background: #8C7E94 no-repeat;
-
 }
-/*body{
-    background: url('../images/reviews%20image.jpg');
-    background-color: #E9EFDF;
-    background-repeat:no-repeat;
-    background-size:contain;
-    background-position:center;
-}*/
-#login{
+.btn-primary{
     background: #6A5676;
+    border-color: rgba(255,255,255,0.5);
 }
-#login:hover{
+.btn-primary:hover{
     background: #493355;
+    border-color: rgba(255,255,255,0.5);
+}
+.btn-primary:focus{
+    background: #493355;
+    border-color: rgba(0,0,0,0.2);
 }
