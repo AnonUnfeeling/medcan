@@ -1,13 +1,18 @@
 package ua.softgroup.medreview.persistent.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Field;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.*;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -22,6 +27,7 @@ public class User extends AbstractEntity<Long> implements UserDetails {
     private static final long serialVersionUID = -5180634756313937659L;
 
     @Column(nullable = false, unique = true)
+    @Field(analyze = Analyze.NO)
     private String login;
 
     @Column(nullable = false)

@@ -20,4 +20,15 @@ public interface RecordRepositorySearch {
      */
     List<Record> searchByTitle(String keywords, LocalDate from, LocalDate to);
 
+    /**
+     * Searches {@code username}'s records by title. Supports stemming in English.
+     *
+     * @param username the author's username of records
+     * @param text the text to search
+     * @param from optional date range (start)
+     * @param to optional date range (end)
+     * @return a list of matching records
+     */
+    List<Record> searchByTitleAndAuthor(String username, String text, LocalDate from, LocalDate to);
+
 }
