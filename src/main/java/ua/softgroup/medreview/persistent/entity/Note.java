@@ -23,11 +23,11 @@ import java.time.LocalDateTime;
 public class Note extends AbstractEntity<Long> {
     private static final long serialVersionUID = 6627846745698054192L;
 
-    @Column
+    @Column(columnDefinition = "text")
     @Field(analyzer = @Analyzer(definition = "en"))
     private String description;
 
-    @Column
+    @Column(columnDefinition = "text")
     @Field(analyzer = @Analyzer(definition = "en"))
     private String conclusion;
 

@@ -4,30 +4,17 @@ import javax.persistence.*;
 
 /**
  * @author Sergiy Perevyazko <sg.sergiyp@gmail.com>
+ * @author Oleksandr Tyshkovets <sg.olexander@gmail.com>
  */
 @Entity
 public class SubSubject extends AbstractEntity<Long> {
     private static final long serialVersionUID = 98000298364542854L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
 
     @Column
     private String name;
 
     @ManyToOne
     private Subject subject;
-
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
