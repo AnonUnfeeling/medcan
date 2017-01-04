@@ -43,7 +43,7 @@ import java.util.List;
 public class Record extends AbstractEntity<Long> {
     private static final long serialVersionUID = 5768370930485023928L;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 500)
     @Field(analyzer = @Analyzer(definition = "en"))
     private String title;
 
