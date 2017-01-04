@@ -25,10 +25,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public String determineHomeUrlByRole() {
+    public List<String> getUserRoles() {
         List<String> roles = new ArrayList<>();
         SecurityContextHolder.getContext().getAuthentication().getAuthorities().forEach(authority -> roles.add(authority.getAuthority()));
-        return determineUrlByRoles(roles);
+        return roles;
+    }
+
+    @Override
+    public String determineHomeUrlByRole() {
+        return determineUrlByRoles(getUserRoles());
     }
 
     private String determineUrlByRoles(List<String> roles) {
