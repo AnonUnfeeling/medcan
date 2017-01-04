@@ -128,6 +128,11 @@ function deleteUser(control) {
     });
 }
 
+$(document).on('hide.bs.modal', '#addCompanyModal', function () {
+    userLogin = null;
+    $('#userLogin').val(null);
+});
+
 function createUser() {
     if(userLogin==null){
         create();

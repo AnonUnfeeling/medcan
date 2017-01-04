@@ -19,7 +19,7 @@ function checkUser() {
             'X-CSRF-TOKEN': token
         }
     }).done(function (data) {
-        if(data==false){
+        if (data == false) {
             $('#addNoteButton').hide();
         }
     });
@@ -91,8 +91,8 @@ function manageCompany() {
     });
 }
 
-$('#creteNote').on('hidden', function () {
-    editId.val(null);
+$(document).on('hide.bs.modal', '#creteNote', function () {
+    editId = null;
     $('#descriptionNote').val("");
     $('#conclusionNote').val(null);
     $('#keywordsNote').val(null);
@@ -100,20 +100,6 @@ $('#creteNote').on('hidden', function () {
     $('#subSubjectNote').val(null);
     $('#countryNote').val(null);
     $('#languageNote').val(null);
-});
-
-$(document.body).on('hidden.bs.modal', function () {
-    $('#creteNote').removeData('bs.modal');
-    console.log("yes");
-    // editId.val(null);
-    //
-    // $('#descriptionNote').val("");
-    // $('#conclusionNote').val(null);
-    // $('#keywordsNote').val(null);
-    // $('#subjectNote').val(null);
-    // $('#subSubjectNote').val(null);
-    // $('#countryNote').val(null);
-    // $('#languageNote').val(null);
 });
 
 function loadNote() {
