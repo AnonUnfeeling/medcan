@@ -51,7 +51,7 @@ function getUsersByCompanyName(page) {
             'X-CSRF-TOKEN': token
         }
     }).done(function (data) {
-        var arr = data;
+        var arr = data.content;
         console.log("By company");
         console.log(data);
         var totalPages = data.totalPages;
@@ -67,8 +67,8 @@ function getUsersByCompanyName(page) {
         table.find('tr').remove();
         $(arr).each(function () {
             var user = $(this)[0];
-            table.append('<tr onclick="showRecord(this)"><td>' + user.login + '</td><td>' + user.role + '</td>' +
-                '<td>' + user.company + '</td>' +
+            table.append('<tr onclick="showRecord(this)"><td>' + user.login + '</td><td>' + user.roles[0].role + '</td>' +
+                '<td>' + user.company.name + '</td>' +
                 '<td class="text-right"><span id=' +
                 user.login + ' data-singleton="true"' +
                 ' data-toggle="edit" class="glyphicon glyphicon glyphicon-pencil user-control" ' +

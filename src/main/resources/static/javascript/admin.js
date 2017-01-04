@@ -92,9 +92,9 @@ function createCompany() {
         }
     }).done(function (data) {
         $(message).children().remove();
-        message.append("<div id='success' class='alert alert-success'><strong>Success!</strong>'+ data+'</div>")
+        message.append("<div id='success' class='alert alert-success'><strong>Success!</strong></div>")
     }).fail(function (data) {
         $(message).children().remove();
-        message.append("<div id='error' class='alert alert-danger'><strong>Error!</strong>+' data +'</div>")
+        message.append("<div id='error' class='alert alert-danger'><strong>Error!</strong></div>")
     });
 }
