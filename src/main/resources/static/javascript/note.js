@@ -92,6 +92,8 @@ function manageCompany() {
         var edit = $('#creteNote');
         var control = $(this);
         editId = control.attr('id');
+        loadSubject();
+        loadSubSubject();
         loadStatus();
         loadNote();
         edit.modal('show');
@@ -224,8 +226,43 @@ function loadStatus() {
         }
     }).done(function (data) {
         var arr = data;
-
         var select = $('#statusNote').empty();
+        Object.keys(arr).forEach(function (key) {
+            select.append('<option value="' + arr[key] + '">' +
+                '' + arr[key] + '</option>');
+        });
+    });
+}
+
+function loadSubject() {
+    $.ajax({
+        method: "GET",
+        url: "/getSubject",
+        dataType: "json",
+        headers: {
+            'X-CSRF-TOKEN': token
+        }
+    }).done(function (data) {
+        var arr = data;
+        var select = $('#subjectNote').empty();
+        Object.keys(arr).forEach(function (key) {
+            select.append('<option value="' + arr[key] + '">' +
+                '' + arr[key] + '</option>');
+        });
+    });
+}
+
+function loadSubSubject() {
+    $.ajax({
+        method: "GET",
+        url: "/getSubSubject",
+        dataType: "json",
+        headers: {
+            'X-CSRF-TOKEN': token
+        }
+    }).done(function (data) {
+        var arr = data;
+        var select = $('#subSubjectNote').empty();
         Object.keys(arr).forEach(function (key) {
             select.append('<option value="' + arr[key] + '">' +
                 '' + arr[key] + '</option>');

@@ -151,4 +151,30 @@ public class NoteRestController {
         status.add("Removed");
         return status;
     }
+
+    @GetMapping("/getSubject")
+    public
+    @ResponseBody
+    List<String> getSubject() {
+        System.out.println("getSubject");
+//        List<String> status = new ArrayList<>();
+//        status.add("In review");
+//        status.add("Approved");
+//        status.add("Disapproved");
+//        status.add("Removed");
+        return null;
+    }
+
+    @GetMapping("/getSubSubject")
+    public
+    @ResponseBody
+    List<String> getSubSubject() {
+        System.out.println("getSubSubject");
+//        List<String> status = new ArrayList<>();
+//        status.add("In review");
+//        status.add("Approved");
+//        status.add("Disapproved");
+//        status.add("Removed");
+        return null;
+    }
 }
