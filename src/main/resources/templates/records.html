@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -36,6 +36,13 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>
+                    <form method="get" action="/records/search" class="navbar-form navbar-left">
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="keyWord" placeholder="Search">
+                        </div>
+                    </form>
+                </li>
+                <li>
                     <button onclick="location.href = '/login?logout';" type="button"
                             class="btn btn-danger navbar-btn btn-sm center-block">Sign out
                     </button>
@@ -64,7 +71,7 @@
     </div>
     <div class="row">
         <div class="col-md-6">
-            <button type="button" class="btn btn-primary bottom-left" data-toggle="modal"
+            <button type="button" class="btn btn-info bottom-left" data-toggle="modal"
                     data-target="#creteRecord">Add record
             </button>
         </div>
