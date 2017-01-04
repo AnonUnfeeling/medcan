@@ -62,21 +62,13 @@ function getRecords(page) {
         }
     }).done(function (data) {
         var arr = data.content;
-        // var totalPages = data.totalPages;
-        // var currentPage = $pagination.twbsPagination('getCurrentPage');
-        // $pagination.twbsPagination('destroy');
-        // $pagination.twbsPagination($.extend({}, defaultOpts, {
-        //     startPage: (currentPage!=null)?currentPage:0,
-        //     totalPages: totalPages,
-        //     initiateStartPageClick: false
-        // }));
         var table = $('#table-body');
         table.find('tr').remove();
         $(arr).each(function () {
             var record = $(this)[0];
+            console.log(record);
             table.append('<tr onclick="showNote(event,this)"><td>' + record.title +
-                '<td>' + record.type + '</td>' +
-                '<td>' + record.creationDate + '</td>' +
+                '<td>' + record.type + '</td>' + 
                 '<td>' + record.author.login + '</td>' +
                 '</td><td></td><td class="text-right"><span id=' + record.title + ' data-singleton="true" data-toggle="confirmation" class="glyphicon glyphicon-remove-circle records-control" aria-hidden="true"></span></td></tr>');
         });
