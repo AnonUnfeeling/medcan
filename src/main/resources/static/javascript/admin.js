@@ -94,23 +94,29 @@ function deleteCompany(control) {
 
 function createCompany() {
     var message = $('#message-container');
-    $.ajax({
-        method: "POST",
-        url: "/makeCompany",
-        data: {companyName: $('#companyName').val()},
-        // dataType: "json",
-        headers: {
-            'X-CSRF-TOKEN': token
-        }
-    }).done(function (data) {
-        console.log(data);
+    if ($('#companyName').val().trim().length == 0) {
+        console.log("dsa");
         $(message).children().remove();
-        $('#companyName').val(null);
-        message.append("<div id='success' class='alert alert-success'><strong>" + data + "</strong></div>")
-        location.reload();
-    }).fail(function (data) {
-        console.log(data);
-        $(message).children().remove();
-        message.append("<div id='error' class='alert alert-danger'><strong>" + data.responseText + "</strong></div>")
-    });
+        message.append("<div id='success' class='alert alert-success'><strong>Field is empty</strong></div>");
+    } else {
+        $.ajax({
+            method: "POST",
+            url: "/makeCompany",
+            data: {companyName: $('#companyName').val()},
+            // dataType: "json",
+            headers: {
+                'X-CSRF-TOKEN': token
+            }
+        }).done(function (data) {
+            console.log(data);
+            $(message).children().remove();
+            $('#companyName').val(null);
+            message.append("<div id='success' class='alert alert-success'><strong>" + data + "</strong></div>");
+            location.reload();
+        }).fail(function (data) {
+            console.log(data);
+            $(message).children().remove();
+            message.append("<div id='error' class='alert alert-danger'><strong>" + data.responseText + "</strong></div>");
+        });
+    }
 }
