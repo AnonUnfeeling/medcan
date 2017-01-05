@@ -58,7 +58,7 @@ function showUserInCompany(event, companyName) {
 
     console.log(elm);
     console.log(allTDs);
-    if (elm == allTDs[0] && elm == allTDs[1] && elm == companyName) {
+    if (elm == allTDs[0] || elm == allTDs[1] && elm == companyName) {
         window.location.href = "/user?companyName=" + $(companyName).find('td').first()[0].innerText + "&page=" + 1;
     }
 }
