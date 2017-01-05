@@ -86,6 +86,7 @@ function loadPreNote(event, note, id) {
         $('#submitButton').hide();
         $('#titleFoNote').text("Details");
         var edit = $('#creteNote');
+        disableFields(true);
         edit.modal('show');
     }
 }
@@ -116,6 +117,7 @@ function manageCompany() {
         loadStatus();
         loadTreatment();
         loadNote();
+        disableFields(false);
         edit.modal('show');
     });
 }
@@ -317,4 +319,16 @@ function loadTreatment() {
                 '' + arr[key] + '</option>');
         });
     });
+}
+
+function disableFields(boolean) {
+    $('#descriptionNote').prop( "disabled", boolean );
+    $('#conclusionNote').prop( "disabled", boolean );
+    $('#keywordsNote').prop( "disabled", boolean );
+    $('#subjectNote').prop( "disabled", boolean );
+    $('#subSubjectNote').prop( "disabled", boolean );
+    $('#countryNote').prop( "disabled", boolean );
+    $('#languageNote').prop( "disabled", boolean );
+    $('#treatmentNote').prop( "disabled", boolean );
+    $('#statusNote').prop("disabled", boolean);
 }
