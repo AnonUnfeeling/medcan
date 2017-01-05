@@ -280,7 +280,7 @@ function loadRole() {
             var select = $('#userRole').empty();
             if (data == "COMPANY") {
                 select.append('<option value="USER">USER</option>');
-            }else {
+            } else {
                 $.ajax({
                     method: "GET",
                     url: "/getRoles",
@@ -301,22 +301,45 @@ function loadRole() {
 }
 
 function loadCompanies() {
-    $.ajax({
-        method: "GET",
-        url: "/getAllCompany",
-        dataType: "json",
-        headers: {
-            'X-CSRF-TOKEN': token
-        }
-    }).done(function (data) {
-        var arr = data;
+    var select = $('#userCompany').empty();
+    $(document).ready(function () {
+        $.ajax({
+            method: "POST",
+            url: "/checkRole",
+            headers: {
+                'X-CSRF-TOKEN': token
+            }
+        }).done(function (data) {
+            if (data == "COMPANY") {
+                $.ajax({
+                    method: "POST",
+                    url: "/checkCompany",
+                    dataType: "json",
+                    headers: {
+                        'X-CSRF-TOKEN': token
+                    }
+                }).done(function (data) {
+                    select.append('<option value="USER">' + data + '</option>');
+                });
+            } else {
+                $.ajax({
+                    method: "GET",
+                    url: "/getAllCompany",
+                    dataType: "json",
+                    headers: {
+                        'X-CSRF-TOKEN': token
+                    }
+                }).done(function (data) {
+                    var arr = data;
+                    select.append('<option value="Non Company">Non Company</option>');
+                    $(arr).each(function () {
+                        var company = $(this)[0];
+                        select.append('<option value="' + company.name + '">' +
+                            '' + company.name + '</option>');
 
-        var select = $('#userCompany').empty();
-        select.append('<option value="Non Company">Non Company</option>');
-        $(arr).each(function () {
-            var company = $(this)[0];
-            select.append('<option value="' + company.name + '">' +
-                '' + company.name + '</option>');
+                    });
+                });
+            }
         });
     });
 }

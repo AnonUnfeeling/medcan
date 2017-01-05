@@ -53,6 +53,13 @@ public class UserController {
         return authenticationService.getPrincipal().getRoles().get(0).getRole().toString();
     }
 
+    @PostMapping("/checkCompany")
+    public
+    @ResponseBody
+    String checkCompany() {
+        return authenticationService.getPrincipal().getCompany().getName();
+    }
+
     @PostMapping("/checkUser")
     public
     @ResponseBody
