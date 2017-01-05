@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import ua.softgroup.medreview.persistent.entity.Company;
 import ua.softgroup.medreview.persistent.entity.User;
 import ua.softgroup.medreview.web.dto.UserDto;
+import ua.softgroup.medreview.web.form.UserForm;
 
 import java.util.List;
 
@@ -14,6 +15,8 @@ import java.util.List;
 public interface UserService {
 
     void saveUser(User user);
+
+    void createUser(UserForm userForm);
 
     void updateUser(UserDto userDto);
 

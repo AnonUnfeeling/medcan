@@ -1,5 +1,7 @@
 package ua.softgroup.medreview.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +15,7 @@ import ua.softgroup.medreview.persistent.repository.CompanyRepository;
 import ua.softgroup.medreview.persistent.repository.UserRepository;
 import ua.softgroup.medreview.service.UserService;
 import ua.softgroup.medreview.web.dto.UserDto;
+import ua.softgroup.medreview.web.form.UserForm;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -26,6 +29,7 @@ import static ua.softgroup.medreview.persistent.entity.Role.*;
 @Service
 public class UserServiceImpl implements UserService {
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final UserRepository userRepository;
     private final CompanyRepository companyRepository;
     private final PasswordEncoder passwordEncoder;
@@ -44,8 +48,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void createUser(UserForm userForm) {
+        logger.debug("create User from UserForm");
+        userRepository.save(convertUserFormToEntity(userForm));
+    }
+
+    @Override
     public void updateUser(UserDto userDto) {
-        userRepository.save(convertToEntity(userDto));
+        logger.debug("create User from UserDto");
+        userRepository.save(convertDtoToEntity(userDto));
     }
 
     @Override
@@ -78,7 +89,8 @@ public class UserServiceImpl implements UserService {
         return (List<User>) userRepository.findAll();
     }
 
-    private User convertToEntity(UserDto userDto) {
+    private User convertDtoToEntity(UserDto userDto) {
+        logger.debug("convertDtoToEntity: {}", userDto);
         User user = userRepository.findByLogin(userDto.getPreLogin());
         user.setLogin(userDto.getLogin());
         if (userDto.getPassword() != null && !userDto.getPassword().trim().isEmpty()) {
@@ -86,6 +98,19 @@ public class UserServiceImpl implements UserService {
         }
         setUserRoles(user, userDto.getRole());
         user.setCompany(companyRepository.findByName(userDto.getCompany()));
+        return user;
+    }
+
+    private User convertUserFormToEntity(UserForm userForm) {
+        logger.debug("convertUserFormToEntity: {}", userForm);
+        User user = new User();
+        user.setLogin(userForm.getLogin());
+        String pass = userForm.getPassword();
+        if (pass != null && !pass.trim().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(pass));
+        }
+        user.setCompany(companyRepository.findByName(userForm.getCompany()));
+        setUserRoles(user, Role.valueOf(userForm.getRole()));
         return user;
     }
 
