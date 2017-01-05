@@ -22,21 +22,6 @@ function getUsersByCompany() {
     }));
 }
 
-function getTotalUsersPages() {
-    var totalPages = 1;
-    $.ajax({
-        method: "GET",
-        url: "/countPageUsers",
-        dataType: "json",
-        headers: {
-            'X-CSRF-TOKEN': token
-        }
-    }).done(function (data) {
-        console.log(data);
-        totalPages = data;
-    });
-    return totalPages;
-}
 
 function getUsersByCompanyName(page) {
     $.ajax({
@@ -52,15 +37,16 @@ function getUsersByCompanyName(page) {
         }
     }).done(function (data) {
         var arr = data.content;
-        console.log("By company");
-        console.log(data);
         var totalPages = data.totalPages;
         var currentPage = $pagination.twbsPagination('getCurrentPage');
         $pagination.twbsPagination('destroy');
         $pagination.twbsPagination($.extend({}, defaultOpts, {
             startPage: (currentPage != null) ? currentPage : 0,
             totalPages: totalPages,
-            initiateStartPageClick: false
+            initiateStartPageClick: false,
+            onPageClick: function (event, page) {
+                getUsersByCompanyName(page);
+            }
         }));
 
         var table = $('#table-body');
@@ -95,20 +81,31 @@ function getUsers(page) {
         }
     }).done(function (data) {
         var arr = data;
-        //var totalPages = data.totalPages;
-        var currentPage = $pagination.twbsPagination('getCurrentPage');
-        $pagination.twbsPagination('destroy');
-        $pagination.twbsPagination($.extend({}, defaultOpts, {
-            startPage: (currentPage != null) ? currentPage : 0,
-            totalPages: getTotalUsersPages(),
-            initiateStartPageClick: false
-        }));
+        $.ajax({
+            method: "GET",
+            url: "/countPageUsers",
+            dataType: "json",
+            headers: {
+                'X-CSRF-TOKEN': token
+            }
+        }).done(function (data) {
+            var currentPage = $pagination.twbsPagination('getCurrentPage');
+            $pagination.twbsPagination('destroy');
+            $pagination.twbsPagination($.extend({}, defaultOpts, {
+                startPage: (currentPage != null) ? currentPage : 0,
+                totalPages: data,
+                initiateStartPageClick: false,
+
+            }));
+        }).fail(function (data) {
+            console.log(data);
+        });
+
         var table = $('#table-body');
         table.find('tr').remove();
         $(arr).each(function () {
             var user = $(this)[0];
             var company;
-            console.log(user.company);
             if (user.company == null) company = "No company"; else company = user.company;
             table.append('<tr onclick="showRecord(event,this)"><td>' + user.login + '</td><td>' + user.role + '</td>' +
                 '<td>' + company + '</td><td></td>' +
@@ -122,6 +119,7 @@ function getUsers(page) {
                 'aria-hidden="true"></span></td>');
         });
         manageCompany();
+
     });
 }
 

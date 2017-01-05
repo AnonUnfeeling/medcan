@@ -7,8 +7,10 @@ var defaultOpts = {
         getRecords(page);
     }
 };
-
 $(document).ready(function () {
+    checkUser();
+    loadNotes();
+
     $.ajax({
         method: "GET",
         url: "/notes/search",
@@ -45,17 +47,6 @@ $(document).ready(function () {
         });
         manageCompany();
     });
-
-});
-/**
- * Created by jdroidcoder on 03.01.2017.
- */
-
-var token = $("meta[name='_csrf']").attr("content");
-
-$(document).ready(function () {
-    checkUser();
-    loadNotes();
 });
 
 function checkUser() {
@@ -137,6 +128,7 @@ function loadPreNote(event, note, id) {
         $('#submitButton').hide();
         $('#titleFoNote').text("Details");
         var edit = $('#creteNote');
+        disableFields(true);
         edit.modal('show');
     }
 }
@@ -167,6 +159,7 @@ function manageCompany() {
         loadStatus();
         loadTreatment();
         loadNote();
+        disableFields(false);
         edit.modal('show');
     });
 }
@@ -184,6 +177,7 @@ $(document).on('hide.bs.modal', '#creteNote', function () {
     $('#countryNote').val(null);
     $('#languageNote').val(null);
     $('#treatmentNote').val(null);
+    disableFields(false);
 });
 
 function loadNote() {
@@ -371,4 +365,17 @@ function loadTreatment() {
                 '' + arr[key] + '</option>');
         });
     });
+}
+
+
+function disableFields(boolean) {
+    $('#descriptionNote').prop( "disabled", boolean );
+    $('#conclusionNote').prop( "disabled", boolean );
+    $('#keywordsNote').prop( "disabled", boolean );
+    $('#subjectNote').prop( "disabled", boolean );
+    $('#subSubjectNote').prop( "disabled", boolean );
+    $('#countryNote').prop( "disabled", boolean );
+    $('#languageNote').prop( "disabled", boolean );
+    $('#treatmentNote').prop( "disabled", boolean );
+    $('#statusNote').prop("disabled", boolean);
 }
