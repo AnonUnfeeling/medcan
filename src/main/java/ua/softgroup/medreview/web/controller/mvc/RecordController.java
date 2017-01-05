@@ -4,20 +4,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import ua.softgroup.medreview.persistent.entity.Record;
+import ua.softgroup.medreview.persistent.entity.RecordType;
 import ua.softgroup.medreview.persistent.entity.User;
 import ua.softgroup.medreview.service.AuthenticationService;
 import ua.softgroup.medreview.service.RecordService;
+import ua.softgroup.medreview.service.SearchService;
 import ua.softgroup.medreview.service.UserService;
 import ua.softgroup.medreview.web.form.RecordForm;
+
 import javax.validation.Valid;
-import java.util.ArrayList;
-import ua.softgroup.medreview.service.SearchService;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Oleksandr Tyshkovets <sg.olexander@gmail.com>
@@ -93,14 +100,11 @@ public class RecordController {
     }
 
     @RequestMapping(value = "getTypeRecord")
-    public
     @ResponseBody
-    List<String> getAllRoles() {
-        List<String> type = new ArrayList<>();
-        type.add("Book");
-        type.add("Website");
-        type.add("Doctor");
-        return type;
+    public ResponseEntity<List<String>> getAllRoles() {
+        return ResponseEntity.ok(Arrays.stream(RecordType.values())
+                .map(RecordType::getType)
+                .collect(Collectors.toList()));
     }
 
     @GetMapping(value = "/search")

@@ -313,7 +313,8 @@ function loadCompanies() {
                         'X-CSRF-TOKEN': token
                     }
                 }).done(function (data) {
-                    select.append('<option value="USER">' + data + '</option>');
+                    select.append('<option value="'+data+'">' + data + '</option>');
+                    select.hide();
                 });
             } else {
                 $.ajax({

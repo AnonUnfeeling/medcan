@@ -1,6 +1,5 @@
 package ua.softgroup.medreview.persistent.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
 import org.apache.lucene.analysis.snowball.SnowballPorterFilterFactory;
 import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
@@ -22,7 +21,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +46,7 @@ public class Record extends AbstractEntity<Long> {
     private String title;
 
     @Column
-    private String type;
+    private String type = RecordType.BOOK.getType();
 
     @Column
     @CreationTimestamp
