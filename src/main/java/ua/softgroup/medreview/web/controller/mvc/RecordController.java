@@ -102,11 +102,6 @@ public class RecordController {
         return type;
     }
 
-//    @GetMapping(value = "/{id}")
-//    public ResponseEntity showRecordById(@PathVariable("id") long id) {
-//        return ResponseEntity.ok(recordService.getById(id));
-//    }
-
     @GetMapping(value = "/search")
     public ResponseEntity<List<Record>> findRecordsByKeywords(@RequestParam String keyword) {
         return ResponseEntity.ok(searchService.searchByTitle(keyword, null, null));

@@ -211,8 +211,6 @@ function create() {
         $(message).children().remove();
         message.append("<div id='success' class='alert alert-success'><strong>Password is empty</strong></div>");
     } else {
-        var success_msg = $('#success');
-        var error_msg = $('#error');
         $.ajax({
             method: "POST",
             url: "/user",
@@ -222,15 +220,14 @@ function create() {
                 role: $('#userRole').val(),
                 company: $('#userCompany').val()
             },
-            dataType: "json",
+            // dataType: "json",
             headers: {
                 'X-CSRF-TOKEN': token
             }
         }).done(function (data) {
-            $(message).children().remove();
-            message.append("<div id='success' class='alert alert-success'><strong>" + data + "</strong></div>");
             location.reload();
         }).fail(function (data) {
+            console.log(data);
             $(message).children().remove();
             message.append("<div id='success' class='alert alert-success'><strong>" + data + "</strong></div>");
         });
@@ -253,13 +250,10 @@ function updateUser() {
                 role: $('#userRole').val(),
                 company: $('#userCompany').val()
             },
-            dataType: "json",
             headers: {
                 'X-CSRF-TOKEN': token
             }
         }).done(function (data) {
-            $(message).children().remove();
-            message.append("<div id='success' class='alert alert-success'><strong>" + data + "</strong></div>");
             location.reload();
         }).fail(function (data) {
             $(message).children().remove();

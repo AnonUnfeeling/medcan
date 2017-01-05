@@ -81,7 +81,7 @@ public class UserController {
         } catch (org.springframework.dao.DataIntegrityViolationException e) {
             return ResponseEntity.badRequest().body(String.format("Username \"%s\" is already taken.", userForm.getLogin()));
         }
-        return ResponseEntity.ok(String.format("User \"$s\" was created successfully.", userForm.getLogin()));
+        return ResponseEntity.ok(String.format("User \"%s\" was created successfully.", userForm.getLogin()));
     }
 
     @RequestMapping(value = "user/edit", method = RequestMethod.POST)
