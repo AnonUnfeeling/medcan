@@ -16,6 +16,7 @@ import ua.softgroup.medreview.persistent.entity.SubSubject;
 import ua.softgroup.medreview.persistent.entity.Subject;
 import ua.softgroup.medreview.persistent.repository.NoteRepository;
 import ua.softgroup.medreview.persistent.repository.RecordRepository;
+import ua.softgroup.medreview.service.SearchService;
 import ua.softgroup.medreview.service.SubSubjectService;
 import ua.softgroup.medreview.service.SubjectService;
 
@@ -25,24 +26,28 @@ import java.util.List;
 
 /**
  * @author Oleksandr Tyshkovets <sg.olexander@gmail.com>
+ * @author jdroidcoder
  */
 @RestController
 public class NoteRestController {
 
+    private static final String SEARCH_NOTES_VIEW = "searchNotesResult";
+
     private final NoteRepository noteRepository;
+    private final RecordRepository recordRepository;
+    private final SubjectService subjectService;
+    private final SubSubjectService subSubjectService;
+    private final SearchService searchService;
 
     @Autowired
-    private RecordRepository recordRepository;
-
-    @Autowired
-    private SubjectService subjectService;
-
-    @Autowired
-    private SubSubjectService subSubjectService;
-
-    @Autowired
-    public NoteRestController(NoteRepository noteRepository) {
+    public NoteRestController(NoteRepository noteRepository, RecordRepository recordRepository,
+                              SubjectService subjectService, SubSubjectService subSubjectService,
+                              SearchService searchService) {
         this.noteRepository = noteRepository;
+        this.recordRepository = recordRepository;
+        this.subjectService = subjectService;
+        this.subSubjectService = subSubjectService;
+        this.searchService = searchService;
     }
 
     @GetMapping("/records/notes")
@@ -56,9 +61,8 @@ public class NoteRestController {
     }
 
     @PostMapping("/records/note/add")
-    public
     @ResponseBody
-    ResponseEntity makeNewNote(@RequestParam String titleRecord,
+    public ResponseEntity makeNewNote(@RequestParam String titleRecord,
                                @RequestParam String description,
                                @RequestParam String conclusion,
                                @RequestParam String keywords,
@@ -87,9 +91,8 @@ public class NoteRestController {
     }
 
     @PostMapping("/records/note/edit")
-    public
     @ResponseBody
-    ResponseEntity editNote(@RequestParam String id,
+    public ResponseEntity editNote(@RequestParam String id,
                             @RequestParam String titleRecord,
                             @RequestParam String description,
                             @RequestParam String conclusion,
@@ -120,9 +123,8 @@ public class NoteRestController {
     }
 
     @PostMapping("/records/note/remove")
-    public
     @ResponseBody
-    ResponseEntity removeNote(@RequestParam String id) {
+    public ResponseEntity removeNote(@RequestParam String id) {
         try {
             noteRepository.delete(Long.parseLong(id));
             return ResponseEntity.ok(HttpStatus.OK);
@@ -142,10 +144,9 @@ public class NoteRestController {
         return noteRepository.findByRecordId(id).remove(note);
     }
 
-    @PostMapping("/records/{id}/chengeStatus")
-    public
+    @PostMapping("/records/{id}/changeStatus")
     @ResponseBody
-    ResponseEntity chengeStatus(@PathVariable Long id, @RequestParam Note note, @RequestParam String status) {
+    public ResponseEntity changeStatus(@PathVariable Long id, @RequestParam Note note, @RequestParam String status) {
         if (status != null && note != null) {
             noteRepository.findByRecordId(id).stream().filter(n -> note.getDescription().equals(n.getDescription())).findFirst().get().setStatus(status);
             return ResponseEntity.ok(HttpStatus.OK);
@@ -155,9 +156,8 @@ public class NoteRestController {
     }
 
     @RequestMapping(value = "getStatus")
-    public
     @ResponseBody
-    List<String> getAllRoles() {
+    public List<String> getAllRoles() {
         List<String> status = new ArrayList<>();
         status.add("In review");
         status.add("Approved");
@@ -167,27 +167,35 @@ public class NoteRestController {
     }
 
     @GetMapping("/getSubject")
-    public
     @ResponseBody
-    List<Subject> getSubject() {
+    public List<Subject> getSubject() {
         return subjectService.getAll();
     }
 
     @GetMapping("/getSubSubject")
-    public
     @ResponseBody
-    List<SubSubject> getSubSubject() {
+    public List<SubSubject> getSubSubject() {
         return subSubjectService.getAll();
     }
 
     @GetMapping("/getTreatment")
-    public
     @ResponseBody
-    List<String> getTreatment() {
+    public List<String> getTreatment() {
         List<String> treatment = new ArrayList<>();
         treatment.add("Treatment1");
         treatment.add("Treatment2");
         treatment.add("Treatment3");
         return treatment;
+    }
+
+    @GetMapping(value = "/notes/search")
+    @ResponseBody
+    public ResponseEntity<List<Note>> searchNotes(@RequestParam String keyword) {
+        return ResponseEntity.ok(searchService.searchByAllFields(keyword, null, null));
+    }
+
+    @GetMapping(value = "/notes/results")
+    public ModelAndView showSearchResults() {
+        return new ModelAndView(SEARCH_NOTES_VIEW);
     }
 }

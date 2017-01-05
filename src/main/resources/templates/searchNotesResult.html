@@ -14,7 +14,7 @@
     <script src="/javascript/bootstrap-confirmation.js"></script>
     <script src="/javascript/checkRole.js"></script>
     <script src="/javascript/jquery.twbsPagination.min.js"></script>
-    <script src="/javascript/search.js"></script>
+    <script src="/javascript/searchNote.js"></script>
 </head>
 <body>
 <nav class="navbar navbar-default navbar-fixed-top">
@@ -47,13 +47,19 @@
 <div id="table-container" class="container">
     <h4>Search results for "<span id="keyword" th:text="${param.keyword}"></span>"</h4>
     <hr/>
-    <table class="table table-responsive">
+    <table class="table table-responsive table-hover table-striped">
         <thead>
         <tr>
-            <th>Title</th>
-            <th>Type</th>
-            <th>Author</th>
-            <th></th>
+            <th id="description">Description</th>
+            <th id="conclusion">Conclusion</th>
+            <th id="keywords">Keywords</th>
+            <th id="subject">Subject</th>
+            <th id="subSubject">SubSubject</th>
+            <th id="treatment">Treatment</th>
+            <th id="country">Country</th>
+            <th id="language">Language</th>
+            <th id="status">Status</th>
+            <th id="creationDate">Create date</th>
         </tr>
         </thead>
         <tbody id="table-body">
