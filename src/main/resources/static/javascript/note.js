@@ -21,6 +21,7 @@ function checkUser() {
     }).done(function (data) {
         if (data == false) {
             $('#addNoteButton').hide();
+            $('#submitButton').hide();
         }
     });
 }
@@ -75,13 +76,14 @@ function loadPreNote(event, note, id) {
         elm = elm.parentNode;
     }
 
-    if (elm !== allTDs[10] && elm !== allTDs[11] && elm !== note) {
+    if (elm !== allTDs[11] && elm !== allTDs[12] && elm !== note) {
         editId = id;
         loadSubject();
         loadSubSubject();
         loadStatus();
         loadTreatment();
         loadNote();
+        $('#submitButton').hide();
         var edit = $('#creteNote');
         edit.modal('show');
     }
@@ -139,7 +141,6 @@ function loadNote() {
             'X-CSRF-TOKEN': token
         }
     }).done(function (data) {
-        $('#submitButton').hide();
         var select = $('#statusNote').empty();
         select.append('<option value="' + data.status + '">' +
             '' + data.status + '</option>');
