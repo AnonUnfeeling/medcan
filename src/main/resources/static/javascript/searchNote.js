@@ -31,7 +31,7 @@ $(document).ready(function () {
                 '<td>' + note.treatment + '</td>' +
                 '<td>' + note.country.slice(0, 8) + '</td>' +
                 '<td>' + note.language.slice(0, 8) + '</td>' +
-                '<td>' + note.status.slice(0, 8) + '</td>' +
+                '<td>' + note.status + '</td>' +
                 '<td>' + note.updateDate.dayOfMonth + ' ' + note.updateDate.month +
                 ' ' + note.updateDate.year +
                 '</td><td></td><td class="text-right"><span id="' +
@@ -98,7 +98,7 @@ function loadNotes() {
                 '<td>' + note.treatment + '</td>' +
                 '<td>' + note.country.slice(0, 8) + '</td>' +
                 '<td>' + note.language.slice(0, 8) + '</td>' +
-                '<td>' + note.status.slice(0, 8) + '</td>' +
+                '<td>' + note.status + '</td>' +
                 '<td>' + note.updateDate.dayOfMonth + ' ' + note.updateDate.month +
                 ' ' + note.updateDate.year +
                 '</td><td></td><td class="text-right"><span id="' +
