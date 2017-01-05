@@ -98,15 +98,18 @@ function createCompany() {
         method: "POST",
         url: "/makeCompany",
         data: {companyName: $('#companyName').val()},
-        dataType: "json",
+        // dataType: "json",
         headers: {
             'X-CSRF-TOKEN': token
         }
     }).done(function (data) {
+        console.log(data);
         $(message).children().remove();
-        message.append("<div id='success' class='alert alert-success'><strong>Success!</strong></div>")
+        $('#companyName').val(null);
+        message.append("<div id='success' class='alert alert-success'><strong>" + data + "</strong></div>")
     }).fail(function (data) {
+        console.log(data);
         $(message).children().remove();
-        message.append("<div id='error' class='alert alert-danger'><strong>Error!</strong></div>")
+        message.append("<div id='error' class='alert alert-danger'><strong>" + data.responseText + "</strong></div>")
     });
 }

@@ -30,13 +30,15 @@ public class CompanyController {
     private CompanyService companyService;
 
     @PostMapping(value = "makeCompany")
-    public @ResponseBody ResponseEntity<?> makeCompany(@RequestParam String companyName) {
+    public
+    @ResponseBody
+    ResponseEntity<?> makeCompany(@RequestParam String companyName) {
         logger.debug("makeCompany");
         try {
             companyService.createCompany(companyName);
-            return ResponseEntity.ok(HttpStatus.OK);
+            return ResponseEntity.ok(String.format("Company \"%s\" was created.", companyName));
         } catch (org.springframework.dao.DataIntegrityViolationException e) {
-            return ResponseEntity.badRequest().body(String.format("'%s' is already taken", companyName));
+            return ResponseEntity.badRequest().body(String.format("Company \"%s\" is already exist", companyName));
         }
     }
 
