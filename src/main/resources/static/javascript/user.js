@@ -180,6 +180,7 @@ function deleteUser(control) {
         }
     }).done(function (data) {
         console.log(data);
+        location.reload();
     });
 }
 
@@ -216,6 +217,7 @@ function create() {
         success_msg.hide();
         error_msg.hide();
         success_msg.show();
+        location.reload();
     }).fail(function (data) {
         success_msg.hide();
         error_msg.hide();
@@ -244,6 +246,7 @@ function updateUser() {
         success_msg.hide();
         error_msg.hide();
         success_msg.show();
+        location.reload();
     }).fail(function (data) {
         success_msg.hide();
         error_msg.hide();

@@ -141,6 +141,7 @@ function deleteRecord(control) {
         }
     }).done(function (data) {
         console.log(data);
+        location.reload();
     });
 }
 
@@ -161,6 +162,7 @@ function createRecord() {
     }).done(function (data) {
         $(message).children().remove();
         message.append("<div id='success' class='alert alert-success'><strong>Success!</strong>'+ data+'</div>")
+        location.reload();
     }).fail(function (data) {
         $(message).children().remove();
         message.append("<div id='error' class='alert alert-danger'><strong>Error!</strong>+' data +'</div>")

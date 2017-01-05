@@ -107,6 +107,7 @@ function createCompany() {
         $(message).children().remove();
         $('#companyName').val(null);
         message.append("<div id='success' class='alert alert-success'><strong>" + data + "</strong></div>")
+        location.reload();
     }).fail(function (data) {
         console.log(data);
         $(message).children().remove();

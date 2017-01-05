@@ -51,7 +51,7 @@
     <h4>Record type: <label th:text="${param.type}"></label></h4>
     <hr/>
     <div class="table-responsive">
-        <table class="table table-responsive">
+        <table class="table table-responsive table-hover table-striped">
             <thead>
             <tr>
                 <th id="description">Description</th>
@@ -72,8 +72,13 @@
     </div>
     <div class="row">
         <div class="col-md-6">
+<<<<<<< HEAD
             <button id="addNoteButton" type="button" onclick="loadStatus();  loadSubject(); loadSubSubject(); loadTreatment();"
                     class="btn btn-primary bottom-left"
+=======
+            <button id="addNoteButton" type="button" onclick="loadStatus();  loadSubject(); loadSubSubject();"
+                    class="btn btn-info bottom-left"
+>>>>>>> 3663d7d8ecbd384094c1971214661aaa223b6af2
                     data-toggle="modal"
                     data-target="#creteNote">Add note
             </button>
