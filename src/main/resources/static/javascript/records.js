@@ -157,7 +157,6 @@ function deleteRecord(control) {
 function createRecord() {
     var message = $('#message-container');
     if ($('#title').val().trim().length !== 0) {
-        console.log("dsa");
         $.ajax({
             method: "POST",
             url: "/records/add",
@@ -165,22 +164,23 @@ function createRecord() {
                 title: $('#title').val(),
                 type: $('#type').val()
             },
-            dataType: "json",
             headers: {
                 'X-CSRF-TOKEN': token
             }
         }).done(function (data) {
+            console.log(data);
             $(message).children().remove();
-            message.append("<div id='success' class='alert alert-success'><strong>Success! </strong>'+ data+'</div>");
-            location.reload();
+            message.append("<div id='success' class='alert alert-success'><strong>Success! </strong>"+ data + "</div>");
+            setTimeout(function () {
+                location.reload();
+            }, 1000);
         }).fail(function (data) {
             $(message).children().remove();
-            message.append("<div id='error' class='alert alert-danger'><strong>Error! </strong>+' data +'</div>");
+            message.append("<div id='error' class='alert alert-danger'><strong>Error! </strong>"+ data.responseText +"</div>");
         });
     } else {
-        console.log("dsa1");
         $(message).children().remove();
-        message.append("<div id='success' class='alert alert-success'><strong>Error! </strong>Title is empty</div>");
+        message.append("<div id='error' class='alert alert-danger'><strong>Error! </strong>Title is empty</div>");
     }
 }
 

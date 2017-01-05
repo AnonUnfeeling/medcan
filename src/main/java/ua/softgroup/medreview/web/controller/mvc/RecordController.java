@@ -55,11 +55,12 @@ public class RecordController {
     }
 
     @PostMapping(value = "/add")
-    public String createRecord(@Valid RecordForm recordForm, BindingResult bindingResult) {
-        User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public ResponseEntity createRecord(@Valid RecordForm recordForm, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()) return ResponseEntity.badRequest().body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
+        User principal = authenticationService.getPrincipal();
         Record record = new Record(recordForm.getTitle(), recordForm.getType(), principal);
         recordService.saveRecord(record);
-        return "redirect:/" + RECORDS_VIEW;
+        return ResponseEntity.status(HttpStatus.CREATED).body("Record '"+record.getTitle()+"' was created.");
     }
 
     @PostMapping(value = "/removeRecord")
