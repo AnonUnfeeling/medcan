@@ -45,6 +45,7 @@ function loadNotes() {
                 '<td>' + note.keywords.slice(0, 8) + '</td>' +
                 '<td>' + note.subject.slice(0, 8) + '</td>' +
                 '<td>' + note.subSubject.slice(0, 8) + '</td>' +
+                '<td>' + note.treatment + '</td>' +
                 '<td>' + note.country.slice(0, 8) + '</td>' +
                 '<td>' + note.language.slice(0, 8) + '</td>' +
                 '<td>' + note.status.slice(0, 8) + '</td>' +
@@ -107,6 +108,7 @@ function manageCompany() {
         loadSubject();
         loadSubSubject();
         loadStatus();
+        loadTreatment();
         loadNote();
         edit.modal('show');
     });
@@ -122,6 +124,7 @@ $(document).on('hide.bs.modal', '#creteNote', function () {
     $('#subSubjectNote').val(null);
     $('#countryNote').val(null);
     $('#languageNote').val(null);
+    $('#treatmentNote').val(null);
 });
 
 function loadNote() {
@@ -145,6 +148,7 @@ function loadNote() {
         $('#subSubjectNote').val(data.subSubject);
         $('#countryNote').val(data.country);
         $('#languageNote').val(data.language);
+        $('#treatmentNote').val(data.treatment);
     });
 }
 
@@ -186,7 +190,8 @@ function create() {
             subject: $('#subjectNote').val(),
             subSubject: $('#subSubjectNote').val(),
             country: $('#countryNote').val(),
-            language: $('#languageNote').val()
+            language: $('#languageNote').val(),
+            treatment: $('#treatmentNote').val()
         },
         headers: {
             'X-CSRF-TOKEN': token
@@ -210,7 +215,8 @@ function update() {
             subSubject: $('#subSubjectNote').val(),
             country: $('#countryNote').val(),
             language: $('#languageNote').val(),
-            status: $('#statusNote').val()
+            status: $('#statusNote').val(),
+            treatment: $('#treatmentNote').val()
         },
         headers: {
             'X-CSRF-TOKEN': token
@@ -271,6 +277,24 @@ function loadSubSubject() {
         Object.keys(arr).forEach(function (key) {
             select.append('<option value="' + arr[key].name + '">' +
                 '' + arr[key].name + '</option>');
+        });
+    });
+}
+
+function loadTreatment() {
+    $.ajax({
+        method: "GET",
+        url: "/getTreatment",
+        dataType: "json",
+        headers: {
+            'X-CSRF-TOKEN': token
+        }
+    }).done(function (data) {
+        var arr = data;
+        var select = $('#treatmentNote').empty();
+        Object.keys(arr).forEach(function (key) {
+            select.append('<option value="' + arr[key] + '">' +
+                '' + arr[key] + '</option>');
         });
     });
 }

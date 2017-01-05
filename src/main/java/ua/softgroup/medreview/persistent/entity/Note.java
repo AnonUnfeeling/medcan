@@ -45,6 +45,10 @@ public class Note extends AbstractEntity<Long> {
 
     @Column
     @Field(analyzer = @Analyzer(definition = "en"))
+    private String treatment;
+
+    @Column
+    @Field(analyzer = @Analyzer(definition = "en"))
     private String country;
 
     @Column
@@ -83,6 +87,19 @@ public class Note extends AbstractEntity<Long> {
         this.country = country;
         this.language = language;
         this.status = status;
+    }
+
+    public Note(String description, String conclusion, String keywords, String subject, String subSubject,
+                String country, String language, String status, String treatment) {
+        this.description = description;
+        this.conclusion = conclusion;
+        this.keywords = keywords;
+        this.subject = subject;
+        this.subSubject = subSubject;
+        this.country = country;
+        this.language = language;
+        this.status = status;
+        this.treatment = treatment;
     }
 
     public String getDescription() {
@@ -171,6 +188,14 @@ public class Note extends AbstractEntity<Long> {
 
     public void setRecord(Record record) {
         this.record = record;
+    }
+
+    public String getTreatment() {
+        return treatment;
+    }
+
+    public void setTreatment(String treatment) {
+        this.treatment = treatment;
     }
 
     @Override

@@ -175,4 +175,15 @@ public class NoteRestController {
     List<SubSubject> getSubSubject() {
         return subSubjectService.getAll();
     }
+
+    @GetMapping("/getTreatment")
+    public
+    @ResponseBody
+    List<String> getTreatment() {
+        List<String> treatment = new ArrayList<>();
+        treatment.add("Treatment1");
+        treatment.add("Treatment2");
+        treatment.add("Treatment3");
+        return treatment;
+    }
 }
