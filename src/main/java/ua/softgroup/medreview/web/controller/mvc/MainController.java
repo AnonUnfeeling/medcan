@@ -17,6 +17,7 @@ public class MainController {
 
     @RequestMapping
     public String homePage() {
-        return "redirect:" + authenticationService.determineHomeUrlByRole();
+//        return "redirect:" + authenticationService.determineHomeUrlByRole();
+        return "redirect:/records";
     }
 }
