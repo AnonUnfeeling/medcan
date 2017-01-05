@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import ua.softgroup.medreview.persistent.entity.Note;
+import ua.softgroup.medreview.persistent.entity.NoteStatus;
 import ua.softgroup.medreview.persistent.entity.SubSubject;
 import ua.softgroup.medreview.persistent.entity.Subject;
 import ua.softgroup.medreview.persistent.repository.NoteRepository;
@@ -21,8 +22,10 @@ import ua.softgroup.medreview.service.SubSubjectService;
 import ua.softgroup.medreview.service.SubjectService;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Oleksandr Tyshkovets <sg.olexander@gmail.com>
@@ -81,7 +84,6 @@ public class NoteRestController {
             note.setCountry(country);
             note.setLanguage(language);
             note.setTreatment(treatment);
-            note.setStatus("In review");
             note.setRecord(recordRepository.findByTitle(titleRecord));
             noteRepository.save(note);
             return ResponseEntity.ok(HttpStatus.OK);
@@ -155,15 +157,11 @@ public class NoteRestController {
         }
     }
 
-    @RequestMapping(value = "getStatus")
-    @ResponseBody
-    public List<String> getAllRoles() {
-        List<String> status = new ArrayList<>();
-        status.add("In review");
-        status.add("Approved");
-        status.add("Disapproved");
-        status.add("Removed");
-        return status;
+    @GetMapping(value = "notes/statuses")
+    public ResponseEntity<List<String>> getNoteStatuses() {
+        return ResponseEntity.ok(Arrays.stream(NoteStatus.values())
+                .map(NoteStatus::getStatus)
+                .collect(Collectors.toList()));
     }
 
     @GetMapping("/getSubject")

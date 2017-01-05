@@ -238,12 +238,14 @@ function update() {
 function loadStatus() {
     $.ajax({
         method: "GET",
-        url: "/getStatus",
+        url: "/notes/statuses",
         dataType: "json",
         headers: {
             'X-CSRF-TOKEN': token
         }
     }).done(function (data) {
+        console.log("Status: ");
+        console.log(data);
         var arr = data;
         var select = $('#statusNote').empty();
         Object.keys(arr).forEach(function (key) {
