@@ -5,7 +5,7 @@
     <groupId>ua.softgroup</groupId>
     <artifactId>medreview</artifactId>
     <packaging>jar</packaging>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.1</version>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
