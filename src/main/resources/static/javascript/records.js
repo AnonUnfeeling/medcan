@@ -146,10 +146,8 @@ function deleteRecord(control) {
 //Crete record
 function createRecord() {
     var message = $('#message-container');
-    if ($('#title').val().trim().length == 0) {
-        $(message).children().remove();
-        message.append("<div id='success' class='alert alert-success'><strong>Error! </strong>Title is empty</div>");
-    } else {
+    if ($('#title').val().trim().length !== 0) {
+        console.log("dsa");
         $.ajax({
             method: "POST",
             url: "/records/add",
@@ -169,9 +167,12 @@ function createRecord() {
             $(message).children().remove();
             message.append("<div id='error' class='alert alert-danger'><strong>Error! </strong>+' data +'</div>");
         });
+    } else {
+        console.log("dsa1");
+        $(message).children().remove();
+        message.append("<div id='success' class='alert alert-success'><strong>Error! </strong>Title is empty</div>");
     }
 }
-
 
 function loadType() {
     $.ajax({
