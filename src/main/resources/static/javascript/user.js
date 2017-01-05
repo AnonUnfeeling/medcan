@@ -107,8 +107,11 @@ function getUsers(page) {
         table.find('tr').remove();
         $(arr).each(function () {
             var user = $(this)[0];
+            var company;
+            console.log(user.company);
+            if(user.company==null) company="No company"; else company = user.company;
             table.append('<tr onclick="showRecord(event,this)"><td>' + user.login + '</td><td>' + user.role + '</td>' +
-                '<td>' + user.company + '</td><td></td>' +
+                '<td>' + company + '</td><td></td>' +
                 '<td class="text-right"><span id="' +
                 user.login + '" data-singleton="true"' +
                 ' data-toggle="edit" class="glyphicon glyphicon glyphicon-pencil user-control" ' +

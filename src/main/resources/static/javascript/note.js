@@ -80,6 +80,7 @@ function loadPreNote(event, note, id) {
         loadSubject();
         loadSubSubject();
         loadStatus();
+        loadTreatment();
         loadNote();
         var edit = $('#creteNote');
         edit.modal('show');
