@@ -75,8 +75,6 @@ function loadPreNote(event, note, id) {
         elm = elm.parentNode;
     }
 
-    console.log(allTDs);
-    console.log(elm);
     if (elm !== allTDs[10] && elm !== allTDs[11] && elm !== note) {
         editId = id;
         loadSubject();
