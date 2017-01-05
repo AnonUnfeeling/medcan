@@ -59,7 +59,7 @@ function loadNotes() {
                 '<td class="text-right"><span id="' + note.id + '" ' +
                 'data-singleton="true" data-toggle="confirmation" ' +
                 'class="glyphicon glyphicon-remove-circle users-control" ' +
-                'aria-hidden="true"></span></td>');
+                'aria-hidden="true"></span></td></tr>');
         });
         manageCompany();
     });
@@ -144,9 +144,6 @@ function loadNote() {
             'X-CSRF-TOKEN': token
         }
     }).done(function (data) {
-        var select = $('#statusNote').empty();
-        select.append('<option value="' + data.status + '">' +
-            '' + data.status + '</option>');
         $('#descriptionNote').val(data.description);
         $('#conclusionNote').val(data.conclusion);
         $('#keywordsNote').val(data.keywords);
@@ -155,6 +152,21 @@ function loadNote() {
         $('#countryNote').val(data.country);
         $('#languageNote').val(data.language);
         $('#treatmentNote').val(data.treatment);
+        var select = $('#statusNote').empty();
+        select.append('<option value="' + data.status + '">' +
+            '' + data.status + '</option>');
+        $.ajax({
+            method: "POST",
+            url: "/checkRole",
+            headers: {
+                'X-CSRF-TOKEN': token
+            }
+        }).done(function (data) {
+            console.log(data);
+            if(data=="ADMIN"){
+                loadStatus();
+            }
+        });
     });
 }
 
@@ -244,8 +256,6 @@ function loadStatus() {
             'X-CSRF-TOKEN': token
         }
     }).done(function (data) {
-        console.log("Status: ");
-        console.log(data);
         var arr = data;
         var select = $('#statusNote').empty();
         Object.keys(arr).forEach(function (key) {
