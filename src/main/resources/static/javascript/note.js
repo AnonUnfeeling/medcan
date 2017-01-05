@@ -40,7 +40,7 @@ function loadNotes() {
         table.find('tr').remove();
         $(arr).each(function () {
             var note = $(this)[0];
-            table.append('<tr onclick="loadPreNote(' + $(this)[0].id + ');"><td>' + note.description.slice(0, 8) + '</td>' +
+            table.append('<tr onclick="loadPreNote(event,this,' + $(this)[0].id + ');"><td>' + note.description.slice(0, 8) + '</td>' +
                 '<td>' + note.conclusion.slice(0, 8) + '</td>' +
                 '<td>' + note.keywords.slice(0, 8) + '</td>' +
                 '<td>' + note.subject.slice(0, 8) + '</td>' +
@@ -50,11 +50,11 @@ function loadNotes() {
                 '<td>' + note.status.slice(0, 8) + '</td>' +
                 '<td>' + note.updateDate.dayOfMonth + ' ' + note.updateDate.month +
                 ' ' + note.updateDate.year +
-                '</td></td><td></td><td class="text-right"><span id=' +
-                note.id + ' data-singleton="true"' +
+                '</td><td></td><td class="text-right"><span id="' +
+                note.id + '" data-singleton="true"' +
                 ' data-toggle="edit" class="glyphicon glyphicon glyphicon-pencil user-control" ' +
                 'aria-hidden="true"></span>' +
-                '<td class="text-right"><span id=' + note.id + ' ' +
+                '<td class="text-right"><span id="' + note.id + '" ' +
                 'data-singleton="true" data-toggle="confirmation" ' +
                 'class="glyphicon glyphicon-remove-circle users-control" ' +
                 'aria-hidden="true"></span></td>');
@@ -65,11 +65,23 @@ function loadNotes() {
 
 var editId;
 
-function loadPreNote(id) {
-    editId = id;
-    loadNote();
-    var edit = $('#creteNote');
-    edit.modal('show');
+function loadPreNote(event, note, id) {
+    var e = event || window.event,
+        elm = e.target || e.srcElement,
+        allTDs = note.getElementsByTagName('td');
+
+    while (elm.nodeName.toLowerCase() !== 'td' && elm !== note) {
+        elm = elm.parentNode;
+    }
+
+    console.log(allTDs);
+    console.log(elm);
+    if (elm !== allTDs[10] && elm !== note) {
+        editId = id;
+        loadNote();
+        var edit = $('#creteNote');
+        edit.modal('show');
+    }
 }
 
 function manageCompany() {
