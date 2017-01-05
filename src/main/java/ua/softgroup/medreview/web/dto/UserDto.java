@@ -1,6 +1,9 @@
 package ua.softgroup.medreview.web.dto;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import ua.softgroup.medreview.persistent.entity.Role;
+
+import javax.validation.constraints.Size;
 
 /**
  * @author Sergiy Perevyazko <sg.sergiyp@gmail.com>
@@ -8,6 +11,8 @@ import ua.softgroup.medreview.persistent.entity.Role;
 public class UserDto {
 
     private String preLogin;
+    @NotEmpty(message = "Username cannot be empty")
+    @Size(max = 32, message = "Username is too long (maximum is 32 characters)")
     private String login;
     private String password;
     private Role role;
@@ -62,5 +67,16 @@ public class UserDto {
 
     public void setCompany(String company) {
         this.company = company;
+    }
+
+    @Override
+    public String toString() {
+        return "UserDto{" +
+                "preLogin='" + preLogin + '\'' +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", role=" + role +
+                ", company='" + company + '\'' +
+                '}';
     }
 }

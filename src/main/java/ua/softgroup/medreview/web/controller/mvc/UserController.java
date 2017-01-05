@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,12 +33,15 @@ import java.util.TreeMap;
 import ua.softgroup.medreview.service.CompanyService;
 import ua.softgroup.medreview.service.UserService;
 
+import javax.validation.Valid;
+
 /**
  * Created by jdroidcoder on 28.12.2016.
  */
 @RestController
 public class UserController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private static final int NUMBER_OF_PAGES = 10;
 
     @Autowired
     private AuthenticationService authenticationService;
@@ -61,47 +65,31 @@ public class UserController {
     }
 
     @PostMapping(value = "user")
-    public ResponseEntity makeUser(@RequestParam("login") String login,
-                                   @RequestParam("password") String password,
-                                   @RequestParam("role") String role,
-                                   @RequestParam("company") String company) {
-        try {
-            User user = new User();
-            user.setLogin(login);
-            user.setPassword(password);
-            List<UserRole> roles = new ArrayList<>();
-            if (Role.ADMIN.toString().equals(role)) {
-                roles.add(new UserRole(Role.ADMIN, user));
-                roles.add(new UserRole(Role.COMPANY, user));
-            } else if (Role.COMPANY.toString().equals(role)) {
-                roles.add(new UserRole(Role.COMPANY, user));
-            } else {
-                roles.add(new UserRole(Role.USER, user));
-            }
-            user.setRoles(roles);
-            user.setCompany(companyservice.findByName(company));
-            userService.saveUser(user);
-
-            return ResponseEntity.ok(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity(Keys.FAIL.toString(), HttpStatus.OK);
+    public ResponseEntity createUser(@Valid UserForm userForm, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
         }
+        try {
+            userService.createUser(userForm);
+        } catch (org.springframework.dao.DataIntegrityViolationException e) {
+            return ResponseEntity.badRequest().body(String.format("Username \"%s\" is already taken.", userForm.getLogin()));
+        }
+        return ResponseEntity.ok(String.format("User \"$s\" was created successfully.", userForm.getLogin()));
     }
 
     @RequestMapping(value = "user/edit", method = RequestMethod.POST)
-    public ResponseEntity editUser(UserDto userDto) {
-        try {
-            userService.updateUser(userDto);
-            return ResponseEntity.ok(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity(Keys.FAIL.toString(), HttpStatus.OK);
+    public ResponseEntity editUser(@Valid UserDto userDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
         }
+        userService.updateUser(userDto);
+        return ResponseEntity.ok("User was changed successfully.");
     }
 
     @RequestMapping(value = "usersByCompany", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<Page<User>> showUsersByCompany(@RequestParam String companyName, @RequestParam int page) {
-        return ResponseEntity.ok(userService.getUsersByCompany(companyservice.findByName(companyName), new PageRequest(page - 1, 10)));
+        return ResponseEntity.ok(userService.getUsersByCompany(companyservice.findByName(companyName), new PageRequest(page - 1, NUMBER_OF_PAGES)));
     }
 
 
@@ -125,7 +113,7 @@ public class UserController {
         ObjectMapper mapper = new ObjectMapper();
         try {
             List<UserForm> userForms = new ArrayList<>();
-            Page<User> userPage = userService.findAll(new PageRequest(page - 1, 10));
+            Page<User> userPage = userService.findAll(new PageRequest(page - 1, NUMBER_OF_PAGES));
             for (User user : userPage) {
                 if (authenticationService.getPrincipal().getRoles().get(0).getRole().equals(Role.ADMIN)) {
                     userForms.add(new UserForm(user));
@@ -171,6 +159,6 @@ public class UserController {
     private
     @ResponseBody
     int countPageUsers() {
-        return userService.findAll(new PageRequest(0, 10)).getTotalPages();
+        return userService.findAll(new PageRequest(0, NUMBER_OF_PAGES)).getTotalPages();
     }
 }
