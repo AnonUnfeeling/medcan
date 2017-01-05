@@ -21,6 +21,7 @@ import ua.softgroup.medreview.persistent.entity.User;
 
 import ua.softgroup.medreview.persistent.entity.UserRole;
 import ua.softgroup.medreview.service.AuthenticationService;
+import ua.softgroup.medreview.web.dto.UserDto;
 import ua.softgroup.medreview.web.form.UserForm;
 
 import java.util.ArrayList;
@@ -59,15 +60,11 @@ public class UserController {
         return authenticationService.getPrincipal().getRoles().get(0).getUser().getLogin();
     }
 
-    //TODO: this link for admin and company role
-    @RequestMapping(value = "user", method = RequestMethod.POST)
-    public
-    @ResponseBody
-    ResponseEntity
-    makeUser(@RequestParam("login") String login,
-             @RequestParam("password") String password,
-             @RequestParam("role") String role,
-             @RequestParam("company") String company) {
+    @PostMapping(value = "user")
+    public ResponseEntity makeUser(@RequestParam("login") String login,
+                                   @RequestParam("password") String password,
+                                   @RequestParam("role") String role,
+                                   @RequestParam("company") String company) {
         try {
             User user = new User();
             user.setLogin(login);
@@ -92,62 +89,15 @@ public class UserController {
     }
 
     @RequestMapping(value = "user/edit", method = RequestMethod.POST)
-    public
-    @ResponseBody
-    ResponseEntity
-    editUser(@RequestParam("preLogin") String preLogin,
-             @RequestParam("login") String login,
-             @RequestParam("password") String password,
-             @RequestParam("role") String role,
-             @RequestParam("company") String company) {
+    public ResponseEntity editUser(UserDto userDto) {
         try {
-            User user = userService.findUserByLogin(preLogin);
-            user.setLogin(login);
-            user.setPassword(password);
-            List<UserRole> roles = new ArrayList<>();
-            if (Role.ADMIN.toString().equals(role)) {
-                roles.add(new UserRole(Role.ADMIN, user));
-                roles.add(new UserRole(Role.COMPANY, user));
-            } else if (Role.COMPANY.toString().equals(role)) {
-                roles.add(new UserRole(Role.COMPANY, user));
-            } else {
-                roles.add(new UserRole(Role.USER, user));
-            }
-            user.setRoles(roles);
-            user.setCompany(companyservice.findByName(company));
-            userService.saveUser(user);
-
+            userService.updateUser(userDto);
             return ResponseEntity.ok(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity(Keys.FAIL.toString(), HttpStatus.OK);
         }
     }
 
-//    //TODO: this link for admin and company role
-//    @RequestMapping(value = "usersByCompany", method = RequestMethod.GET)
-//    public
-//    @ResponseBody
-//    String showUserByCompany(String companyName, int page) {
-//        ObjectMapper mapper = new ObjectMapper();
-//        try {
-//            List<UserForm> userForms = new ArrayList<>();
-//            Page<User> userPage = userService.findAll(new PageRequest(page - 1, 10));
-//            for (User user : userPage) {
-//                if (authenticationService.getPrincipal().getRoles().get(0).getRole().equals(Role.ADMIN)) {
-//                    try {
-//                        if (user.getCompany().getName().equals(companyName)) {
-//                            userForms.add(new UserForm(user));
-//                        }
-//                    } catch (Exception e) {
-//
-//                    }
-//                }
-//            }
-//            return mapper.writeValueAsString(userForms);
-//        } catch (JsonProcessingException e) {
-//            return "";
-//        }
-//    }
     @RequestMapping(value = "usersByCompany", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<Page<User>> showUsersByCompany(@RequestParam String companyName, @RequestParam int page) {

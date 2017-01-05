@@ -19,6 +19,10 @@ public class UserRole extends AbstractEntity<Long> {
     public UserRole() {
     }
 
+    public UserRole(Role role) {
+        this.role = role;
+    }
+
     public UserRole(Role role, User user) {
         this.role = role;
         this.user = user;
