@@ -164,6 +164,7 @@ function manageCompany() {
         var edit = $('#addCompanyModal');
         var control = $(this);
         $('#userLogin').val(control.attr('id'));
+        $('#titleForUser').text("Edit user");
         userLogin=control.attr('id');
         loadRole();
         loadCompanies();
@@ -189,6 +190,7 @@ function deleteUser(control) {
 
 $(document).on('hide.bs.modal', '#addCompanyModal', function () {
     userLogin = null;
+    $('#titleForUser').text("Add user");
     $('#userLogin').val(null);
 });
 

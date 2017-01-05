@@ -84,6 +84,7 @@ function loadPreNote(event, note, id) {
         loadTreatment();
         loadNote();
         $('#submitButton').hide();
+        $('#titleFoNote').text("Details");
         var edit = $('#creteNote');
         edit.modal('show');
     }
@@ -109,6 +110,7 @@ function manageCompany() {
         var edit = $('#creteNote');
         var control = $(this);
         editId = control.attr('id');
+        $('#titleFoNote').text("Edit note");
         loadSubject();
         loadSubSubject();
         loadStatus();
@@ -120,6 +122,7 @@ function manageCompany() {
 
 $(document).on('hide.bs.modal', '#creteNote', function () {
     editId = null;
+    $('#titleFoNote').text("Creating new note");
     $('#submitButton').show();
     $('#descriptionNote').val("");
     $('#conclusionNote').val(null);
