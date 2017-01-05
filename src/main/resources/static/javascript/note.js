@@ -78,6 +78,9 @@ function loadPreNote(event, note, id) {
     console.log(elm);
     if (elm !== allTDs[10] && elm !== allTDs[11] && elm !== note) {
         editId = id;
+        loadSubject();
+        loadSubSubject();
+        loadStatus();
         loadNote();
         var edit = $('#creteNote');
         edit.modal('show');
