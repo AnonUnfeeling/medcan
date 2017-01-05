@@ -137,6 +137,7 @@ $(document).on('hide.bs.modal', '#creteNote', function () {
     $('#countryNote').val(null);
     $('#languageNote').val(null);
     $('#treatmentNote').val(null);
+    disableFields(false);
 });
 
 function loadNote() {
