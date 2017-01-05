@@ -66,6 +66,7 @@ function loadNotes() {
 }
 
 var editId;
+var isEdit = false;
 
 function loadPreNote(event, note, id) {
     var e = event || window.event,
@@ -78,6 +79,7 @@ function loadPreNote(event, note, id) {
 
     if (elm !== allTDs[11] && elm !== allTDs[12] && elm !== note) {
         editId = id;
+        isEdit = true;
         loadSubject();
         loadSubSubject();
         loadStatus();
@@ -122,6 +124,7 @@ function manageCompany() {
 
 $(document).on('hide.bs.modal', '#creteNote', function () {
     editId = null;
+    isEdit = false;
     $('#titleFoNote').text("Creating new note");
     $('#submitButton').show();
     $('#descriptionNote').val("");
@@ -155,18 +158,20 @@ function loadNote() {
         var select = $('#statusNote').empty();
         select.append('<option value="' + data.status + '">' +
             '' + data.status + '</option>');
-        $.ajax({
-            method: "POST",
-            url: "/checkRole",
-            headers: {
-                'X-CSRF-TOKEN': token
-            }
-        }).done(function (data) {
-            console.log(data);
-            if(data=="ADMIN"){
-                loadStatus();
-            }
-        });
+        if (!isEdit) {
+            $.ajax({
+                method: "POST",
+                url: "/checkRole",
+                headers: {
+                    'X-CSRF-TOKEN': token
+                }
+            }).done(function (data) {
+                console.log(data);
+                if (data == "ADMIN") {
+                    loadStatus();
+                }
+            });
+        }
     });
 }
 
