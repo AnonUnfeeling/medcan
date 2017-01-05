@@ -57,7 +57,7 @@ public class Note extends AbstractEntity<Long> {
 
     @Column
     @Field(analyzer = @Analyzer(definition = "en"))
-    private String status;
+    private String status = NoteStatus.IN_REVIEW.getStatus();
 
     @JsonIgnore
     @Column
