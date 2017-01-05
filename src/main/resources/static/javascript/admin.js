@@ -39,7 +39,7 @@ function getCompanies(page) {
         table.find('tr').remove();
         $(arr).each(function () {
             var company = $(this)[0];
-            table.append('<tr onclick="showUserInCompany(this)"><td>' + company.name + '</td><td class="text-right"><span id=' + company.name + ' data-singleton="true" data-toggle="confirmation" class="glyphicon glyphicon-remove-circle company-control" aria-hidden="true"></span></td></tr>');
+            table.append('<tr onclick="showUserInCompany(event,this)"><td>' + company.name + '</td><td></td><td class="text-right"><span id="' + company.name + '" data-singleton="true" data-toggle="confirmation" class="glyphicon glyphicon-remove-circle company-control" aria-hidden="true"></span></td></tr>');
         });
         manageCompany();
     }).fail(function (data) {
@@ -47,8 +47,20 @@ function getCompanies(page) {
     });
 }
 
-function showUserInCompany(companyName) {
-    window.location.href = "/user?companyName=" + $(companyName).find('td').first()[0].innerText + "&page=" + 1;
+function showUserInCompany(event, companyName) {
+    var e = event || window.event,
+        elm = e.target || e.srcElement,
+        allTDs = companyName.getElementsByTagName('td');
+
+    while (elm.nodeName.toLowerCase() !== 'td' && elm !== companyName) {
+        elm = elm.parentNode;
+    }
+
+    console.log(elm);
+    console.log(allTDs);
+    if (elm == allTDs[0] && elm == allTDs[1] && elm == companyName) {
+        window.location.href = "/user?companyName=" + $(companyName).find('td').first()[0].innerText + "&page=" + 1;
+    }
 }
 
 function manageCompany() {

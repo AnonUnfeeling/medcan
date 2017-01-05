@@ -204,7 +204,7 @@ function update() {
             'X-CSRF-TOKEN': token
         }
     }).done(function (data) {
-       
+
     }).fail(function (data) {
     });
 }
