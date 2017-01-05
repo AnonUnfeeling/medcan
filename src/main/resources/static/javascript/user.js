@@ -44,7 +44,7 @@ function getUsersByCompanyName(page) {
         url: "/usersByCompany",
         data: {
             companyName: $('#companyName').val(),
-            page:  page
+            page: page
         },
         dataType: "json",
         headers: {
@@ -58,7 +58,7 @@ function getUsersByCompanyName(page) {
         var currentPage = $pagination.twbsPagination('getCurrentPage');
         $pagination.twbsPagination('destroy');
         $pagination.twbsPagination($.extend({}, defaultOpts, {
-            startPage: (currentPage!=null)?currentPage:0,
+            startPage: (currentPage != null) ? currentPage : 0,
             totalPages: totalPages,
             initiateStartPageClick: false
         }));
@@ -99,7 +99,7 @@ function getUsers(page) {
         var currentPage = $pagination.twbsPagination('getCurrentPage');
         $pagination.twbsPagination('destroy');
         $pagination.twbsPagination($.extend({}, defaultOpts, {
-            startPage: (currentPage!=null)?currentPage:0,
+            startPage: (currentPage != null) ? currentPage : 0,
             totalPages: getTotalUsersPages(),
             initiateStartPageClick: false
         }));
@@ -109,7 +109,7 @@ function getUsers(page) {
             var user = $(this)[0];
             var company;
             console.log(user.company);
-            if(user.company==null) company="No company"; else company = user.company;
+            if (user.company == null) company = "No company"; else company = user.company;
             table.append('<tr onclick="showRecord(event,this)"><td>' + user.login + '</td><td>' + user.role + '</td>' +
                 '<td>' + company + '</td><td></td>' +
                 '<td class="text-right"><span id="' +
@@ -125,7 +125,7 @@ function getUsers(page) {
     });
 }
 
-function showRecord(event,record) {
+function showRecord(event, record) {
 
     var e = event || window.event,
         elm = e.target || e.srcElement,
@@ -135,7 +135,7 @@ function showRecord(event,record) {
         elm = elm.parentNode;
     }
 
-    if (elm !== allTDs[4] && elm!==allTDs[5] && elm !== record) {
+    if (elm !== allTDs[4] && elm !== allTDs[5] && elm !== record) {
         window.location.href = "/records/record?username=" + $(record).find('td')[0].innerText;
     }
 }
@@ -165,7 +165,7 @@ function manageCompany() {
         var control = $(this);
         $('#userLogin').val(control.attr('id'));
         $('#titleForUser').text("Edit user");
-        userLogin=control.attr('id');
+        userLogin = control.attr('id');
         loadRole();
         loadCompanies();
         edit.modal('show');
@@ -195,68 +195,77 @@ $(document).on('hide.bs.modal', '#addCompanyModal', function () {
 });
 
 function createUser() {
-    if(userLogin==null){
+    if (userLogin == null) {
         create();
-    }else {
+    } else {
         updateUser();
     }
 }
 
 function create() {
-    var success_msg = $('#success');
-    var error_msg = $('#error');
-    $.ajax({
-        method: "POST",
-        url: "/user",
-        data: {
-            login: $('#userLogin').val(),
-            password: $('#userPassword').val(),
-            role: $('#userRole').val(),
-            company: $('#userCompany').val()
-        },
-        dataType: "json",
-        headers: {
-            'X-CSRF-TOKEN': token
-        }
-    }).done(function (data) {
-        success_msg.hide();
-        error_msg.hide();
-        success_msg.show();
-        location.reload();
-    }).fail(function (data) {
-        success_msg.hide();
-        error_msg.hide();
-        error_msg.show();
-    });
+    var message = $('#message-container');
+    if ($('#userLogin').val().trim().length == 0) {
+        $(message).children().remove();
+        message.append("<div id='success' class='alert alert-success'><strong>Login is empty</strong></div>");
+    } else if ($('#userPassword').val().trim().length == 0) {
+        $(message).children().remove();
+        message.append("<div id='success' class='alert alert-success'><strong>Password is empty</strong></div>");
+    } else {
+        var success_msg = $('#success');
+        var error_msg = $('#error');
+        $.ajax({
+            method: "POST",
+            url: "/user",
+            data: {
+                login: $('#userLogin').val(),
+                password: $('#userPassword').val(),
+                role: $('#userRole').val(),
+                company: $('#userCompany').val()
+            },
+            dataType: "json",
+            headers: {
+                'X-CSRF-TOKEN': token
+            }
+        }).done(function (data) {
+            $(message).children().remove();
+            message.append("<div id='success' class='alert alert-success'><strong>" + data + "</strong></div>");
+            location.reload();
+        }).fail(function (data) {
+            $(message).children().remove();
+            message.append("<div id='success' class='alert alert-success'><strong>" + data + "</strong></div>");
+        });
+    }
 }
 
 function updateUser() {
-    var success_msg = $('#success');
-    var error_msg = $('#error');
-    $.ajax({
-        method: "POST",
-        url: "/user/edit",
-        data: {
-            preLogin:userLogin,
-            login: $('#userLogin').val(),
-            password: $('#userPassword').val(),
-            role: $('#userRole').val(),
-            company: $('#userCompany').val()
-        },
-        dataType: "json",
-        headers: {
-            'X-CSRF-TOKEN': token
-        }
-    }).done(function (data) {
-        success_msg.hide();
-        error_msg.hide();
-        success_msg.show();
-        location.reload();
-    }).fail(function (data) {
-        success_msg.hide();
-        error_msg.hide();
-        error_msg.show();
-    });
+    var message = $('#message-container');
+    if ($('#userLogin').val().trim().length == 0) {
+        $(message).children().remove();
+        message.append("<div id='success' class='alert alert-success'><strong>Login is empty</strong></div>");
+    } else {
+        $.ajax({
+            method: "POST",
+            url: "/user/edit",
+            data: {
+                preLogin: userLogin,
+                login: $('#userLogin').val(),
+                password: $('#userPassword').val(),
+                role: $('#userRole').val(),
+                company: $('#userCompany').val()
+            },
+            dataType: "json",
+            headers: {
+                'X-CSRF-TOKEN': token
+            }
+        }).done(function (data) {
+            $(message).children().remove();
+            message.append("<div id='success' class='alert alert-success'><strong>" + data + "</strong></div>");
+            location.reload();
+        }).fail(function (data) {
+            $(message).children().remove();
+            message.append("<div id='success' class='alert alert-success'><strong>" + data + "</strong></div>");
+        });
+    }
 }
 
 function loadRole() {

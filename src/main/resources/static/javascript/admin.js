@@ -95,7 +95,6 @@ function deleteCompany(control) {
 function createCompany() {
     var message = $('#message-container');
     if ($('#companyName').val().trim().length == 0) {
-        console.log("dsa");
         $(message).children().remove();
         message.append("<div id='success' class='alert alert-success'><strong>Field is empty</strong></div>");
     } else {
@@ -108,13 +107,11 @@ function createCompany() {
                 'X-CSRF-TOKEN': token
             }
         }).done(function (data) {
-            console.log(data);
             $(message).children().remove();
             $('#companyName').val(null);
             message.append("<div id='success' class='alert alert-success'><strong>" + data + "</strong></div>");
             location.reload();
         }).fail(function (data) {
-            console.log(data);
             $(message).children().remove();
             message.append("<div id='error' class='alert alert-danger'><strong>" + data.responseText + "</strong></div>");
         });
