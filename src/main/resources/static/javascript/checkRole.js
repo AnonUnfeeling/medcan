@@ -14,14 +14,14 @@ $(document).ready(function () {
     }).done(function (data) {
         if (data == "COMPANY") {
             $('#companyLink').hide();
-            if($('#statusNote')!=null){
+            if ($('#statusNote') != null) {
                 $('#statusNote').hide();
             }
         }
-        if(data=="USER"){
+        if (data == "USER") {
             $('#companyLink').hide();
             $('#userLink').hide();
-            if($('#statusNote')!=null){
+            if ($('#statusNote') != null) {
                 $('#statusNote').hide();
             }
         }

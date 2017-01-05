@@ -269,21 +269,34 @@ function updateUser() {
 }
 
 function loadRole() {
-    $.ajax({
-        method: "GET",
-        url: "/getRoles",
-        dataType: "json",
-        headers: {
-            'X-CSRF-TOKEN': token
-        }
-    }).done(function (data) {
-        var arr = data;
-
-        var select = $('#userRole').empty();
-        Object.keys(arr).forEach(function (key) {
-            select.append('<option value="' + arr[key] + '">' +
-                '' + arr[key] + '</option>');
-        });
+    $(document).ready(function () {
+        $.ajax({
+            method: "POST",
+            url: "/checkRole",
+            headers: {
+                'X-CSRF-TOKEN': token
+            }
+        }).done(function (data) {
+            var select = $('#userRole').empty();
+            if (data == "COMPANY") {
+                select.append('<option value="USER">USER</option>');
+            }else {
+                $.ajax({
+                    method: "GET",
+                    url: "/getRoles",
+                    dataType: "json",
+                    headers: {
+                        'X-CSRF-TOKEN': token
+                    }
+                }).done(function (data) {
+                    var arr = data;
+                    Object.keys(arr).forEach(function (key) {
+                        select.append('<option value="' + arr[key] + '">' +
+                            '' + arr[key] + '</option>');
+                    });
+                });
+            }
+        })
     });
 }
 
