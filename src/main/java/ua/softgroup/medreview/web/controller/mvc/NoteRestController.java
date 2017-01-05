@@ -189,12 +189,13 @@ public class NoteRestController {
     }
 
     @GetMapping(value = "/notes/search")
-    public ResponseEntity<List<Note>> searchNotes(@RequestParam String text) {
-        return ResponseEntity.ok(searchService.searchByAllFields(text, null, null));
+    @ResponseBody
+    public ResponseEntity<List<Note>> searchNotes(@RequestParam String keyword) {
+        return ResponseEntity.ok(searchService.searchByAllFields(keyword, null, null));
     }
 
     @GetMapping(value = "/notes/results")
-    public String showSearchResults() {
-        return SEARCH_NOTES_VIEW;
+    public ModelAndView showSearchResults() {
+        return new ModelAndView(SEARCH_NOTES_VIEW);
     }
 }

@@ -35,6 +35,16 @@
                 <li><a href="/records" id="recordLink">Records</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
+                <li style="margin-right: 50px;">
+                    <form method="get" action="/notes/results" class="navbar-form navbar-left">
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="keyword" placeholder="Search in records...">
+                                  <span class="input-group-btn">
+                                    <button class="btn btn-default" type="submit">Go!</button>
+                                  </span>
+                        </div><!-- /input-group -->
+                    </form>
+                </li>
                 <li>
                     <button onclick="location.href = '/logout';" type="button"
                             class="btn btn-danger navbar-btn btn-sm center-block">Sign out
