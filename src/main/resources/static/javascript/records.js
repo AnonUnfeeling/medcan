@@ -58,8 +58,9 @@ function gerRecordsByUser(page) {
                 '<td>' + record.author.login + '</td>' +
                 '<td>' + record.creationDate.dayOfMonth + ' ' + record.creationDate.month +
                 ' ' + record.creationDate.year + '</td>' +
-                '<td>' + record.notes[record.notes.length - 1].updateDate.dayOfMonth + ' ' + record.notes[record.notes.length - 1].updateDate.month +
-                ' ' + record.notes[record.notes.length - 1].updateDate.year +
+                '<td>' + ((record.notes.length !== 0) ? (record.notes[record.notes.length - 1].updateDate.dayOfMonth + ' ' + record.notes[record.notes.length - 1].updateDate.month +
+                ' ' + record.notes[record.notes.length - 1].updateDate.year) : ( record.creationDate.dayOfMonth + ' ' + record.creationDate.month +
+                ' ' + record.creationDate.year)) +
                 '</td><td></td><td class="text-right"><span id="' + record.title + '" data-singleton="true" data-toggle="confirmation" class="glyphicon glyphicon-remove-circle records-control" aria-hidden="true"></span></td></tr>');
         });
         manageCompany();
@@ -99,8 +100,9 @@ function getRecords(page) {
                 '<td>' + record.author.login + '</td>' +
                 '<td>' + record.creationDate.dayOfMonth + ' ' + record.creationDate.month +
                 ' ' + record.creationDate.year + '</td>' +
-                '<td>' + record.notes[record.notes.length - 1].updateDate.dayOfMonth + ' ' + record.notes[record.notes.length - 1].updateDate.month +
-                ' ' + record.notes[record.notes.length - 1].updateDate.year +
+                '<td>' + ((record.notes.length !== 0) ? (record.notes[record.notes.length - 1].updateDate.dayOfMonth + ' ' + record.notes[record.notes.length - 1].updateDate.month +
+                ' ' + record.notes[record.notes.length - 1].updateDate.year) : ( record.creationDate.dayOfMonth + ' ' + record.creationDate.month +
+                ' ' + record.creationDate.year)) +
                 '</td><td></td><td class="text-right"><span id="' + record.title + '" data-singleton="true" data-toggle="confirmation" class="glyphicon glyphicon-remove-circle records-control" aria-hidden="true"></span></td></tr>');
         });
         manageCompany();
@@ -118,7 +120,7 @@ function showNote(event, record) {
         elm = elm.parentNode;
     }
 
-    if (elm !== allTDs[4] && elm !== record) {
+    if (elm !== allTDs[6] && elm !== record) {
         window.location.href = "/records/note?title=" + $(record).find('td')[0].innerText + "&type=" + $(record).find('td')[1].innerText;
     }
 }
