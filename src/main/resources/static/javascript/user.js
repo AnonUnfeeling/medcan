@@ -308,7 +308,6 @@ function loadCompanies() {
                 $.ajax({
                     method: "POST",
                     url: "/checkCompany",
-                    dataType: "json",
                     headers: {
                         'X-CSRF-TOKEN': token
                     }
