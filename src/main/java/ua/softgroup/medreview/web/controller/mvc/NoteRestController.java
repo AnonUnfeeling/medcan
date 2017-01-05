@@ -65,7 +65,8 @@ public class NoteRestController {
                                @RequestParam String subject,
                                @RequestParam String subSubject,
                                @RequestParam String country,
-                               @RequestParam String language) {
+                               @RequestParam String language,
+                               @RequestParam String treatment) {
         try {
             Note note = new Note();
             note.setDescription(description);
@@ -75,6 +76,7 @@ public class NoteRestController {
             note.setSubSubject(subSubject);
             note.setCountry(country);
             note.setLanguage(language);
+            note.setTreatment(treatment);
             note.setStatus("In review");
             note.setRecord(recordRepository.findByTitle(titleRecord));
             noteRepository.save(note);
@@ -96,7 +98,8 @@ public class NoteRestController {
                             @RequestParam String subSubject,
                             @RequestParam String country,
                             @RequestParam String language,
-                            @RequestParam String status) {
+                            @RequestParam String status,
+                            @RequestParam String treatment) {
         try {
             Note note = noteRepository.findOne(Long.parseLong(id));
             note.setDescription(description);
@@ -107,6 +110,7 @@ public class NoteRestController {
             note.setCountry(country);
             note.setLanguage(language);
             note.setStatus(status);
+            note.setTreatment(treatment);
             note.setRecord(recordRepository.findByTitle(titleRecord));
             noteRepository.save(note);
             return ResponseEntity.ok(HttpStatus.OK);
