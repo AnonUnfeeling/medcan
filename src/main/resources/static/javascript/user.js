@@ -109,11 +109,11 @@ function getUsers(page) {
             var user = $(this)[0];
             table.append('<tr onclick="showRecord(event,this)"><td>' + user.login + '</td><td>' + user.role + '</td>' +
                 '<td>' + user.company + '</td><td></td>' +
-                '<td class="text-right"><span id=' +
-                user.login + ' data-singleton="true"' +
+                '<td class="text-right"><span id="' +
+                user.login + '" data-singleton="true"' +
                 ' data-toggle="edit" class="glyphicon glyphicon glyphicon-pencil user-control" ' +
                 'aria-hidden="true"></span>' +
-                '<td class="text-right"><span id=' + user.login + ' ' +
+                '<td class="text-right"><span id="' + user.login + '" ' +
                 'data-singleton="true" data-toggle="confirmation" ' +
                 'class="glyphicon glyphicon-remove-circle users-control" ' +
                 'aria-hidden="true"></span></td>');
