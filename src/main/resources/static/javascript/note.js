@@ -76,7 +76,7 @@ function loadPreNote(event, note, id) {
 
     console.log(allTDs);
     console.log(elm);
-    if (elm !== allTDs[10] && elm !== note) {
+    if (elm !== allTDs[10] && elm !== allTDs[11] && elm !== note) {
         editId = id;
         loadNote();
         var edit = $('#creteNote');
@@ -161,6 +161,7 @@ function deleteNote(control) {
         }
     }).done(function (data) {
         console.log(data);
+        location.reload();
     });
 }
 
@@ -192,6 +193,7 @@ function create() {
             'X-CSRF-TOKEN': token
         }
     }).done(function (data) {
+        location.reload();
     }).fail(function (data) {
     });
 }
