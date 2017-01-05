@@ -66,5 +66,45 @@
         </tbody>
     </table>
 </div>
+<!--Modal for create note-->
+<div id="creteNote" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 id="titleFoNote">Creating new note</h3>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body">
+                        <textarea id="descriptionNote" placeholder="Description"
+                                  class="form-control"></textarea> <br/>
+                    <textarea id="conclusionNote" placeholder="Conclusion" class="form-control"></textarea>
+                    <br/>
+                    <input id="keywordsNote" placeholder="Keywords" type="text" class="form-control"/><br/>
+                    <select id="subjectNote" class="form-control"></select> <br/>
+                    <select id="subSubjectNote" class="form-control"></select> <br/>
+                    <select id="treatmentNote" class="form-control"></select> <br/>
+                    <select id="statusNote" class="form-control"></select> <br/>
+                    <input id="countryNote" placeholder="Country" type="text" class="form-control"/><br/>
+                    <input id="languageNote" placeholder="Language" type="text" class="form-control"/><br/>
+                    <div id="success" class="alert alert-success" hidden="hidden">
+                        <strong>Success!</strong> User was created.
+                    </div>
+                    <div id="error" class="alert  alert-danger" hidden="hidden">
+                        <strong>Error!</strong> User with such login is already exist.
+                    </div>
+                </div>
+                <hr/>
+                <div id="form-control" class="text-right">
+                    <button id="submitButton" class="btn btn-info" type="submit" onclick="createNote();">SUBMIT
+                    </button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
