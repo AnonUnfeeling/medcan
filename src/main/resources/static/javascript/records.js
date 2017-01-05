@@ -45,7 +45,7 @@ function gerRecordsByUser(page) {
         var currentPage = $pagination.twbsPagination('getCurrentPage');
         $pagination.twbsPagination('destroy');
         $pagination.twbsPagination($.extend({}, defaultOpts, {
-            startPage: (currentPage!=null)?currentPage:0,
+            startPage: (currentPage != null) ? currentPage : 0,
             totalPages: totalPages,
             initiateStartPageClick: false
         }));
@@ -82,7 +82,7 @@ function getRecords(page) {
         var currentPage = $pagination.twbsPagination('getCurrentPage');
         $pagination.twbsPagination('destroy');
         $pagination.twbsPagination($.extend({}, defaultOpts, {
-            startPage: (currentPage!=null)?currentPage:1,
+            startPage: (currentPage != null) ? currentPage : 1,
             totalPages: totalPages,
             initiateStartPageClick: false
         }));
@@ -90,9 +90,8 @@ function getRecords(page) {
         table.find('tr').remove();
         $(arr).each(function () {
             var record = $(this)[0];
-            console.log(record);
             table.append('<tr onclick="showNote(event,this)"><td>' + record.title +
-                '<td>' + record.type + '</td>' + 
+                '<td>' + record.type + '</td>' +
                 '<td>' + record.author.login + '</td>' +
                 '</td><td></td><td class="text-right"><span id="' + record.title + '" data-singleton="true" data-toggle="confirmation" class="glyphicon glyphicon-remove-circle records-control" aria-hidden="true"></span></td></tr>');
         });
@@ -140,7 +139,6 @@ function deleteRecord(control) {
             'X-CSRF-TOKEN': token
         }
     }).done(function (data) {
-        console.log(data);
         location.reload();
     });
 }
@@ -148,25 +146,30 @@ function deleteRecord(control) {
 //Crete record
 function createRecord() {
     var message = $('#message-container');
-    $.ajax({
-        method: "POST",
-        url: "/records/add",
-        data: {
-            title: $('#title').val(),
-            type: $('#type').val()
-        },
-        dataType: "json",
-        headers: {
-            'X-CSRF-TOKEN': token
-        }
-    }).done(function (data) {
+    if ($('#title').val().trim().length == 0) {
         $(message).children().remove();
-        message.append("<div id='success' class='alert alert-success'><strong>Success!</strong>'+ data+'</div>")
-        location.reload();
-    }).fail(function (data) {
-        $(message).children().remove();
-        message.append("<div id='error' class='alert alert-danger'><strong>Error!</strong>+' data +'</div>")
-    });
+        message.append("<div id='success' class='alert alert-success'><strong>Error! </strong>Title is empty</div>");
+    } else {
+        $.ajax({
+            method: "POST",
+            url: "/records/add",
+            data: {
+                title: $('#title').val(),
+                type: $('#type').val()
+            },
+            dataType: "json",
+            headers: {
+                'X-CSRF-TOKEN': token
+            }
+        }).done(function (data) {
+            $(message).children().remove();
+            message.append("<div id='success' class='alert alert-success'><strong>Success! </strong>'+ data+'</div>");
+            location.reload();
+        }).fail(function (data) {
+            $(message).children().remove();
+            message.append("<div id='error' class='alert alert-danger'><strong>Error! </strong>+' data +'</div>");
+        });
+    }
 }
 
 
