@@ -20,21 +20,30 @@ $(document).ready(function () {
 });
 
 function searchInRecord() {
+    var title = $('#search-title').html();
+    console.log(title);
     $.ajax({
         method: "POST",
-        url: "/notes/search",
-        data: { text: $('#keyword').html()},
+        url: "/search/records/"+title+"/notes/",
+        data: { text: $('#keyword').html(),
+                category: null,
+            treatment:null,
+            subCategory:null},
         dataType: "json",
         headers: {
             'X-CSRF-TOKEN': token
         }
     }).done(function (data) {
+
+        console.log(data);
+
         var arr = data;
         var table = $('#table-body');
         table.find('tr').remove();
         $(arr).each(function () {
             var note = $(this)[0];
-            table.append('<tr onclick="loadPreNote(event,this,' + $(this)[0].id + ');"><td>' + note.description.slice(0, 8) + '</td>' +
+            table.append(
+                '<tr onclick="loadPreNote(event,this,' + $(this)[0].id + ');"><td>' + note.description.slice(0, 8) + '</td>' +
                 '<td>' + note.conclusion.slice(0, 8) + '</td>' +
                 '<td>' + note.keywords.slice(0, 8) + '</td>' +
                 '<td>' + note.subject.slice(0, 8) + '</td>' +

@@ -61,13 +61,14 @@ public class SearchServiceImpl implements SearchService {
         return noteRepository.searchByAllFieldsAndAuthor(authenticationService.getPrincipal().getUsername(), text, from, to);
     }
 
+    @Override
     public List<Note> searchNotesInRecord(String recordTitle, String text, String category, String subCategory, String treatment) {
         logger.debug("Search notes in record {} by text {}", recordTitle, text);
-        List<Note> notes = noteRepository.searchByAllFieldsInRecord(recordTitle, text);
-        return notes.stream()
-                .filter(note -> category == null || note.getSubject().equals(category))
-                .filter(note -> subCategory == null || note.getSubSubject().equals(subCategory))
-                .filter(note -> treatment == null || note.getTreatment().equals(treatment))
+        return noteRepository.searchByAllFieldsInRecord(recordTitle, text).stream()
+                .peek(System.out::println)
+                .filter(note -> category == null || category.isEmpty() || note.getSubject().equals(category))
+                .filter(note -> subCategory == null || subCategory.isEmpty() || note.getSubSubject().equals(subCategory))
+                .filter(note -> treatment == null || treatment.isEmpty() || note.getTreatment().equals(treatment))
                 .collect(Collectors.toList());
     }
 }
