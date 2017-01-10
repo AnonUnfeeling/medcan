@@ -100,7 +100,6 @@ public class NoteRestController {
                                    @RequestParam String subject,
                                    @RequestParam String subSubject,
                                    @RequestParam String country,
-//                                   @RequestParam String status,
                                    @RequestParam String treatment,
                                    @RequestParam String titleForNote) {
         try {
@@ -112,7 +111,6 @@ public class NoteRestController {
             note.setSubSubject(subSubject);
             note.setCountry(country);
             note.setLanguage(authenticationService.getPrincipal().getLanguage());
-//            note.setStatus(status);
             note.setTreatment(treatment);
             note.setTitle(titleForNote);
             note.setRecord(recordRepository.findByTitle(titleRecord));
@@ -144,17 +142,6 @@ public class NoteRestController {
     private boolean isDeleted(long id, Note note) {
         return noteRepository.findByRecordId(id).remove(note);
     }
-
-//    @PostMapping("/records/{id}/changeStatus")
-//    @ResponseBody
-//    public ResponseEntity changeStatus(@PathVariable Long id, @RequestParam Note note, @RequestParam String status) {
-//        if (status != null && note != null) {
-////            noteRepository.findByRecordId(id).stream().filter(n -> note.getDescription().equals(n.getDescription())).findFirst().get().setStatus(status);
-//            return ResponseEntity.ok(HttpStatus.OK);
-//        } else {
-//            return new ResponseEntity(Keys.FAIL.toString(), HttpStatus.OK);
-//        }
-//    }
 
     @GetMapping(value = "notes/statuses")
     public ResponseEntity<List<String>> getNoteStatuses() {
