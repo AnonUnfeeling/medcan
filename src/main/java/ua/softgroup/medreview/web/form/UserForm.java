@@ -18,15 +18,17 @@ public class UserForm {
     @NotEmpty(message = "Role cannot be empty")
     private String role;
     private String company;
+    private String language;
 
     public UserForm() {
     }
 
-    public UserForm(String login, String password, String role, String company) {
+    public UserForm(String login, String password, String role, String company, String language) {
         this.login = login;
         this.password = password;
         this.role = role;
         this.company = company;
+        this.language = language;
     }
 
     public UserForm(User user) {
@@ -36,6 +38,14 @@ public class UserForm {
             this.company = user.getCompany().getName();
         } catch (Exception e) {
         }
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 
     public String getLogin() {

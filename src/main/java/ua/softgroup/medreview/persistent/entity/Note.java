@@ -23,6 +23,10 @@ import java.time.LocalDateTime;
 public class Note extends AbstractEntity<Long> {
     private static final long serialVersionUID = 6627846745698054192L;
 
+    @Column(nullable = false, unique = true, length = 500)
+    @Field(analyzer = @Analyzer(definition = "en"))
+    private String title;
+
     @Column(columnDefinition = "text")
     @Field(analyzer = @Analyzer(definition = "en"))
     private String description;
@@ -55,9 +59,9 @@ public class Note extends AbstractEntity<Long> {
     @Field(analyzer = @Analyzer(definition = "en"))
     private String language;
 
-    @Column
-    @Field(analyzer = @Analyzer(definition = "en"))
-    private String status = NoteStatus.IN_REVIEW.getStatus();
+//    @Column
+//    @Field(analyzer = @Analyzer(definition = "en"))
+//    private String status = NoteStatus.IN_REVIEW.getStatus();
 
     @JsonIgnore
     @Column
@@ -86,7 +90,7 @@ public class Note extends AbstractEntity<Long> {
         this.subSubject = subSubject;
         this.country = country;
         this.language = language;
-        this.status = status;
+//        this.status = status;
     }
 
     public Note(String description, String conclusion, String keywords, String subject, String subSubject,
@@ -98,8 +102,16 @@ public class Note extends AbstractEntity<Long> {
         this.subSubject = subSubject;
         this.country = country;
         this.language = language;
-        this.status = status;
+//        this.status = status;
         this.treatment = treatment;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getDescription() {
@@ -158,13 +170,13 @@ public class Note extends AbstractEntity<Long> {
         this.language = language;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
+//    public String getStatus() {
+//        return status;
+//    }
+//
+//    public void setStatus(String status) {
+//        this.status = status;
+//    }
 
     public LocalDateTime getCreationDate() {
         return creationDate;
@@ -208,7 +220,7 @@ public class Note extends AbstractEntity<Long> {
                 ", subSubject='" + subSubject + '\'' +
                 ", country='" + country + '\'' +
                 ", language='" + language + '\'' +
-                ", status='" + status + '\'' +
+//                ", status='" + status + '\'' +
                 ", creationDate=" + creationDate +
                 ", updateDate=" + updateDate +
                 '}';

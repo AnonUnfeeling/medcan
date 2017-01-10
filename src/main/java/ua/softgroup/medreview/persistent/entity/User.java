@@ -34,6 +34,9 @@ public class User extends AbstractEntity<Long> implements UserDetails {
     private String password;
 
     @Column(nullable = false)
+    private String language;
+
+    @Column(nullable = false)
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<UserRole> roles = new ArrayList<>();
 
@@ -56,6 +59,14 @@ public class User extends AbstractEntity<Long> implements UserDetails {
         this.password = password;
         this.roles.add(new UserRole(role, this));
         this.company = company;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 
     public String getLogin() {

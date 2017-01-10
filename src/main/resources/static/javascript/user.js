@@ -165,6 +165,7 @@ function manageCompany() {
         $('#titleForUser').text("Edit user");
         userLogin = control.attr('id');
         loadRole();
+        loadLanguage();
         loadCompanies();
         edit.modal('show');
     });
@@ -216,7 +217,8 @@ function create() {
                 login: $('#userLogin').val(),
                 password: $('#userPassword').val(),
                 role: $('#userRole').val(),
-                company: $('#userCompany').val()
+                company: $('#userCompany').val(),
+                language:$('#usersLanguage').val()
             },
             // dataType: "json",
             headers: {
@@ -246,7 +248,8 @@ function updateUser() {
                 login: $('#userLogin').val(),
                 password: $('#userPassword').val(),
                 role: $('#userRole').val(),
-                company: $('#userCompany').val()
+                company: $('#userCompany').val(),
+                language:$('#usersLanguage').val()
             },
             headers: {
                 'X-CSRF-TOKEN': token
@@ -289,6 +292,25 @@ function loadRole() {
                 });
             }
         })
+    });
+}
+
+function loadLanguage() {
+    var select = $('#usersLanguage').empty();
+    $(document).ready(function () {
+        $.ajax({
+            method: "POST",
+            url: "/getLanguage",
+            headers: {
+                'X-CSRF-TOKEN': token
+            }
+        }).done(function (data) {
+            var arr = data;
+            Object.keys(arr).forEach(function (key) {
+                select.append('<option value="' + arr[key] + '">' +
+                    '' + arr[key] + '</option>');
+            });
+        });
     });
 }
 

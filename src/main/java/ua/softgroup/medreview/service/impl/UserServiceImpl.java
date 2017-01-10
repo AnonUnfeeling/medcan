@@ -110,6 +110,7 @@ public class UserServiceImpl implements UserService {
             user.setPassword(passwordEncoder.encode(pass));
         }
         user.setCompany(companyRepository.findByName(userForm.getCompany()));
+        user.setLanguage(userForm.getLanguage());
         setUserRoles(user, Role.valueOf(userForm.getRole()));
         return user;
     }

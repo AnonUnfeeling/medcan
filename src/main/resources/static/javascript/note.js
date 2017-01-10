@@ -47,9 +47,7 @@ function loadNotes() {
                 '<td>' + note.subject.slice(0, 8) + '</td>' +
                 '<td>' + note.subSubject.slice(0, 8) + '</td>' +
                 '<td>' + note.treatment + '</td>' +
-                '<td>' + note.country.slice(0, 8) + '</td>' +
-                '<td>' + note.language.slice(0, 8) + '</td>' +
-                '<td>' + note.status + '</td>' +
+                // '<td>' + note.status + '</td>' +
                 '<td>' + note.updateDate.dayOfMonth + ' ' + note.updateDate.month +
                 ' ' + note.updateDate.year +
                 '</td><td></td><td class="text-right"><span id="' +
@@ -77,15 +75,16 @@ function loadPreNote(event, note, id) {
         elm = elm.parentNode;
     }
 
-    if (elm !== allTDs[11] && elm !== allTDs[12] && elm !== note) {
+    if (elm !== allTDs[8] && elm !== allTDs[9] && elm !== note) {
         editId = id;
         isEdit = true;
         loadSubject();
         loadSubSubject();
-        loadStatus();
+        // loadStatus();
         loadTreatment();
         loadNote();
         $('#submitButton').hide();
+        $('#languageNote').show();
         $('#titleFoNote').text("Details");
         var edit = $('#creteNote');
         disableFields(true);
@@ -116,7 +115,8 @@ function manageCompany() {
         $('#titleFoNote').text("Edit note");
         loadSubject();
         loadSubSubject();
-        loadStatus();
+        $('#languageNote').hide();
+        // loadStatus();
         loadTreatment();
         loadNote();
         disableFields(false);
@@ -135,8 +135,9 @@ $(document).on('hide.bs.modal', '#creteNote', function () {
     $('#subjectNote').val(null);
     $('#subSubjectNote').val(null);
     $('#countryNote').val(null);
-    $('#languageNote').val(null);
+    // $('#languageNote').val(null);
     $('#treatmentNote').val(null);
+    $('#titleForNote').val(null);
     disableFields(false);
 });
 
@@ -158,23 +159,24 @@ function loadNote() {
         $('#countryNote').val(data.country);
         $('#languageNote').val(data.language);
         $('#treatmentNote').val(data.treatment);
-        var select = $('#statusNote').empty();
-        select.append('<option value="' + data.status + '">' +
-            '' + data.status + '</option>');
-        if (!isEdit) {
-            $.ajax({
-                method: "POST",
-                url: "/checkRole",
-                headers: {
-                    'X-CSRF-TOKEN': token
-                }
-            }).done(function (data) {
-                console.log(data);
-                if (data == "ADMIN") {
-                    loadStatus();
-                }
-            });
-        }
+        $('#titleForNote').val(data.title);
+        // var select = $('#statusNote').empty();
+        // select.append('<option value="' + data.status + '">' +
+        //     '' + data.status + '</option>');
+        // if (!isEdit) {
+        //     $.ajax({
+        //         method: "POST",
+        //         url: "/checkRole",
+        //         headers: {
+        //             'X-CSRF-TOKEN': token
+        //         }
+        //     }).done(function (data) {
+        //         console.log(data);
+        //         if (data == "ADMIN") {
+        //             loadStatus();
+        //         }
+        //     });
+        // }
     });
 }
 
@@ -206,72 +208,84 @@ function createNote() {
 }
 
 function create() {
-    $.ajax({
-        method: "POST",
-        url: "/records/note/add",
-        data: {
-            titleRecord: $('#titleNote').val(),
-            description: $('#descriptionNote').val(),
-            conclusion: $('#conclusionNote').val(),
-            keywords: $('#keywordsNote').val(),
-            subject: $('#subjectNote').val(),
-            subSubject: $('#subSubjectNote').val(),
-            country: $('#countryNote').val(),
-            language: $('#languageNote').val(),
-            treatment: $('#treatmentNote').val()
-        },
-        headers: {
-            'X-CSRF-TOKEN': token
-        }
-    }).done(function (data) {
-        location.reload();
-    }).fail(function (data) {
-    });
+    var message = $('#message-container');
+    if ($('#titleForNote').val().trim().length !== 0) {
+        $.ajax({
+            method: "POST",
+            url: "/records/note/add",
+            data: {
+                titleRecord: $('#titleNote').val(),
+                description: $('#descriptionNote').val(),
+                conclusion: $('#conclusionNote').val(),
+                keywords: $('#keywordsNote').val(),
+                subject: $('#subjectNote').val(),
+                subSubject: $('#subSubjectNote').val(),
+                country: $('#countryNote').val(),
+                // language: $('#languageNote').val(),
+                treatment: $('#treatmentNote').val(),
+                titleForNote: $('#titleForNote').val()
+            },
+            headers: {
+                'X-CSRF-TOKEN': token
+            }
+        }).done(function (data) {
+            location.reload();
+        });
+    } else {
+        $(message).children().remove();
+        message.append("<div id='error' class='alert alert-danger'><strong>Error! </strong>Title is empty</div>");
+    }
 }
 
 function update() {
-    $.ajax({
-        method: "POST",
-        url: "/records/note/edit",
-        data: {
-            id: editId,
-            titleRecord: $('#titleNote').val(),
-            description: $('#descriptionNote').val(),
-            conclusion: $('#conclusionNote').val(),
-            keywords: $('#keywordsNote').val(),
-            subject: $('#subjectNote').val(),
-            subSubject: $('#subSubjectNote').val(),
-            country: $('#countryNote').val(),
-            language: $('#languageNote').val(),
-            status: $('#statusNote').val(),
-            treatment: $('#treatmentNote').val()
-        },
-        headers: {
-            'X-CSRF-TOKEN': token
-        }
-    }).done(function (data) {
-
-    }).fail(function (data) {
-    });
-}
-
-function loadStatus() {
-    $.ajax({
-        method: "GET",
-        url: "/notes/statuses",
-        dataType: "json",
-        headers: {
-            'X-CSRF-TOKEN': token
-        }
-    }).done(function (data) {
-        var arr = data;
-        var select = $('#statusNote').empty();
-        Object.keys(arr).forEach(function (key) {
-            select.append('<option value="' + arr[key] + '">' +
-                '' + arr[key] + '</option>');
+    var message = $('#message-container');
+    if ($('#titleForNote').val().trim().length !== 0) {
+        $.ajax({
+            method: "POST",
+            url: "/records/note/edit",
+            data: {
+                id: editId,
+                titleRecord: $('#titleNote').val(),
+                description: $('#descriptionNote').val(),
+                conclusion: $('#conclusionNote').val(),
+                keywords: $('#keywordsNote').val(),
+                subject: $('#subjectNote').val(),
+                subSubject: $('#subSubjectNote').val(),
+                country: $('#countryNote').val(),
+                // language: $('#languageNote').val(),
+                // status: $('#statusNote').val(),
+                treatment: $('#treatmentNote').val(),
+                titleForNote: $('#titleForNote').val()
+            },
+            headers: {
+                'X-CSRF-TOKEN': token
+            }
+        }).done(function (data) {
+            location.reload();
         });
-    });
+    } else {
+        $(message).children().remove();
+        message.append("<div id='error' class='alert alert-danger'><strong>Error! </strong>Title is empty</div>");
+    }
 }
+
+// function loadStatus() {
+//     $.ajax({
+//         method: "GET",
+//         url: "/notes/statuses",
+//         dataType: "json",
+//         headers: {
+//             'X-CSRF-TOKEN': token
+//         }
+//     }).done(function (data) {
+//         var arr = data;
+//         var select = $('#statusNote').empty();
+//         Object.keys(arr).forEach(function (key) {
+//             select.append('<option value="' + arr[key] + '">' +
+//                 '' + arr[key] + '</option>');
+//         });
+//     });
+// }
 
 function loadSubject() {
     $.ajax({
@@ -328,13 +342,14 @@ function loadTreatment() {
 }
 
 function disableFields(boolean) {
-    $('#descriptionNote').prop( "disabled", boolean );
-    $('#conclusionNote').prop( "disabled", boolean );
-    $('#keywordsNote').prop( "disabled", boolean );
-    $('#subjectNote').prop( "disabled", boolean );
-    $('#subSubjectNote').prop( "disabled", boolean );
-    $('#countryNote').prop( "disabled", boolean );
-    $('#languageNote').prop( "disabled", boolean );
-    $('#treatmentNote').prop( "disabled", boolean );
-    $('#statusNote').prop("disabled", boolean);
+    $('#descriptionNote').prop("disabled", boolean);
+    $('#conclusionNote').prop("disabled", boolean);
+    $('#keywordsNote').prop("disabled", boolean);
+    $('#subjectNote').prop("disabled", boolean);
+    $('#subSubjectNote').prop("disabled", boolean);
+    $('#countryNote').prop("disabled", boolean);
+    $('#languageNote').prop("disabled", boolean);
+    $('#treatmentNote').prop("disabled", boolean);
+    // $('#statusNote').prop("disabled", boolean);
+    $('#titleForNote').prop("disabled", boolean);
 }

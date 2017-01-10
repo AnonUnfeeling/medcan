@@ -38,7 +38,8 @@
                 <li style="margin-right: 50px;">
                     <form method="get" action="/notes/results" class="navbar-form navbar-left">
                         <div class="input-group">
-                            <input required type="text" class="form-control" name="keyword" placeholder="Search in notes...">
+                            <input required type="text" class="form-control" name="keyword"
+                                   placeholder="Search in notes...">
                                   <span class="input-group-btn">
                                     <button class="btn btn-default" type="submit">Go!</button>
                                   </span>
@@ -70,9 +71,6 @@
                 <th id="subject">Category</th>
                 <th id="subSubject">Sub-category</th>
                 <th id="treatment">Treatment</th>
-                <th id="country">Country</th>
-                <th id="language">Language</th>
-                <th id="status">Status</th>
                 <th id="creationDate">Date created</th>
             </tr>
             </thead>
@@ -82,8 +80,9 @@
     </div>
     <div class="row">
         <div class="col-md-6">
-
-            <button id="addNoteButton" type="button" onclick="loadStatus();  loadSubject(); loadSubSubject(); loadTreatment();"
+            <!--loadStatus(); -->
+            <button id="addNoteButton" type="button"
+                    onclick=" loadSubject(); loadSubSubject(); loadTreatment();"
                     class="btn btn-info bottom-left"
                     data-toggle="modal"
                     data-target="#creteNote">Add note
@@ -105,7 +104,8 @@
                 </div>
                 <div class="modal-body">
                     <div class="modal-body">
-                        <textarea id="descriptionNote" placeholder="Description"
+                        <input id="titleForNote" type="text" placeholder="Title" class="form-control"/> <br/>
+                        <textarea rows="10" id="descriptionNote" placeholder="Description"
                                   class="form-control"></textarea> <br/>
                         <textarea id="conclusionNote" placeholder="Conclusion" class="form-control"></textarea>
                         <br/>
@@ -113,15 +113,10 @@
                         <select id="subjectNote" class="form-control"></select> <br/>
                         <select id="subSubjectNote" class="form-control"></select> <br/>
                         <select id="treatmentNote" class="form-control"></select> <br/>
-                        <select id="statusNote" class="form-control"></select> <br/>
+                        <!--<select id="statusNote" class="form-control"></select> <br/>-->
                         <input id="countryNote" placeholder="Country" type="text" class="form-control"/><br/>
-                        <input id="languageNote" placeholder="Language" type="text" class="form-control"/><br/>
-                        <div id="success" class="alert alert-success" hidden="hidden">
-                            <strong>Success!</strong> User was created.
-                        </div>
-                        <div id="error" class="alert  alert-danger" hidden="hidden">
-                            <strong>Error!</strong> User with such login is already exist.
-                        </div>
+                        <input id="languageNote" placeholder="Language" type="text" class="form-control" hidden/><br/>
+                        <div id="message-container"></div>
                     </div>
                     <hr/>
                     <div id="form-control" class="text-right">

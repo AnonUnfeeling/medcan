@@ -17,6 +17,7 @@ import ua.softgroup.medreview.persistent.entity.SubSubject;
 import ua.softgroup.medreview.persistent.entity.Subject;
 import ua.softgroup.medreview.persistent.repository.NoteRepository;
 import ua.softgroup.medreview.persistent.repository.RecordRepository;
+import ua.softgroup.medreview.service.AuthenticationService;
 import ua.softgroup.medreview.service.SearchService;
 import ua.softgroup.medreview.service.SubSubjectService;
 import ua.softgroup.medreview.service.SubjectService;
@@ -35,7 +36,8 @@ import java.util.stream.Collectors;
 public class NoteRestController {
 
     private static final String SEARCH_NOTES_VIEW = "searchNotesResult";
-
+    @Autowired
+    private AuthenticationService authenticationService;
     private final NoteRepository noteRepository;
     private final RecordRepository recordRepository;
     private final SubjectService subjectService;
@@ -66,14 +68,14 @@ public class NoteRestController {
     @PostMapping("/records/note/add")
     @ResponseBody
     public ResponseEntity makeNewNote(@RequestParam String titleRecord,
-                               @RequestParam String description,
-                               @RequestParam String conclusion,
-                               @RequestParam String keywords,
-                               @RequestParam String subject,
-                               @RequestParam String subSubject,
-                               @RequestParam String country,
-                               @RequestParam String language,
-                               @RequestParam String treatment) {
+                                      @RequestParam String description,
+                                      @RequestParam String conclusion,
+                                      @RequestParam String keywords,
+                                      @RequestParam String subject,
+                                      @RequestParam String subSubject,
+                                      @RequestParam String country,
+                                      @RequestParam String treatment,
+                                      @RequestParam String titleForNote) {
         try {
             Note note = new Note();
             note.setDescription(description);
@@ -82,8 +84,9 @@ public class NoteRestController {
             note.setSubject(subject);
             note.setSubSubject(subSubject);
             note.setCountry(country);
-            note.setLanguage(language);
+            note.setLanguage(authenticationService.getPrincipal().getLanguage());
             note.setTreatment(treatment);
+            note.setTitle(titleForNote);
             note.setRecord(recordRepository.findByTitle(titleRecord));
             noteRepository.save(note);
             return ResponseEntity.ok(HttpStatus.OK);
@@ -95,16 +98,16 @@ public class NoteRestController {
     @PostMapping("/records/note/edit")
     @ResponseBody
     public ResponseEntity editNote(@RequestParam String id,
-                            @RequestParam String titleRecord,
-                            @RequestParam String description,
-                            @RequestParam String conclusion,
-                            @RequestParam String keywords,
-                            @RequestParam String subject,
-                            @RequestParam String subSubject,
-                            @RequestParam String country,
-                            @RequestParam String language,
-                            @RequestParam String status,
-                            @RequestParam String treatment) {
+                                   @RequestParam String titleRecord,
+                                   @RequestParam String description,
+                                   @RequestParam String conclusion,
+                                   @RequestParam String keywords,
+                                   @RequestParam String subject,
+                                   @RequestParam String subSubject,
+                                   @RequestParam String country,
+//                                   @RequestParam String status,
+                                   @RequestParam String treatment,
+                                   @RequestParam String titleForNote) {
         try {
             Note note = noteRepository.findOne(Long.parseLong(id));
             note.setDescription(description);
@@ -113,9 +116,10 @@ public class NoteRestController {
             note.setSubject(subject);
             note.setSubSubject(subSubject);
             note.setCountry(country);
-            note.setLanguage(language);
-            note.setStatus(status);
+            note.setLanguage(authenticationService.getPrincipal().getLanguage());
+//            note.setStatus(status);
             note.setTreatment(treatment);
+            note.setTitle(titleForNote);
             note.setRecord(recordRepository.findByTitle(titleRecord));
             noteRepository.save(note);
             return ResponseEntity.ok(HttpStatus.OK);
@@ -146,16 +150,16 @@ public class NoteRestController {
         return noteRepository.findByRecordId(id).remove(note);
     }
 
-    @PostMapping("/records/{id}/changeStatus")
-    @ResponseBody
-    public ResponseEntity changeStatus(@PathVariable Long id, @RequestParam Note note, @RequestParam String status) {
-        if (status != null && note != null) {
-            noteRepository.findByRecordId(id).stream().filter(n -> note.getDescription().equals(n.getDescription())).findFirst().get().setStatus(status);
-            return ResponseEntity.ok(HttpStatus.OK);
-        } else {
-            return new ResponseEntity(Keys.FAIL.toString(), HttpStatus.OK);
-        }
-    }
+//    @PostMapping("/records/{id}/changeStatus")
+//    @ResponseBody
+//    public ResponseEntity changeStatus(@PathVariable Long id, @RequestParam Note note, @RequestParam String status) {
+//        if (status != null && note != null) {
+////            noteRepository.findByRecordId(id).stream().filter(n -> note.getDescription().equals(n.getDescription())).findFirst().get().setStatus(status);
+//            return ResponseEntity.ok(HttpStatus.OK);
+//        } else {
+//            return new ResponseEntity(Keys.FAIL.toString(), HttpStatus.OK);
+//        }
+//    }
 
     @GetMapping(value = "notes/statuses")
     public ResponseEntity<List<String>> getNoteStatuses() {

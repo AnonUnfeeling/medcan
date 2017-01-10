@@ -17,16 +17,18 @@ public class UserDto {
     private String password;
     private Role role;
     private String company;
+    private String language;
 
     public UserDto() {
     }
 
-    public UserDto(String preLogin, String login, String password, Role role, String company) {
+    public UserDto(String preLogin, String login, String password, Role role, String company, String language) {
         this.preLogin = preLogin;
         this.login = login;
         this.password = password;
         this.role = role;
         this.company = company;
+        this.language = language;
     }
 
     public String getPreLogin() {
@@ -67,6 +69,14 @@ public class UserDto {
 
     public void setCompany(String company) {
         this.company = company;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 
     @Override

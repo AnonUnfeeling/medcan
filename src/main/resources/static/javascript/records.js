@@ -168,7 +168,6 @@ function createRecord() {
                 'X-CSRF-TOKEN': token
             }
         }).done(function (data) {
-            console.log(data);
             $(message).children().remove();
             message.append("<div id='success' class='alert alert-success'><strong>Success! </strong>"+ data + "</div>");
             setTimeout(function () {

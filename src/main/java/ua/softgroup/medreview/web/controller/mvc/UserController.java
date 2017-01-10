@@ -151,6 +151,20 @@ public class UserController {
         return roles;
     }
 
+    @RequestMapping(value = "getLanguage")
+    public
+    @ResponseBody
+    List<String> getLanguage() {
+        List<String> languages = new ArrayList<>();
+        languages.add("English");
+        languages.add("Dutch");
+        languages.add("German");
+        languages.add("French");
+        languages.add("Spanish");
+        languages.add("Russian");
+        return languages;
+    }
+
     @PostMapping(value = "removeUser")
     public ResponseEntity removeUser(@RequestParam String userLogin) {
         logger.debug("removeUser " + userLogin);
