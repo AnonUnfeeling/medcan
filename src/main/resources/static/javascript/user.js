@@ -54,7 +54,7 @@ function getUsersByCompanyName(page) {
         $(arr).each(function () {
             var user = $(this)[0];
             table.append('<tr onclick="showRecord(event,this)"><td>' + user.login + '</td><td>' + user.roles[0].role + '</td>' +
-                '<td>' + user.company.name + '</td><td></td>' +
+                '<td>' + user.company.name + '</td><td>' + user.language + '</td><td></td>' +
                 '<td class="text-right"><span id="' +
                 user.login + '" data-singleton="true"' +
                 ' data-toggle="edit" class="glyphicon glyphicon glyphicon-pencil user-control" ' +
@@ -98,7 +98,7 @@ function getUsers(page) {
 
             }));
         }).fail(function (data) {
-            console.log(data);
+          
         });
 
         var table = $('#table-body');
@@ -108,7 +108,7 @@ function getUsers(page) {
             var company;
             if (user.company == null) company = "No company"; else company = user.company;
             table.append('<tr onclick="showRecord(event,this)"><td>' + user.login + '</td><td>' + user.role + '</td>' +
-                '<td>' + company + '</td><td></td>' +
+                '<td>' + company + '</td><td>' + user.language + '</td><td></td>' +
                 '<td class="text-right"><span id="' +
                 user.login + '" data-singleton="true"' +
                 ' data-toggle="edit" class="glyphicon glyphicon glyphicon-pencil user-control" ' +
@@ -133,7 +133,7 @@ function showRecord(event, record) {
         elm = elm.parentNode;
     }
 
-    if (elm !== allTDs[4] && elm !== allTDs[5] && elm !== record) {
+    if (elm !== allTDs[5] && elm !== allTDs[6] && elm !== record) {
         window.location.href = "/records/record?username=" + $(record).find('td')[0].innerText;
     }
 }
@@ -182,7 +182,6 @@ function deleteUser(control) {
             'X-CSRF-TOKEN': token
         }
     }).done(function (data) {
-        console.log(data);
         location.reload();
     });
 }
@@ -218,7 +217,7 @@ function create() {
                 password: $('#userPassword').val(),
                 role: $('#userRole').val(),
                 company: $('#userCompany').val(),
-                language:$('#usersLanguage').val()
+                language: $('#usersLanguage').val()
             },
             // dataType: "json",
             headers: {
@@ -227,7 +226,7 @@ function create() {
         }).done(function (data) {
             location.reload();
         }).fail(function (data) {
-            console.log(data);
+         
             $(message).children().remove();
             message.append("<div id='success' class='alert alert-success'><strong>" + data + "</strong></div>");
         });
@@ -249,7 +248,7 @@ function updateUser() {
                 password: $('#userPassword').val(),
                 role: $('#userRole').val(),
                 company: $('#userCompany').val(),
-                language:$('#usersLanguage').val()
+                language: $('#usersLanguage').val()
             },
             headers: {
                 'X-CSRF-TOKEN': token
@@ -332,7 +331,7 @@ function loadCompanies() {
                         'X-CSRF-TOKEN': token
                     }
                 }).done(function (data) {
-                    select.append('<option value="'+data+'">' + data + '</option>');
+                    select.append('<option value="' + data + '">' + data + '</option>');
                     select.hide();
                 });
             } else {

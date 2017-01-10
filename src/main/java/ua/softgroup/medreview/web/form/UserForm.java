@@ -38,6 +38,7 @@ public class UserForm {
             this.company = user.getCompany().getName();
         } catch (Exception e) {
         }
+        this.language = user.getLanguage();
     }
 
     public String getLanguage() {
