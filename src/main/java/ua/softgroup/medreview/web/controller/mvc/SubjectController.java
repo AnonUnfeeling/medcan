@@ -4,16 +4,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ua.softgroup.medreview.persistent.entity.SubSubject;
 import ua.softgroup.medreview.persistent.entity.Subject;
+import ua.softgroup.medreview.persistent.entity.Treatment;
 import ua.softgroup.medreview.service.SubjectService;
 import ua.softgroup.medreview.web.dto.SubSubjectDto;
 import ua.softgroup.medreview.web.dto.SubjectDto;
+import ua.softgroup.medreview.web.dto.TreatmentDto;
 import ua.softgroup.medreview.web.exception.SubjectNotFoundException;
+import ua.softgroup.medreview.web.exception.TreatmentNotFoundException;
 
 import javax.validation.Valid;
 import java.util.List;
-
-import static java.util.Optional.ofNullable;
 
 /**
  * @author Sergiy Perevyazko <sg.sergiyp@gmail.com>
@@ -30,6 +32,8 @@ public class SubjectController {
     private static final String SUB_SUBJECT_WAS_CREATED = "SubSubject was created successfully.";
     private static final String SUB_SUBJECT_WAS_CHANGED = "SubSubject was changed.";
     private static final String SUB_SUBJECT_WAS_DELETED = "SubSubject was deleted.";
+    private static final String TREATMENT_WAS_CREATED = "Treatment was created successfully.";
+    private static final String TREATMENT_WAS_DELETED = "Treatment was deleted.";
 
     @GetMapping
     public ResponseEntity<List<SubjectDto>> getAllSubjects() {
@@ -55,8 +59,8 @@ public class SubjectController {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
         }
-        subjectService.editSubject(subjectDto, ofNullable(subjectService.getSubjectByName(subjectDto.getOldName()))
-                .orElseThrow(() -> new SubjectNotFoundException(subjectDto.getOldName())));
+        final Subject subjectForEdit = subjectService.getSubjectByName(subjectDto.getOldName()).orElseThrow(() -> new SubjectNotFoundException(subjectDto.getOldName()));
+        subjectService.editSubject(subjectDto, subjectForEdit);
         return ResponseEntity.ok(SUBJECT_WAS_CHANGED);
     }
 
@@ -76,8 +80,8 @@ public class SubjectController {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
         }
-        subjectService.createSubSubject(subSubjectDto, ofNullable(subjectService.getSubjectByName(subSubjectDto.getSubject()))
-                .orElseThrow(() -> new SubjectNotFoundException(subSubjectDto.getSubject())));
+        final Subject subject = subjectService.getSubjectByName(subSubjectDto.getSubject()).orElseThrow(() -> new SubjectNotFoundException(subSubjectDto.getSubject()));
+        subjectService.createSubSubject(subSubjectDto, subject);
         return ResponseEntity.ok(SUB_SUBJECT_WAS_CREATED);
     }
 
@@ -86,8 +90,8 @@ public class SubjectController {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
         }
-        subjectService.editSubSubject(subSubjectDto, ofNullable(subjectService.getSubSubjectByName(subSubjectDto.getOldName()))
-                .orElseThrow(() -> new SubjectNotFoundException(subSubjectDto.getOldName())));
+        final SubSubject subSubject = subjectService.getSubSubjectByName(subSubjectDto.getSubject()).orElseThrow(() -> new SubjectNotFoundException(subSubjectDto.getSubject()));
+        subjectService.editSubSubject(subSubjectDto, subSubject);
         return ResponseEntity.ok(SUB_SUBJECT_WAS_CHANGED);
     }
 
@@ -95,6 +99,29 @@ public class SubjectController {
     public ResponseEntity deleteSubSubjectByName(String name) {
         subjectService.deleteSubSubjectByName(name);
         return ResponseEntity.ok(SUB_SUBJECT_WAS_DELETED);
+    }
+
+    @GetMapping(value = "/treatments/{subSubjectName}")
+    public ResponseEntity<List<TreatmentDto>> getTreatmentsBySubsubject(@PathVariable String subSubjectName) {
+        final SubSubject subSubject = subjectService.getSubSubjectByName(subSubjectName).orElseThrow(() -> new SubjectNotFoundException(subSubjectName));
+        return ResponseEntity.ok(subjectService.getTreatmentsBySubSubject(subSubject));
+    }
+
+    @PostMapping(value = "/treatments")
+    public ResponseEntity createTreatment(@Valid TreatmentDto treatmentDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
+        }
+        final SubSubject subSubject = subjectService.getSubSubjectByName(treatmentDto.getSubSubject()).orElseThrow(() -> new SubjectNotFoundException(treatmentDto.getSubSubject()));
+        subjectService.createTreatment(treatmentDto, subSubject);
+        return ResponseEntity.ok(TREATMENT_WAS_CREATED);
+    }
+
+    @DeleteMapping(value = "/treatments")
+    public ResponseEntity deleteTreatment(String treatmentName) {
+        final Treatment treatment = subjectService.getTreatmentByName(treatmentName).orElseThrow(() -> new TreatmentNotFoundException(treatmentName));
+        subjectService.deleteTreatment(treatment);
+        return ResponseEntity.ok(TREATMENT_WAS_DELETED);
     }
 
 }

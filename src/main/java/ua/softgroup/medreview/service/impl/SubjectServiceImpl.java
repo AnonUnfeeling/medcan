@@ -4,13 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.softgroup.medreview.persistent.entity.SubSubject;
 import ua.softgroup.medreview.persistent.entity.Subject;
+import ua.softgroup.medreview.persistent.entity.Treatment;
 import ua.softgroup.medreview.persistent.repository.SubSubjectRepository;
 import ua.softgroup.medreview.persistent.repository.SubjectRepository;
+import ua.softgroup.medreview.persistent.repository.TreatmentRepository;
 import ua.softgroup.medreview.service.SubjectService;
 import ua.softgroup.medreview.web.dto.SubSubjectDto;
 import ua.softgroup.medreview.web.dto.SubjectDto;
+import ua.softgroup.medreview.web.dto.TreatmentDto;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -21,11 +25,13 @@ public class SubjectServiceImpl implements SubjectService {
 
     private final SubjectRepository subjectRepository;
     private final SubSubjectRepository subSubjectRepository;
+    private final TreatmentRepository treatmentRepository;
 
     @Autowired
-    public SubjectServiceImpl(SubjectRepository subjectRepository, SubSubjectRepository subSubjectRepository) {
+    public SubjectServiceImpl(SubjectRepository subjectRepository, SubSubjectRepository subSubjectRepository, TreatmentRepository treatmentRepository) {
         this.subjectRepository = subjectRepository;
         this.subSubjectRepository = subSubjectRepository;
+        this.treatmentRepository = treatmentRepository;
     }
 
     @Override
@@ -63,13 +69,13 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public Subject getSubjectByName(String name) {
-        return subjectRepository.findByName(name);
+    public Optional<Subject> getSubjectByName(String name) {
+        return Optional.ofNullable(subjectRepository.findByName(name));
     }
 
     @Override
-    public SubSubject getSubSubjectByName(String name) {
-        return subSubjectRepository.findByName(name);
+    public Optional<SubSubject> getSubSubjectByName(String name) {
+        return Optional.ofNullable(subSubjectRepository.findByName(name));
     }
 
     @Override
@@ -94,7 +100,6 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public void editSubject(SubjectDto subjectDto, Subject subjectForEdit) {
-//        Subject subject = subjectRepository.findByName(subjectDto.getOldName());
         subjectForEdit.setName(subjectDto.getName());
         subjectRepository.save(subjectForEdit);
     }
@@ -105,12 +110,47 @@ public class SubjectServiceImpl implements SubjectService {
         subSubjectRepository.save(subSubjectForEdit);
     }
 
+    @Override
+    public Optional<Treatment> getTreatmentByName(String name) {
+        return Optional.ofNullable(treatmentRepository.findByName(name));
+    }
+
+    @Override
+    public List<TreatmentDto> getAllTreatments() {
+        return ((List<Treatment>) treatmentRepository.findAll())
+                .stream()
+                .map(this::convertTreatmentToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TreatmentDto> getTreatmentsBySubSubject(SubSubject subSubject) {
+        return subSubject.getTreatments()
+                .stream()
+                .map(this::convertTreatmentToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void createTreatment(TreatmentDto treatmentDto, SubSubject subSubject) {
+        treatmentRepository.save(new Treatment(treatmentDto.getName(), subSubject));
+    }
+
+    @Override
+    public void deleteTreatment(Treatment treatment) {
+        treatmentRepository.delete(treatment);
+    }
+
     private SubjectDto convertSubjectToDto(Subject subject) {
         return new SubjectDto(subject.getName());
     }
 
     private SubSubjectDto convertSubSubjectToDto(SubSubject subSubject) {
         return new SubSubjectDto(subSubject.getName());
+    }
+
+    private TreatmentDto convertTreatmentToDto(Treatment treatment) {
+        return new TreatmentDto(treatment.getName());
     }
 
 }
