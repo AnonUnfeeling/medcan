@@ -4,9 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +17,6 @@ import ua.softgroup.medreview.persistent.repository.NoteRepository;
 import ua.softgroup.medreview.persistent.repository.RecordRepository;
 import ua.softgroup.medreview.service.AuthenticationService;
 import ua.softgroup.medreview.service.SearchService;
-import ua.softgroup.medreview.service.SubSubjectService;
 import ua.softgroup.medreview.service.SubjectService;
 
 import java.util.ArrayList;
@@ -41,17 +38,15 @@ public class NoteRestController {
     private final NoteRepository noteRepository;
     private final RecordRepository recordRepository;
     private final SubjectService subjectService;
-    private final SubSubjectService subSubjectService;
     private final SearchService searchService;
 
     @Autowired
     public NoteRestController(NoteRepository noteRepository, RecordRepository recordRepository,
-                              SubjectService subjectService, SubSubjectService subSubjectService,
+                              SubjectService subjectService,
                               SearchService searchService) {
         this.noteRepository = noteRepository;
         this.recordRepository = recordRepository;
         this.subjectService = subjectService;
-        this.subSubjectService = subSubjectService;
         this.searchService = searchService;
     }
 
@@ -171,13 +166,13 @@ public class NoteRestController {
     @GetMapping("/getSubject")
     @ResponseBody
     public List<Subject> getSubject() {
-        return subjectService.getAll();
+        return subjectService.getAllSubjects();
     }
 
     @GetMapping("/getSubSubject")
     @ResponseBody
     public List<SubSubject> getSubSubject() {
-        return subSubjectService.getAll();
+        return subjectService.getAllSubSubjects();
     }
 
     @GetMapping("/getTreatment")
