@@ -45,6 +45,16 @@ public class Record extends AbstractEntity<Long> {
     @Field(analyzer = @Analyzer(definition = "en"))
     private String title;
 
+    private String endDescription;
+
+    private String endConclusion;
+
+    @Column
+    private String status;
+
+    @Column
+    private String country;
+
     @Column
     private String type = RecordType.BOOK.getType();
 
@@ -109,11 +119,47 @@ public class Record extends AbstractEntity<Long> {
         this.notes = notes;
     }
 
+    public String getEndDescription() {
+        return endDescription;
+    }
+
+    public void setEndDescription(String endDescription) {
+        this.endDescription = endDescription;
+    }
+
+    public String getEndConclusion() {
+        return endConclusion;
+    }
+
+    public void setEndConclusion(String endConclusion) {
+        this.endConclusion = endConclusion;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
     @Override
     public String toString() {
         return "Record{" +
                 "title='" + title + '\'' +
                 ", type='" + type + '\'' +
+                ", endConclusion='" + endConclusion + '\'' +
+                ", endDescription='" + endDescription + '\'' +
+                ", country='" + country + '\'' +
+                ", status='" + status + '\'' +
                 ", creationDate=" + creationDate +
                 ", author=" + author +
                 '}';

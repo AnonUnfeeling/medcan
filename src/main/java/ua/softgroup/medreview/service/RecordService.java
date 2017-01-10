@@ -24,4 +24,6 @@ public interface RecordService {
     void deleteRecordByName(String name);
 
     Record getRecordByTitle(String title);
+
+    void editRecord(Record record);
 }

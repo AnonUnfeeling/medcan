@@ -6,6 +6,7 @@ var token = $("meta[name='_csrf']").attr("content");
 
 $(document).ready(function () {
     checkUser();
+    loadRecord();
     loadNotes();
 });
 
@@ -47,7 +48,6 @@ function loadNotes() {
                 '<td>' + note.subject.slice(0, 8) + '</td>' +
                 '<td>' + note.subSubject.slice(0, 8) + '</td>' +
                 '<td>' + note.treatment + '</td>' +
-                // '<td>' + note.status + '</td>' +
                 '<td>' + note.updateDate.dayOfMonth + ' ' + note.updateDate.month +
                 ' ' + note.updateDate.year +
                 '</td><td></td><td class="text-right"><span id="' +
@@ -135,7 +135,6 @@ $(document).on('hide.bs.modal', '#creteNote', function () {
     $('#subjectNote').val(null);
     $('#subSubjectNote').val(null);
     $('#countryNote').val(null);
-    // $('#languageNote').val(null);
     $('#treatmentNote').val(null);
     $('#titleForNote').val(null);
     disableFields(false);
@@ -160,23 +159,6 @@ function loadNote() {
         $('#languageNote').val(data.language);
         $('#treatmentNote').val(data.treatment);
         $('#titleForNote').val(data.title);
-        // var select = $('#statusNote').empty();
-        // select.append('<option value="' + data.status + '">' +
-        //     '' + data.status + '</option>');
-        // if (!isEdit) {
-        //     $.ajax({
-        //         method: "POST",
-        //         url: "/checkRole",
-        //         headers: {
-        //             'X-CSRF-TOKEN': token
-        //         }
-        //     }).done(function (data) {
-        //         console.log(data);
-        //         if (data == "ADMIN") {
-        //             loadStatus();
-        //         }
-        //     });
-        // }
     });
 }
 
@@ -192,7 +174,6 @@ function deleteNote(control) {
             'X-CSRF-TOKEN': token
         }
     }).done(function (data) {
-        console.log(data);
         location.reload();
     });
 }
@@ -200,10 +181,8 @@ function deleteNote(control) {
 function createNote() {
     if (editId == null) {
         create();
-        // $('#creteNote').modal('hide');
     } else {
         update();
-        // $('#creteNote').modal('hide');
     }
 }
 
@@ -221,7 +200,6 @@ function create() {
                 subject: $('#subjectNote').val(),
                 subSubject: $('#subSubjectNote').val(),
                 country: $('#countryNote').val(),
-                // language: $('#languageNote').val(),
                 treatment: $('#treatmentNote').val(),
                 titleForNote: $('#titleForNote').val()
             },
@@ -253,8 +231,6 @@ function update() {
                 subject: $('#subjectNote').val(),
                 subSubject: $('#subSubjectNote').val(),
                 country: $('#countryNote').val(),
-                // language: $('#languageNote').val(),
-                // status: $('#statusNote').val(),
                 treatment: $('#treatmentNote').val(),
                 titleForNote: $('#titleForNote').val()
             },
@@ -270,23 +246,23 @@ function update() {
     }
 }
 
-// function loadStatus() {
-//     $.ajax({
-//         method: "GET",
-//         url: "/notes/statuses",
-//         dataType: "json",
-//         headers: {
-//             'X-CSRF-TOKEN': token
-//         }
-//     }).done(function (data) {
-//         var arr = data;
-//         var select = $('#statusNote').empty();
-//         Object.keys(arr).forEach(function (key) {
-//             select.append('<option value="' + arr[key] + '">' +
-//                 '' + arr[key] + '</option>');
-//         });
-//     });
-// }
+function loadStatus() {
+    $.ajax({
+        method: "GET",
+        url: "/notes/statuses",
+        dataType: "json",
+        headers: {
+            'X-CSRF-TOKEN': token
+        }
+    }).done(function (data) {
+        var arr = data;
+        var select = $('#endStatus').empty();
+        Object.keys(arr).forEach(function (key) {
+            select.append('<option value="' + arr[key] + '">' +
+                '' + arr[key] + '</option>');
+        });
+    });
+}
 
 function loadSubject() {
     $.ajax({
@@ -353,4 +329,54 @@ function disableFields(boolean) {
     $('#treatmentNote').prop("disabled", boolean);
     // $('#statusNote').prop("disabled", boolean);
     $('#titleForNote').prop("disabled", boolean);
+}
+
+function createEndReview() {
+    var message = $('#message-container');
+    if ($('#endDescription').val().trim().length !== 0 && $('#endConclusion').val().trim().length !== 0) {
+        $.ajax({
+            method: "POST",
+            url: "/records/edit",
+            data: {
+                title: $('#titleNote').val(),
+                type: $('#typeNote').val(),
+                endDescription: $('#endDescription').val(),
+                endConclusion: $('#endConclusion').val(),
+                status: $('#endStatus').val(),
+                country: $('#endCountry').val()
+            },
+            headers: {
+                'X-CSRF-TOKEN': token
+            }
+        }).done(function (data) {
+            location.reload();
+        }).fail(function (data) {
+            $(message).children().remove();
+            message.append("<div id='error' class='alert alert-danger'><strong>Error! </strong>" + data.responseText + "</div>");
+        });
+    } else {
+        $(message).children().remove();
+        message.append("<div id='error' class='alert alert-danger'><strong>Error! </strong>Fields cannot be empty</div>");
+    }
+}
+
+function loadRecord() {
+    $.ajax({
+        method: "GET",
+        url: "/records/getRecordDetails",
+        data: {
+            recordName: $('#titleNote').val()
+        },
+        headers: {
+            'X-CSRF-TOKEN': token
+        }
+    }).done(function (data) {
+        var header = $('#noteHeader');
+        if (data.endDescription.trim().length>0) {
+            header.append("<h4>End description:<label>" + data.endDescription + "</label></h4>");
+            header.append("<h4>End conclusion: <label>" + data.endConclusion + "</label></h4>");
+            header.append("<h4>Status: <label>" + data.status + "</label></h4>");
+            header.append("<h4>Country: <label>" + data.country + "</label></h4>");
+        }
+    });
 }

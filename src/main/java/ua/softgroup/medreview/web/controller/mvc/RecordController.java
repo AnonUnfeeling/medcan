@@ -116,4 +116,25 @@ public class RecordController {
     public ModelAndView showSearchResults() {
         return new ModelAndView(SEARCH_RESULTS_VIEW);
     }
+
+    @PostMapping(value = "/edit")
+    public ResponseEntity editRecord(@Valid RecordForm recordForm, BindingResult bindingResult) {
+        Record record = recordService.getByTitle(recordForm.getTitle());
+        record.setTitle(recordForm.getTitle());
+        record.setAuthor(record.getAuthor());
+        record.setCountry(recordForm.getCountry());
+        record.setEndDescription(recordForm.getEndDescription());
+        record.setEndConclusion(recordForm.getEndConclusion());
+        record.setStatus(recordForm.getStatus());
+        record.setCreationDate(record.getCreationDate());
+        record.setNotes(record.getNotes());
+        record.setType(record.getType());
+        recordService.editRecord(record);
+        return ResponseEntity.ok("User was changed successfully.");
+    }
+
+    @RequestMapping(value = "/getRecordDetails")
+    public ResponseEntity<?> getRecordDeatils(@RequestParam String recordName){
+        return ResponseEntity.ok(recordService.getByTitle(recordName));
+    }
 }

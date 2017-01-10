@@ -1,7 +1,10 @@
 package ua.softgroup.medreview.web.form;
 
+import org.hibernate.search.annotations.Analyzer;
+import org.hibernate.search.annotations.Field;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.persistence.Column;
 import javax.validation.constraints.Size;
 
 /**
@@ -14,6 +17,10 @@ public class RecordForm {
     private String title;
     @NotEmpty(message = "Type cannot be empty")
     private String type;
+    private String endDescription;
+    private String endConclusion;
+    private String status;
+    private String country;
 
     public String getType() {
         return type;
@@ -31,4 +38,47 @@ public class RecordForm {
         this.title = title;
     }
 
+    public String getEndDescription() {
+        return endDescription;
+    }
+
+    public void setEndDescription(String endDescription) {
+        this.endDescription = endDescription;
+    }
+
+    public String getEndConclusion() {
+        return endConclusion;
+    }
+
+    public void setEndConclusion(String endConclusion) {
+        this.endConclusion = endConclusion;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    @Override
+    public String toString() {
+        return "RecordForm{" +
+                "title='" + title + '\'' +
+                ", type='" + type + '\'' +
+                ", endDescription='" + endDescription + '\'' +
+                ", endConclusion='" + endConclusion + '\'' +
+                ", status='" + status + '\'' +
+                ", country='" + country + '\'' +
+                '}';
+    }
 }

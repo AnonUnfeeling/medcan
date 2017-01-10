@@ -79,4 +79,9 @@ public class RecordServiceImpl implements RecordService {
     public Record getRecordByTitle(String title) {
         return recordRepository.findByTitle(title);
     }
+
+    @Override
+    public void editRecord(Record record) {
+        recordRepository.save(record);
+    }
 }
