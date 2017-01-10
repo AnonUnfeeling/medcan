@@ -46,7 +46,7 @@
     </div>
 </nav>
 <div id="table-container" class="container">
-    <h4>Search results for "<span id="keyword" th:text="${param.keyword}"></span>"</h4>
+    <h4>Search results for "<span id="keyword" th:text="${param.t}"></span>"</h4>
     <hr/>
     <table class="table table-responsive table-hover table-striped">
         <thead>
@@ -66,6 +66,7 @@
         <tbody id="table-body">
         </tbody>
     </table>
+    <div hidden id="search-type" th:text="${param.p}"></div>
 </div>
 <!--Modal for create note-->
 <div id="creteNote" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
@@ -80,8 +81,7 @@
                 <div class="modal-body">
                         <textarea id="descriptionNote" placeholder="Description"
                                   class="form-control"></textarea> <br/>
-                    <textarea id="conclusionNote" placeholder="Conclusion" class="form-control"></textarea>
-                    <br/>
+                    <textarea id="conclusionNote" placeholder="Conclusion" class="form-control"></textarea><br/>
                     <input id="keywordsNote" placeholder="Keywords" type="text" class="form-control"/><br/>
                     <select id="subjectNote" class="form-control"></select> <br/>
                     <select id="subSubjectNote" class="form-control"></select> <br/>
@@ -102,7 +102,6 @@
                     </button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
-                </form>
             </div>
         </div>
     </div>

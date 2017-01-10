@@ -7,10 +7,58 @@ var defaultOpts = {
         getRecords(page);
     }
 };
+
 $(document).ready(function () {
     checkUser();
-    loadNotes();
+    
+    var type = $('#search-type').html();
+    if(type == "all"){
+        searchInAllNotes();
+    } else {
+        searchInRecord();
+    }
+});
 
+function searchInRecord() {
+    $.ajax({
+        method: "POST",
+        url: "/notes/search",
+        data: { text: $('#keyword').html()},
+        dataType: "json",
+        headers: {
+            'X-CSRF-TOKEN': token
+        }
+    }).done(function (data) {
+        var arr = data;
+        var table = $('#table-body');
+        table.find('tr').remove();
+        $(arr).each(function () {
+            var note = $(this)[0];
+            table.append('<tr onclick="loadPreNote(event,this,' + $(this)[0].id + ');"><td>' + note.description.slice(0, 8) + '</td>' +
+                '<td>' + note.conclusion.slice(0, 8) + '</td>' +
+                '<td>' + note.keywords.slice(0, 8) + '</td>' +
+                '<td>' + note.subject.slice(0, 8) + '</td>' +
+                '<td>' + note.subSubject.slice(0, 8) + '</td>' +
+                '<td>' + note.treatment + '</td>' +
+                '<td>' + note.country.slice(0, 8) + '</td>' +
+                '<td>' + note.language.slice(0, 8) + '</td>' +
+                '<td>' + note.status + '</td>' +
+                '<td>' + note.updateDate.dayOfMonth + ' ' + note.updateDate.month +
+                ' ' + note.updateDate.year +
+                '</td><td></td><td class="text-right"><span id="' +
+                note.id + '" data-singleton="true"' +
+                ' data-toggle="edit" class="glyphicon glyphicon glyphicon-pencil user-control" ' +
+                'aria-hidden="true"></span>' +
+                '<td class="text-right"><span id="' + note.id + '" ' +
+                'data-singleton="true" data-toggle="confirmation" ' +
+                'class="glyphicon glyphicon-remove-circle users-control" ' +
+                'aria-hidden="true"></span></td></tr>');
+        });
+        manageCompany();
+    });
+}
+
+function searchInAllNotes() {
     $.ajax({
         method: "GET",
         url: "/notes/search",
@@ -43,11 +91,11 @@ $(document).ready(function () {
                 '<td class="text-right"><span id="' + note.id + '" ' +
                 'data-singleton="true" data-toggle="confirmation" ' +
                 'class="glyphicon glyphicon-remove-circle users-control" ' +
-                'aria-hidden="true"></span></td>');
+                'aria-hidden="true"></span></td></tr>');
         });
         manageCompany();
     });
-});
+}
 
 function checkUser() {
     $.ajax({
@@ -63,45 +111,6 @@ function checkUser() {
             $('#addNoteButton').hide();
             $('#submitButton').hide();
         }
-    });
-}
-
-function loadNotes() {
-    $.ajax({
-        method: "GET",
-        url: "/records/notes",
-        data: {title: $('#titleNote').val()},
-        dataType: "json",
-        headers: {
-            'X-CSRF-TOKEN': token
-        }
-    }).done(function (data) {
-        var arr = data;
-        var table = $('#table-body');
-        table.find('tr').remove();
-        $(arr).each(function () {
-            var note = $(this)[0];
-            table.append('<tr onclick="loadPreNote(event,this,' + $(this)[0].id + ');"><td>' + note.description.slice(0, 8) + '</td>' +
-                '<td>' + note.conclusion.slice(0, 8) + '</td>' +
-                '<td>' + note.keywords.slice(0, 8) + '</td>' +
-                '<td>' + note.subject.slice(0, 8) + '</td>' +
-                '<td>' + note.subSubject.slice(0, 8) + '</td>' +
-                '<td>' + note.treatment + '</td>' +
-                '<td>' + note.country.slice(0, 8) + '</td>' +
-                '<td>' + note.language.slice(0, 8) + '</td>' +
-                '<td>' + note.status + '</td>' +
-                '<td>' + note.updateDate.dayOfMonth + ' ' + note.updateDate.month +
-                ' ' + note.updateDate.year +
-                '</td><td></td><td class="text-right"><span id="' +
-                note.id + '" data-singleton="true"' +
-                ' data-toggle="edit" class="glyphicon glyphicon glyphicon-pencil user-control" ' +
-                'aria-hidden="true"></span>' +
-                '<td class="text-right"><span id="' + note.id + '" ' +
-                'data-singleton="true" data-toggle="confirmation" ' +
-                'class="glyphicon glyphicon-remove-circle users-control" ' +
-                'aria-hidden="true"></span></td></tr>');
-        });
-        manageCompany();
     });
 }
 
