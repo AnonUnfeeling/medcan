@@ -14,22 +14,28 @@ public interface SubjectService {
 
     List<Subject> getAllSubjects();
 
+    List<SubjectDto> getAllSubjectDtos();
+
     List<SubSubject> getAllSubSubjects();
+
+    List<SubSubjectDto> getAllSubSubjectsDtos();
+
+    List<SubSubjectDto> getSubSubjectDtosBySubjectName(String name);
 
     Subject getSubjectByName(String name);
 
+    SubSubject getSubSubjectByName(String name);
+
     void createSubject(Subject subject);
 
-    void createSubSubject(SubSubject subSubject);
-
-    void createSubSubject(SubSubjectDto subSubjectDto);
+    void createSubSubject(SubSubjectDto subSubjectDto, Subject subject);
 
     void deleteSubjectByName(String name);
 
     void deleteSubSubjectByName(String name);
 
-    void editSubject(SubjectDto subjectDto);
+    void editSubject(SubjectDto subjectDto, Subject subjectForEdit);
 
-    void editSubSubject(SubSubjectDto subSubjectDto);
+    void editSubSubject(SubSubjectDto subSubjectDto, SubSubject subSubjectForEdit);
 
 }

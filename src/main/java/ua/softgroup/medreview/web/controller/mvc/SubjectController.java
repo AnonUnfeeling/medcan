@@ -4,14 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ua.softgroup.medreview.persistent.entity.SubSubject;
 import ua.softgroup.medreview.persistent.entity.Subject;
 import ua.softgroup.medreview.service.SubjectService;
 import ua.softgroup.medreview.web.dto.SubSubjectDto;
 import ua.softgroup.medreview.web.dto.SubjectDto;
+import ua.softgroup.medreview.web.exception.SubjectNotFoundException;
 
 import javax.validation.Valid;
 import java.util.List;
+
+import static java.util.Optional.ofNullable;
 
 /**
  * @author Sergiy Perevyazko <sg.sergiyp@gmail.com>
@@ -30,13 +32,13 @@ public class SubjectController {
     private static final String SUB_SUBJECT_WAS_DELETED = "SubSubject was deleted.";
 
     @GetMapping
-    public ResponseEntity<List<Subject>> getAllSubjects() {
-        return ResponseEntity.ok(subjectService.getAllSubjects());
+    public ResponseEntity<List<SubjectDto>> getAllSubjects() {
+        return ResponseEntity.ok(subjectService.getAllSubjectDtos());
     }
 
     @GetMapping(value = "/{subjectName}")
-    public ResponseEntity<List<SubSubject>> getSubSubjectsBySubjectName(@PathVariable String subjectName) {
-        return ResponseEntity.ok(subjectService.getSubjectByName(subjectName).getSubSubjects());
+    public ResponseEntity<List<SubSubjectDto>> getSubSubjectsDtosBySubjectName(@PathVariable String subjectName) {
+        return ResponseEntity.ok(subjectService.getSubSubjectDtosBySubjectName(subjectName));
     }
 
     @PostMapping
@@ -53,7 +55,8 @@ public class SubjectController {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
         }
-        subjectService.editSubject(subjectDto);
+        subjectService.editSubject(subjectDto, ofNullable(subjectService.getSubjectByName(subjectDto.getOldName()))
+                .orElseThrow(() -> new SubjectNotFoundException(subjectDto.getOldName())));
         return ResponseEntity.ok(SUBJECT_WAS_CHANGED);
     }
 
@@ -64,8 +67,8 @@ public class SubjectController {
     }
 
     @GetMapping(value = "/sub")
-    public ResponseEntity<List<SubSubject>> getAllSubSubjects() {
-        return ResponseEntity.ok(subjectService.getAllSubSubjects());
+    public ResponseEntity<List<SubSubjectDto>> getAllSubSubjects() {
+        return ResponseEntity.ok(subjectService.getAllSubSubjectsDtos());
     }
 
     @PostMapping(value = "/sub")
@@ -73,7 +76,8 @@ public class SubjectController {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
         }
-        subjectService.createSubSubject(subSubjectDto);
+        subjectService.createSubSubject(subSubjectDto, ofNullable(subjectService.getSubjectByName(subSubjectDto.getSubject()))
+                .orElseThrow(() -> new SubjectNotFoundException(subSubjectDto.getSubject())));
         return ResponseEntity.ok(SUB_SUBJECT_WAS_CREATED);
     }
 
@@ -82,7 +86,8 @@ public class SubjectController {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
         }
-        subjectService.editSubSubject(subSubjectDto);
+        subjectService.editSubSubject(subSubjectDto, ofNullable(subjectService.getSubSubjectByName(subSubjectDto.getOldName()))
+                .orElseThrow(() -> new SubjectNotFoundException(subSubjectDto.getOldName())));
         return ResponseEntity.ok(SUB_SUBJECT_WAS_CHANGED);
     }
 
