@@ -14,6 +14,13 @@ public class SubjectDto {
 
     private String oldName;
 
+    public SubjectDto() {
+    }
+
+    public SubjectDto(String name) {
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }

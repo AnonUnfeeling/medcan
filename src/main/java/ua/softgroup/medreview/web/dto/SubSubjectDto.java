@@ -15,6 +15,13 @@ public class SubSubjectDto {
     private String oldName;
     private String subject;
 
+    public SubSubjectDto() {
+    }
+
+    public SubSubjectDto(String name) {
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }
