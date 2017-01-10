@@ -3,6 +3,8 @@ package ua.softgroup.medreview.persistent.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Sergiy Perevyazko <sg.sergiyp@gmail.com>
@@ -18,6 +20,9 @@ public class SubSubject extends AbstractEntity<Long> {
     @JsonIgnore
     @ManyToOne
     private Subject subject;
+
+    @OneToMany(mappedBy = "subSubject", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Treatment> treatments = new ArrayList<>();
 
     public SubSubject() {
     }
@@ -41,5 +46,16 @@ public class SubSubject extends AbstractEntity<Long> {
 
     public void setSubject(Subject subject) {
         this.subject = subject;
+    }
+
+    public List<Treatment> getTreatments() {
+        return treatments;
+    }
+
+    public void setTreatments(List<Treatment> treatments) {
+        this.treatments.clear();
+        if (treatments != null) {
+            this.treatments = treatments;
+        }
     }
 }
