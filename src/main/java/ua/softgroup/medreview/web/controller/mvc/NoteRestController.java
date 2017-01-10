@@ -182,4 +182,12 @@ public class NoteRestController {
     public ModelAndView showSearchResults() {
         return new ModelAndView(SEARCH_NOTES_VIEW);
     }
+
+    @PostMapping(value = "/search/records/{title}/notes/")
+    public ResponseEntity<List<Note>> searchNotesInCurrentRecord(@PathVariable String title, @RequestParam String text,
+                                                                 @RequestParam String category, @RequestParam String subCategory,
+                                                                 @RequestParam String treatment) {
+        return ResponseEntity.ok(searchService.searchNotesInRecord(title, text, category, subCategory, treatment));
+    }
+
 }

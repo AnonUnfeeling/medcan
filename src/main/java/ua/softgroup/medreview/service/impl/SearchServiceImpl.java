@@ -7,16 +7,18 @@ import org.springframework.stereotype.Service;
 import ua.softgroup.medreview.persistent.entity.Note;
 import ua.softgroup.medreview.persistent.entity.Record;
 import ua.softgroup.medreview.persistent.entity.Role;
-import ua.softgroup.medreview.persistent.repository.RecordRepository;
 import ua.softgroup.medreview.persistent.repository.NoteRepository;
+import ua.softgroup.medreview.persistent.repository.RecordRepository;
 import ua.softgroup.medreview.service.AuthenticationService;
 import ua.softgroup.medreview.service.SearchService;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Sergiy Perevyazko <sg.sergiyp@gmail.com>
+ * @author Oleksandr Tyshkovets <sg.olexander@gmail.com>
  */
 @Service
 public class SearchServiceImpl implements SearchService {
@@ -57,5 +59,15 @@ public class SearchServiceImpl implements SearchService {
             return noteRepository.searchByAllFields(text, from, to);
         }
         return noteRepository.searchByAllFieldsAndAuthor(authenticationService.getPrincipal().getUsername(), text, from, to);
+    }
+
+    public List<Note> searchNotesInRecord(String recordTitle, String text, String category, String subCategory, String treatment) {
+        logger.debug("Search notes in record {} by text {}", recordTitle, text);
+        List<Note> notes = noteRepository.searchByAllFieldsInRecord(recordTitle, text);
+        return notes.stream()
+                .filter(note -> category == null || note.getSubject().equals(category))
+                .filter(note -> subCategory == null || note.getSubSubject().equals(subCategory))
+                .filter(note -> treatment == null || note.getTreatment().equals(treatment))
+                .collect(Collectors.toList());
     }
 }
