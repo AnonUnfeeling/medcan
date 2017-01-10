@@ -21,5 +21,7 @@ public interface CompanyService {
     Company findByName(String name);
 
     Page<Company> findAll(Pageable pageable);
+
+    void editCompany(Company company);
 }
 

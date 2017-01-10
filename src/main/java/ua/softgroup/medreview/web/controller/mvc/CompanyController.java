@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -74,5 +75,13 @@ public class CompanyController {
     public ResponseEntity<Iterable<Company>> getAllCompany() {
         logger.debug("get all company");
         return ResponseEntity.ok(companyService.findAll());
+    }
+
+    @RequestMapping(value = "editCompany")
+    public ResponseEntity makeCompany(@RequestParam String preCompanyName,@RequestParam String companyName) {
+        Company company = companyService.findByName(preCompanyName);
+        company.setName(companyName);
+        companyService.editCompany(company);
+        return ResponseEntity.ok(null);
     }
 }

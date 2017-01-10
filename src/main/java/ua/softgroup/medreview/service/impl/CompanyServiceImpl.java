@@ -42,4 +42,9 @@ public class CompanyServiceImpl implements CompanyService {
     public Page<Company> findAll(Pageable pageable) {
         return companyRepository.findAll(pageable);
     }
+
+    @Override
+    public void editCompany(Company company) {
+        companyRepository.save(company);
+    }
 }
