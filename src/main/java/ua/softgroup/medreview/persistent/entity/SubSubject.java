@@ -19,6 +19,14 @@ public class SubSubject extends AbstractEntity<Long> {
     @ManyToOne
     private Subject subject;
 
+    public SubSubject() {
+    }
+
+    public SubSubject(String name, Subject subject) {
+        this.name = name;
+        this.subject = subject;
+    }
+
     public String getName() {
         return name;
     }

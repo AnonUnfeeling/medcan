@@ -21,6 +21,13 @@ public class Subject extends AbstractEntity<Long> {
     @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SubSubject> subSubjects = new ArrayList<>();
 
+    public Subject() {
+    }
+
+    public Subject(String name) {
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }
@@ -36,7 +43,7 @@ public class Subject extends AbstractEntity<Long> {
     public void setSubSubjects(List<SubSubject> subSubjects) {
         this.subSubjects.clear();
         if (subSubjects != null) {
-            subSubjects.forEach(subSubject -> subSubject.setSubject(this));
+//            subSubjects.forEach(subSubject -> subSubject.setSubject(this)); //we don't need SubSubjects without subject inside in our case
             this.subSubjects.addAll(subSubjects);
         }
     }
