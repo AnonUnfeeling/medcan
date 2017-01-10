@@ -413,7 +413,7 @@ function loadRecordEndSetData() {
     }).done(function (data) {
         $('#endDescription').val(data.endDescription);
         $('#endConclusion').val(data.endConclusion);
-        $('#endCountry').val(data.country);
+        // $('#endCountry').val(data.country);
         $('#endStatus').val(data.status);
     });
 }
