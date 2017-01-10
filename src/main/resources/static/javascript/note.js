@@ -85,6 +85,9 @@ function loadPreNote(event, note, id) {
         loadNote();
         $('#submitButton').hide();
         $('#languageNote').show();
+        document.getElementById('createCategory').style.display = 'none';
+        document.getElementById('createCategory').nextElementSibling.style.display = 'none';
+        document.getElementById('createCategory').nextElementSibling.nextElementSibling.style.display = 'none';
         $('#titleFoNote').text("Details");
         var edit = $('#creteNote');
         disableFields(true);
@@ -127,6 +130,9 @@ function manageCompany() {
 $(document).on('hide.bs.modal', '#creteNote', function () {
     editId = null;
     isEdit = false;
+    document.getElementById('createCategory').style.display = 'initial';
+    document.getElementById('createCategory').nextElementSibling.style.display = 'initial';
+    document.getElementById('createCategory').nextElementSibling.nextElementSibling.style.display = 'initial';
     $('#titleFoNote').text("Creating new note");
     $('#submitButton').show();
     $('#descriptionNote').val("");
@@ -372,7 +378,7 @@ function loadRecord() {
         }
     }).done(function (data) {
         var header = $('#noteHeader');
-        if (data.endDescription.trim().length>0) {
+        if (data.endDescription.trim().length > 0) {
             header.append("<h4>End description:<label>" + data.endDescription + "</label></h4>");
             header.append("<h4>End conclusion: <label>" + data.endConclusion + "</label></h4>");
             header.append("<h4>Status: <label>" + data.status + "</label></h4>");
