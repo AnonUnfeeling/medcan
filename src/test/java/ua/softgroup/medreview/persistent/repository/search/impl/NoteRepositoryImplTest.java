@@ -96,10 +96,14 @@ public class NoteRepositoryImplTest {
         assertThat(noteList).hasSize(1);
     }
 
-
     @Test
     public void searchByAllFieldsAndAuthor() throws Exception {
         assertThat(noteRepository.searchByAllFieldsAndAuthor("admin", "english", null, null)).hasSize(2);
+    }
+
+    @Test
+    public void searchByAllFieldsInRecord() throws Exception {
+        assertThat(noteRepository.searchByAllFieldsInRecord("Record_1", "english")).hasSize(2);
     }
 
     private void createNote(String title, String description, String conclusion, String keywords, String subject, String subSubject,

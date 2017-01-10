@@ -31,4 +31,6 @@ public interface NoteRepositorySearch {
      */
     List<Note> searchByAllFieldsAndAuthor(String username, String text, LocalDate from, LocalDate to);
 
+    List<Note> searchByAllFieldsInRecord(String recordTitle, String text);
+
 }
