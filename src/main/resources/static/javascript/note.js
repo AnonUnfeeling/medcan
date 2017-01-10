@@ -200,10 +200,10 @@ function deleteNote(control) {
 function createNote() {
     if (editId == null) {
         create();
-        $('#creteNote').modal('hide');
+        // $('#creteNote').modal('hide');
     } else {
         update();
-        $('#creteNote').modal('hide');
+        // $('#creteNote').modal('hide');
     }
 }
 
