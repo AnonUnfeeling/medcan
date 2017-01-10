@@ -50,21 +50,21 @@ public class NoteRepositoryImplTest {
         Record record1 = recordRepository.save(new Record("Record_1", "Type", user));
         Record record2 = recordRepository.save(new Record("Record_2", "Type", admin));
 
-        createNote("Genetic testing looks for specific inherited changes in a person’s chromosomes, genes, or proteins",
+        createNote("Title1", "Genetic testing looks for specific inherited changes in a person’s chromosomes, genes, or proteins",
                    "Genetic testing of tumor samples can also be performed, but this doc does not cover such testing",
-                   "cancer, gene, testing", "What is genetic testing?", "Genetic testing", "England", "english", "approved",
+                   "cancer, gene, testing", "What is genetic testing?", "Genetic testing", "England", "english", "treatment",
                    LocalDateTime.now().minusDays(10), record1);
-        createNote("Increasing weight has been found to be associated with an increase in the risk of thyroid cancer",
+        createNote("Title2", "Increasing weight has been found to be associated with an increase in the risk of thyroid cancer",
                    "It is unclear what the mechanism might be", "cancer, overweight, obesity",
-                   "Obesity and Cancer Risk", "How common is overweight or obesity?", "Belgium", "english", "disapproved",
+                   "Obesity and Cancer Risk", "How common is overweight or obesity?", "Belgium", "english", "treatment",
                    LocalDateTime.now().minusDays(100), record2);
-        createNote("Difficulties interpreting homosexuality in different cultures",
+        createNote("Title3", "Difficulties interpreting homosexuality in different cultures",
                    "Contemporary scholars caution against applying modern Western assumptions about sex and gender to other times and places",
                    "homosexuality, gay, LGBT", "Societal attitudes toward homosexuality", "Homosexuality acceptance",
-                   "Ukraine", "english", "Removed", LocalDateTime.now().minusDays(50), record1);
-        createNote("Many people don't realize this -- but football is kind of a gay sport",
+                   "Ukraine", "english", "treatment", LocalDateTime.now().minusDays(50), record1);
+        createNote("Title4", "Many people don't realize this -- but football is kind of a gay sport",
                    "Football is for gays", "gays, football, cancer", "10 Reasons Football is Gay", "Football is Gay",
-                   "England", "english", "approved", LocalDateTime.now(), record2);
+                   "England", "english", "treatment", LocalDateTime.now(), record2);
     }
 
     @After
@@ -102,9 +102,9 @@ public class NoteRepositoryImplTest {
         assertThat(noteRepository.searchByAllFieldsAndAuthor("admin", "english", null, null)).hasSize(2);
     }
 
-    private void createNote(String description, String conclusion, String keywords, String subject, String subSubject,
-                            String country, String language, String status, LocalDateTime createdAt, Record record) {
-        Note note = new Note(description, conclusion, keywords, subject, subSubject, country, language, status);
+    private void createNote(String title, String description, String conclusion, String keywords, String subject, String subSubject,
+                            String country, String language, String treatment, LocalDateTime createdAt, Record record) {
+        Note note = new Note(title, description, conclusion, keywords, subject, subSubject, country, language, treatment);
         note.setRecord(record);
         noteRepository.save(note);
         note.setCreationDate(createdAt);

@@ -59,10 +59,6 @@ public class Note extends AbstractEntity<Long> {
     @Field(analyzer = @Analyzer(definition = "en"))
     private String language;
 
-//    @Column
-//    @Field(analyzer = @Analyzer(definition = "en"))
-//    private String status = NoteStatus.IN_REVIEW.getStatus();
-
     @JsonIgnore
     @Column
     @CreationTimestamp
@@ -81,8 +77,9 @@ public class Note extends AbstractEntity<Long> {
     public Note() {
     }
 
-    public Note(String description, String conclusion, String keywords, String subject, String subSubject,
-                String country, String language, String status) {
+    public Note(String title, String description, String conclusion, String keywords, String subject, String subSubject,
+                String country, String language, String treatment) {
+        this.title = title;
         this.description = description;
         this.conclusion = conclusion;
         this.keywords = keywords;
@@ -90,19 +87,6 @@ public class Note extends AbstractEntity<Long> {
         this.subSubject = subSubject;
         this.country = country;
         this.language = language;
-//        this.status = status;
-    }
-
-    public Note(String description, String conclusion, String keywords, String subject, String subSubject,
-                String country, String language, String status, String treatment) {
-        this.description = description;
-        this.conclusion = conclusion;
-        this.keywords = keywords;
-        this.subject = subject;
-        this.subSubject = subSubject;
-        this.country = country;
-        this.language = language;
-//        this.status = status;
         this.treatment = treatment;
     }
 
@@ -170,14 +154,6 @@ public class Note extends AbstractEntity<Long> {
         this.language = language;
     }
 
-//    public String getStatus() {
-//        return status;
-//    }
-//
-//    public void setStatus(String status) {
-//        this.status = status;
-//    }
-
     public LocalDateTime getCreationDate() {
         return creationDate;
     }
@@ -220,7 +196,6 @@ public class Note extends AbstractEntity<Long> {
                 ", subSubject='" + subSubject + '\'' +
                 ", country='" + country + '\'' +
                 ", language='" + language + '\'' +
-//                ", status='" + status + '\'' +
                 ", creationDate=" + creationDate +
                 ", updateDate=" + updateDate +
                 '}';
