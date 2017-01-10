@@ -41,7 +41,7 @@ function loadNotes() {
         table.find('tr').remove();
         $(arr).each(function () {
             var note = $(this)[0];
-            table.append('<tr onclick="loadPreNote(event,this,' + $(this)[0].id + ');"><td>' + note.description.slice(0, 8) + '</td>' +
+            table.append('<tr onclick="loadPreNote(event,this,' + $(this)[0].id + ');"><td>' + note.title.slice(0, 8) + '</td><td>' + note.description.slice(0, 8) + '</td>' +
                 '<td>' + note.conclusion.slice(0, 8) + '</td>' +
                 '<td>' + note.keywords.slice(0, 8) + '</td>' +
                 '<td>' + note.subject.slice(0, 8) + '</td>' +
@@ -229,6 +229,7 @@ function create() {
                 'X-CSRF-TOKEN': token
             }
         }).done(function (data) {
+            $(message).children().remove();
             location.reload();
         });
     } else {
