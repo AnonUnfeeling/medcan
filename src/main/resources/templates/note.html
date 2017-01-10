@@ -59,26 +59,22 @@
     </div>
 </nav>
 <div id="table-container" class="container">
-    <div id="record-header">
-            <h3>All notes in <label th:text="${param.title}"></label></h3>
-            <div class="dropdown">
-                <button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown">Search
-                    <span class="caret"></span></button>
-                <ul class="dropdown-menu">
-                    <li>
-                    <form method="get" action="/notes/results" class="navbar-form navbar-left">
-                        <div class="input-group">
-                            <input required type="text" class="form-control" name="t"
-                                   placeholder="Search in all notes...">
-                            <input hidden name="p" value="">
-                                  <span class="input-group-btn">
-                                    <button class="btn btn-default" type="submit">Go!</button>
-                                  </span>
-                        </div>
-                    </form>
-                    </li>
-                </ul>
+    <div id="record-header" class="row">
+        <div class="col-md-8">
+            <h4>All notes in <label th:text="${param.title}"></label></h4>
+        </div>
+        <div class="col-lg-4">
+            <div class="input-group">
+                <input class="form-control" placeholder="Search in this record..."/>
+                <div class="input-group-btn">
+                    <button class="btn btn-default" type="submit">Go!</button>
+                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><span class="glyphicon glyphicon-option-vertical"></span></button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Action</a></li>
+                    </ul>
+                </div>
             </div>
+        </div>
     </div>
     <div class="panel panel-default">
         <div class="panel-heading">Record info</div>
@@ -87,7 +83,7 @@
             <h5>Record type: <label th:text="${param.type}"></label></h5>
         </div>
     </div>
-    <button id="endReview" class="btn btn-info" onclick="loadStatus(); loadRecordEndSetData();"
+    <button id="endReview" class="btn btn-info bottom-right" onclick="loadStatus(); loadRecordEndSetData();"
             data-toggle="modal"
             data-target="#endReviewModal"> Add end review
     </button>

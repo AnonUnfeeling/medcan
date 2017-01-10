@@ -2,14 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Opss</title>
+    <title>Opss...</title>
+    <link rel="stylesheet" href="/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/css/main.css"/>
 </head>
 <body>
-<h1>Error</h1>
-<p  th:text="${error.exception}">Default Error Message</p>
-<p  th:text="${error.exception_type}">Default Error Message</p>
-<p  th:text="${error.request_uri}">Default Error Message</p>
-<p  th:text="${error.servlet_name}">Default Error Message</p>
-<a href="/" th:href="@{/}">Back to Home Page</a>
+<div class="container">
+    <h3>Status: <span th:text="${#response.status}"></span></h3>
+    <p>Something goes wrong:(</p>
+    <a href="/" th:href="@{/}">Back to Home Page</a>
+</div>
 </body>
 </html>

@@ -46,3 +46,6 @@ body{
 tr{
     cursor:pointer;
 }
+textarea {
+    max-width: 838px;
+}
