@@ -63,7 +63,7 @@
         <h4>Record name: <label th:text="${param.title}"></label></h4>
         <h4>Record type: <label th:text="${param.type}"></label></h4>
     </div>
-    <button id="endReview" class="btn btn-info" onclick="loadStatus();"
+    <button id="endReview" class="btn btn-info" onclick="loadStatus(); loadRecordEndSetData();"
             data-toggle="modal"
             data-target="#endReviewModal"> Add end review
     </button>
@@ -88,7 +88,6 @@
     </div>
     <div class="row">
         <div class="col-md-6">
-            <!--loadStatus(); -->
             <button id="addNoteButton" type="button"
                     onclick=" loadSubject(); loadSubSubject(); loadTreatment();"
                     class="btn btn-info bottom-left"

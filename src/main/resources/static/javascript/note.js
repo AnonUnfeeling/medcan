@@ -333,7 +333,6 @@ function disableFields(boolean) {
     $('#countryNote').prop("disabled", boolean);
     $('#languageNote').prop("disabled", boolean);
     $('#treatmentNote').prop("disabled", boolean);
-    // $('#statusNote').prop("disabled", boolean);
     $('#titleForNote').prop("disabled", boolean);
 }
 
@@ -378,11 +377,43 @@ function loadRecord() {
         }
     }).done(function (data) {
         var header = $('#noteHeader');
-        if (data.endDescription.trim().length > 0) {
-            header.append("<h4>End description:<label>" + data.endDescription + "</label></h4>");
-            header.append("<h4>End conclusion: <label>" + data.endConclusion + "</label></h4>");
-            header.append("<h4>Status: <label>" + data.status + "</label></h4>");
-            header.append("<h4>Country: <label>" + data.country + "</label></h4>");
+        try {
+            if (data.endDescription.trim().length > 0)
+                header.append("<h4>End description:<label>" + data.endDescription + "</label></h4>");
+        } catch (err) {
         }
+        try {
+            if (data.endConclusion.trim().length > 0)
+                header.append("<h4>End conclusion: <label>" + data.endConclusion + "</label></h4>");
+        } catch (err) {
+        }
+        try {
+            if (data.country.trim().length > 0)
+                header.append("<h4>Country: <label>" + data.country + "</label></h4>");
+        } catch (err) {
+        }
+        try {
+            if (data.status.trim().length > 0)
+                header.append("<h4>Status: <label>" + data.status + "</label></h4>");
+        } catch (err) {
+        }
+    });
+}
+
+function loadRecordEndSetData() {
+    $.ajax({
+        method: "GET",
+        url: "/records/getRecordDetails",
+        data: {
+            recordName: $('#titleNote').val()
+        },
+        headers: {
+            'X-CSRF-TOKEN': token
+        }
+    }).done(function (data) {
+        $('#endDescription').val(data.endDescription);
+        $('#endConclusion').val(data.endConclusion);
+        $('#endCountry').val(data.country);
+        $('#endStatus').val(data.status);
     });
 }

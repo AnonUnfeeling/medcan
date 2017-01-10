@@ -14,15 +14,15 @@ $(document).ready(function () {
     }).done(function (data) {
         if (data == "COMPANY") {
             $('#companyLink').hide();
-            if ($('#endReview') != null) {
-                $('#endReview').hide();
+            if ($('#endStatus') != null) {
+                $('#endStatus').hide();
             }
         }
         if (data == "USER") {
             $('#companyLink').hide();
             $('#userLink').hide();
-            if ($('#endReview') != null) {
-                $('#endReview').hide();
+            if ($('#endStatus') != null) {
+                $('#endStatus').hide();
             }
         }
     })

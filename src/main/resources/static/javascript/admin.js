@@ -119,7 +119,29 @@ function createCompany() {
         $(message).children().remove();
         message.append("<div id='success' class='alert alert-success'><strong>Field is empty</strong></div>");
     } else {
-        if (companyName.trim().length == 0) {
+        try {
+            if (companyName.trim().length > 0) {
+                $.ajax({
+                    method: "GET",
+                    url: "/editCompany",
+                    data: {
+                        preCompanyName: companyName,
+                        companyName: $('#companyName').val()
+                    }
+                    ,
+                    headers: {
+                        'X-CSRF-TOKEN': token
+                    }
+                }).done(function (data) {
+                    $(message).children().remove();
+                    $('#companyName').val(null);
+                    location.reload();
+                }).fail(function (data) {
+                    $(message).children().remove();
+                    message.append("<div id='error' class='alert alert-danger'><strong>" + data.responseText + "</strong></div>");
+                });
+            }
+        } catch (err) {
             $.ajax({
                 method: "POST",
                 url: "/makeCompany",
@@ -131,27 +153,6 @@ function createCompany() {
                 $(message).children().remove();
                 $('#companyName').val(null);
                 message.append("<div id='success' class='alert alert-success'><strong>" + data + "</strong></div>");
-                location.reload();
-            }).fail(function (data) {
-                $(message).children().remove();
-                message.append("<div id='error' class='alert alert-danger'><strong>" + data.responseText + "</strong></div>");
-            });
-
-        } else {
-            $.ajax({
-                method: "POST",
-                url: "/editCompany",
-                data: {
-                    preCompanyName: companyName,
-                    companyName: $('#companyName').val()
-                }
-                ,
-                headers: {
-                    'X-CSRF-TOKEN': token
-                }
-            }).done(function (data) {
-                $(message).children().remove();
-                $('#companyName').val(null);
                 location.reload();
             }).fail(function (data) {
                 $(message).children().remove();

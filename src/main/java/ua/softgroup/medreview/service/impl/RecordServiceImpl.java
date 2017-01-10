@@ -66,8 +66,7 @@ public class RecordServiceImpl implements RecordService {
 
     @Override
     public void saveRecord(Record recordForm) {
-        User currentUser = authenticationService.getPrincipal();
-        recordRepository.save(new Record(recordForm.getTitle(), recordForm.getType(), currentUser));
+        recordRepository.save(recordForm);
     }
 
     @Override

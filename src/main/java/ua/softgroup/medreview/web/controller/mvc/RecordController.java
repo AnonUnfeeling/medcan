@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import ua.softgroup.medreview.persistent.entity.NoteStatus;
 import ua.softgroup.medreview.persistent.entity.Record;
 import ua.softgroup.medreview.persistent.entity.RecordType;
 import ua.softgroup.medreview.persistent.entity.User;
@@ -66,6 +67,10 @@ public class RecordController {
         if(bindingResult.hasErrors()) return ResponseEntity.badRequest().body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
         User principal = authenticationService.getPrincipal();
         Record record = new Record(recordForm.getTitle(), recordForm.getType(), principal);
+        record.setCountry(recordForm.getCountry());
+        record.setStatus(NoteStatus.IN_REVIEW.getStatus());
+        record.setEndConclusion("");
+        record.setEndDescription("");
         recordService.saveRecord(record);
         return ResponseEntity.status(HttpStatus.CREATED).body("Record '"+record.getTitle()+"' was created.");
     }
@@ -122,10 +127,10 @@ public class RecordController {
         Record record = recordService.getByTitle(recordForm.getTitle());
         record.setTitle(recordForm.getTitle());
         record.setAuthor(record.getAuthor());
-        record.setCountry(recordForm.getCountry());
+        record.setCountry(record.getCountry());
         record.setEndDescription(recordForm.getEndDescription());
         record.setEndConclusion(recordForm.getEndConclusion());
-        record.setStatus(recordForm.getStatus());
+        record.setStatus(record.getStatus());
         record.setCreationDate(record.getCreationDate());
         record.setNotes(record.getNotes());
         record.setType(record.getType());

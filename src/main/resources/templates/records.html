@@ -43,7 +43,7 @@
                                   <span class="input-group-btn">
                                     <button class="btn btn-default" type="submit">Go!</button>
                                   </span>
-                        </div><!-- /input-group -->
+                        </div>
                     </form>
                 </li>
                 <li>
@@ -106,8 +106,12 @@
                                 <div class="form-group">
                                     <label>Type:</label>
                                     <select id="type" class="form-control"></select> <br/>
-                                    <div id="message-container"></div>
                                 </div>
+                                <div class="form-group">
+                                    <label>Country:</label>
+                                    <input id="country" type="text" placeholder="Country" class="form-control"/>
+                                </div>
+                                <div id="message-container"></div>
                             </div>
                             <div id="form-control" class="text-right">
                                 <button class="btn btn-info" onclick="createRecord();">SUBMIT</button>

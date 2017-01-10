@@ -162,7 +162,8 @@ function createRecord() {
             url: "/records/add",
             data: {
                 title: $('#title').val(),
-                type: $('#type').val()
+                type: $('#type').val(),
+                country: $('#country').val()
             },
             headers: {
                 'X-CSRF-TOKEN': token
