@@ -10,9 +10,6 @@ import java.util.List;
  */
 public interface NoteRepositorySearch {
 
-    @Deprecated
-    List<Note> searchByKeywords(String keywords, LocalDate from, LocalDate to);
-
     /**
      * Searches notes by all fields. Supports stemming in English.
      *

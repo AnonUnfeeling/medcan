@@ -15,6 +15,7 @@ import java.util.List;
  */
 public class NoteRepositoryImpl extends SearchableRepository<Note> implements NoteRepositorySearch {
 
+    private static final String NOTE_TITLE_FIELD = "title";
     private static final String NOTE_DESCRIPTION_FIELD = "description";
     private static final String NOTE_CONCLUSION_FIELD = "conclusion";
     private static final String NOTE_KEYWORDS_FIELD = "keywords";
@@ -22,7 +23,7 @@ public class NoteRepositoryImpl extends SearchableRepository<Note> implements No
     private static final String NOTE_SUB_SUBJECT_FIELD = "subSubject";
     private static final String NOTE_COUNTRY_FIELD = "country";
     private static final String NOTE_LANGUAGE_FIELD = "language";
-    private static final String NOTE_STATUS_FIELD = "status";
+    private static final String NOTE_TREATMENT_FIELD = "treatment";
     private static final String NOTE_CREATION_DATE_FIELD = "creationDate";
     private static final String NOTE_AUTHOR_USERNAME_FIELD = "record.author.login";
 
@@ -33,26 +34,14 @@ public class NoteRepositoryImpl extends SearchableRepository<Note> implements No
     }
 
     @Override
-    @Deprecated
-    public List<Note> searchByKeywords(String text, LocalDate from, LocalDate to) {
-        return searchByKeywords(
-                Search.getFullTextEntityManager(entityManager),
-                from, to, NOTE_CREATION_DATE_FIELD,
-                text, Arrays.asList(NOTE_DESCRIPTION_FIELD, NOTE_CONCLUSION_FIELD, NOTE_KEYWORDS_FIELD,
-                                    NOTE_SUBJECT_FIELD, NOTE_SUB_SUBJECT_FIELD, NOTE_COUNTRY_FIELD,
-                                    NOTE_LANGUAGE_FIELD, NOTE_STATUS_FIELD)
-        );
-    }
-
-    @Override
     @Transactional(readOnly = true)
     public List<Note> searchByAllFields(String text, LocalDate from, LocalDate to) {
         return searchByKeywords(
                 Search.getFullTextEntityManager(entityManager),
                 from, to, NOTE_CREATION_DATE_FIELD,
-                text, Arrays.asList(NOTE_DESCRIPTION_FIELD, NOTE_CONCLUSION_FIELD, NOTE_KEYWORDS_FIELD,
+                text, Arrays.asList(NOTE_TITLE_FIELD, NOTE_DESCRIPTION_FIELD, NOTE_CONCLUSION_FIELD, NOTE_KEYWORDS_FIELD,
                         NOTE_SUBJECT_FIELD, NOTE_SUB_SUBJECT_FIELD, NOTE_COUNTRY_FIELD,
-                        NOTE_LANGUAGE_FIELD, NOTE_STATUS_FIELD)
+                        NOTE_LANGUAGE_FIELD, NOTE_TREATMENT_FIELD)
         );
     }
 
@@ -63,9 +52,9 @@ public class NoteRepositoryImpl extends SearchableRepository<Note> implements No
                 Search.getFullTextEntityManager(entityManager),
                 username, NOTE_AUTHOR_USERNAME_FIELD,
                 from, to, NOTE_CREATION_DATE_FIELD,
-                text, Arrays.asList(NOTE_DESCRIPTION_FIELD, NOTE_CONCLUSION_FIELD, NOTE_KEYWORDS_FIELD,
+                text, Arrays.asList(NOTE_TITLE_FIELD, NOTE_DESCRIPTION_FIELD, NOTE_CONCLUSION_FIELD, NOTE_KEYWORDS_FIELD,
                                     NOTE_SUBJECT_FIELD, NOTE_SUB_SUBJECT_FIELD, NOTE_COUNTRY_FIELD,
-                                    NOTE_LANGUAGE_FIELD, NOTE_STATUS_FIELD)
+                                    NOTE_LANGUAGE_FIELD, NOTE_TREATMENT_FIELD)
         );
     }
 
