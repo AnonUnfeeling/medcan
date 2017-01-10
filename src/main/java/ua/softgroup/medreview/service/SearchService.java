@@ -15,4 +15,6 @@ public interface SearchService {
     List<Record> searchByTitle(String text, LocalDate from, LocalDate to);
 
     List<Note> searchByAllFields(String text, LocalDate from, LocalDate to);
+
+    List<Note> searchNotesInRecord(String recordTitle, String text, String category, String subCategory, String treatment);
 }

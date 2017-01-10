@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -105,7 +104,6 @@ public class NoteRestController {
                                    @RequestParam String subject,
                                    @RequestParam String subSubject,
                                    @RequestParam String country,
-//                                   @RequestParam String status,
                                    @RequestParam String treatment,
                                    @RequestParam String titleForNote) {
         try {
@@ -117,7 +115,6 @@ public class NoteRestController {
             note.setSubSubject(subSubject);
             note.setCountry(country);
             note.setLanguage(authenticationService.getPrincipal().getLanguage());
-//            note.setStatus(status);
             note.setTreatment(treatment);
             note.setTitle(titleForNote);
             note.setRecord(recordRepository.findByTitle(titleRecord));
@@ -149,17 +146,6 @@ public class NoteRestController {
     private boolean isDeleted(long id, Note note) {
         return noteRepository.findByRecordId(id).remove(note);
     }
-
-//    @PostMapping("/records/{id}/changeStatus")
-//    @ResponseBody
-//    public ResponseEntity changeStatus(@PathVariable Long id, @RequestParam Note note, @RequestParam String status) {
-//        if (status != null && note != null) {
-////            noteRepository.findByRecordId(id).stream().filter(n -> note.getDescription().equals(n.getDescription())).findFirst().get().setStatus(status);
-//            return ResponseEntity.ok(HttpStatus.OK);
-//        } else {
-//            return new ResponseEntity(Keys.FAIL.toString(), HttpStatus.OK);
-//        }
-//    }
 
     @GetMapping(value = "notes/statuses")
     public ResponseEntity<List<String>> getNoteStatuses() {
@@ -200,4 +186,12 @@ public class NoteRestController {
     public ModelAndView showSearchResults() {
         return new ModelAndView(SEARCH_NOTES_VIEW);
     }
+
+    @PostMapping(value = "/search/records/{title}/notes/")
+    public ResponseEntity<List<Note>> searchNotesInCurrentRecord(@PathVariable String title, @RequestParam String text,
+                                                                 @RequestParam String category, @RequestParam String subCategory,
+                                                                 @RequestParam String treatment) {
+        return ResponseEntity.ok(searchService.searchNotesInRecord(title, text, category, subCategory, treatment));
+    }
+
 }
