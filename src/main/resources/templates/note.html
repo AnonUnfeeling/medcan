@@ -64,8 +64,11 @@
             <h4>All notes in <label th:text="${param.title}"></label></h4>
         </div>
         <div class="col-lg-4">
+            <form method="get" action="/notes/results">
             <div class="input-group">
-                <input class="form-control" placeholder="Search in this record..."/>
+                <input class="form-control" name="t" placeholder="Search in this record..."/>
+                <input hidden name="p" value=""/>
+                <input hidden type="text" name="title" th:value="${param.title}">
                 <div class="input-group-btn">
                     <button class="btn btn-default" type="submit">Go!</button>
                     <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><span class="glyphicon glyphicon-option-vertical"></span></button>
@@ -74,19 +77,24 @@
                     </ul>
                 </div>
             </div>
+            </form>
         </div>
     </div>
     <div class="panel panel-default">
-        <div class="panel-heading">Record info</div>
-        <div class="panel-body" id="noteHeader">
+        <div class="panel-heading">
+            <span>Record info</span>
+        </div>
+        <div class="panel-body">
+            <div id="noteHeader">
             <h5>Record name: <label th:text="${param.title}"></label></h5>
             <h5>Record type: <label th:text="${param.type}"></label></h5>
+            </div>
+            <button id="endReview" class="btn btn-sm btn-default right" onclick="loadStatus(); loadRecordEndSetData();"
+                    data-toggle="modal"
+                    data-target="#endReviewModal"> Edit
+            </button>
         </div>
     </div>
-    <button id="endReview" class="btn btn-info bottom-right" onclick="loadStatus(); loadRecordEndSetData();"
-            data-toggle="modal"
-            data-target="#endReviewModal"> Add end review
-    </button>
     <hr/>
     <div class="table-responsive">
         <table class="table table-responsive table-hover table-striped">
