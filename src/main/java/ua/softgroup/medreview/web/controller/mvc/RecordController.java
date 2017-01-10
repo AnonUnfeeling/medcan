@@ -130,7 +130,7 @@ public class RecordController {
         record.setCountry(record.getCountry());
         record.setEndDescription(recordForm.getEndDescription());
         record.setEndConclusion(recordForm.getEndConclusion());
-        record.setStatus(record.getStatus());
+        record.setStatus(recordForm.getStatus());
         record.setCreationDate(record.getCreationDate());
         record.setNotes(record.getNotes());
         record.setType(record.getType());

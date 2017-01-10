@@ -379,22 +379,22 @@ function loadRecord() {
         var header = $('#noteHeader');
         try {
             if (data.endDescription.trim().length > 0)
-                header.append("<h4>End description:<label>" + data.endDescription + "</label></h4>");
+                header.append("<h5>End description:<label>" + data.endDescription + "</label></h5>");
         } catch (err) {
         }
         try {
             if (data.endConclusion.trim().length > 0)
-                header.append("<h4>End conclusion: <label>" + data.endConclusion + "</label></h4>");
+                header.append("<h5>End conclusion: <label>" + data.endConclusion + "</label></h5>");
         } catch (err) {
         }
         try {
             if (data.country.trim().length > 0)
-                header.append("<h4>Country: <label>" + data.country + "</label></h4>");
+                header.append("<h5>Country: <label>" + data.country + "</label></h5>");
         } catch (err) {
         }
         try {
             if (data.status.trim().length > 0)
-                header.append("<h4>Status: <label>" + data.status + "</label></h4>");
+                header.append("<h5>Status: <label>" + data.status + "</label></h5>");
         } catch (err) {
         }
     });
