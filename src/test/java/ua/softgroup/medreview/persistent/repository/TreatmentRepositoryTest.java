@@ -7,6 +7,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.omg.CORBA.TRANSACTION_MODE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -32,24 +33,24 @@ import static org.junit.Assert.*;
 @ContextConfiguration(classes = {SpringDataConfig.class})
 @ActiveProfiles("test")
 @SpringBootTest
-public class SubjectRepositoryTest {
+public class TreatmentRepositoryTest {
 
-    private static final String SUBJECT_TABLE = "subject";
-    private static final String SUBJECT_NAME_FIELD = "name-";
-    private static final int SUBJECT_COUNT = 10;
-    private static final Operation DELETE_ALL = sequenceOf(deleteAllFrom(SUBJECT_TABLE));
+    private static final String TREATMENT_TABLE = "treatment";
+    private static final String TREATMENT_NAME_FIELD = "name-";
+    private static final int TREATMENT_COUNT = 10;
+    private static final Operation DELETE_ALL = sequenceOf(deleteAllFrom(TREATMENT_TABLE));
 
     private static final Operation INSERT_DATA = sequenceOf(
-            insertInto(SUBJECT_TABLE)
+            insertInto(TREATMENT_TABLE)
                     .withGeneratedValue("id", sequence().startingAt(1L))
-                    .withGeneratedValue("name", stringSequence(SUBJECT_NAME_FIELD).startingAt(1L))
-                    .columns().repeatingValues().times(SUBJECT_COUNT)
+                    .withGeneratedValue("name", stringSequence(TREATMENT_NAME_FIELD).startingAt(1L))
+                    .columns().repeatingValues().times(TREATMENT_COUNT)
                     .build());
 
     @Autowired
     private DataSource dataSource;
     @Autowired
-    private SubjectRepository subjectRepository;
+    private TreatmentRepository treatmentRepository;
 
     @Before
     public void setUp() throws Exception {
@@ -61,22 +62,21 @@ public class SubjectRepositoryTest {
         new DbSetup(new DataSourceDestination(dataSource), DELETE_ALL).launch();
     }
 
-
     @Test
     public void findByName() throws Exception {
-        int id = new Random().nextInt(SUBJECT_COUNT - 1) + 1;
-        assertNotNull(subjectRepository.findByName(SUBJECT_NAME_FIELD + id));
+        int id = new Random().nextInt(TREATMENT_COUNT - 1) + 1;
+        assertNotNull(treatmentRepository.findByName(TREATMENT_NAME_FIELD + id));
     }
 
     @Test
     public void findByName_notFound() throws Exception {
-        assertNull(subjectRepository.findByName(SUBJECT_NAME_FIELD + SUBJECT_COUNT + 77));
+        assertNull(treatmentRepository.findByName(TREATMENT_NAME_FIELD + TREATMENT_COUNT + 777));
     }
 
     @Test
     public void deleteByName() throws Exception {
-        int id = new Random().nextInt(SUBJECT_COUNT - 1) + 1;
-        subjectRepository.deleteByName(SUBJECT_NAME_FIELD + id);
+        int id = new Random().nextInt(TREATMENT_COUNT - 1) + 1;
+        treatmentRepository.deleteByName(TREATMENT_NAME_FIELD + id);
     }
 
 }
