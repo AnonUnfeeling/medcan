@@ -63,7 +63,7 @@ function gerRecordsByUser(page) {
                 ' ' + record.creationDate.year)) +
                 '</td><td>'+ record.notes.length +'</td><td class="text-right"><span id="' + record.title + '" data-singleton="true" data-toggle="confirmation" class="glyphicon glyphicon-remove-circle records-control" aria-hidden="true"></span></td></tr>');
         });
-        manageCompany();
+        manageRecord();
     }).fail(function (data) {
         console.log(data);
     });
@@ -105,7 +105,7 @@ function getRecords(page) {
                 ' ' + record.creationDate.year)) +
                 '</td><td>'+ record.notes.length +'</td><td class="text-right"><span id="' + record.title + '" data-singleton="true" data-toggle="confirmation" class="glyphicon glyphicon-remove-circle records-control" aria-hidden="true"></span></td></tr>');
         });
-        manageCompany();
+        manageRecord();
     }).fail(function (data) {
 
     });
@@ -126,7 +126,7 @@ function showNote(event, record) {
 }
 
 //Add delete button to last column in table
-function manageCompany() {
+function manageRecord() {
     var record_control = $('.records-control');
     $('[data-toggle=confirmation]').confirmation({
         rootSelector: '[data-toggle=confirmation]'

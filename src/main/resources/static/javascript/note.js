@@ -175,9 +175,6 @@ function loadPreNote(event, note, id) {
         loadNote();
         $('#submitButton').hide();
         $('#languageNote').show();
-        document.getElementById('createCategory').style.display = 'none';
-        document.getElementById('createCategory').nextElementSibling.style.display = 'none';
-        document.getElementById('createCategory').nextElementSibling.nextElementSibling.style.display = 'none';
         $('#titleFoNote').text("Details");
         var edit = $('#creteNote');
         disableFields(true);
@@ -186,6 +183,7 @@ function loadPreNote(event, note, id) {
 }
 
 function manageCompany() {
+    console.log("dsa");
     var record_control = $('.users-control');
     $('[data-toggle=confirmation]').confirmation({
         rootSelector: '[data-toggle=confirmation]'
@@ -217,9 +215,6 @@ function manageCompany() {
 $(document).on('hide.bs.modal', '#creteNote', function () {
     editId = null;
     isEdit = false;
-    document.getElementById('createCategory').style.display = 'initial';
-    document.getElementById('createCategory').nextElementSibling.style.display = 'initial';
-    document.getElementById('createCategory').nextElementSibling.nextElementSibling.style.display = 'initial';
     $('#titleFoNote').text("Creating new note");
     $('#submitButton').show();
     $('#descriptionNote').val("");

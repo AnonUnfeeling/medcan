@@ -69,7 +69,6 @@ public class NoteRestController {
                                       @RequestParam String keywords,
                                       @RequestParam String subject,
                                       @RequestParam String subSubject,
-                                      @RequestParam String country,
                                       @RequestParam String treatment,
                                       @RequestParam String titleForNote) {
         try {
@@ -79,7 +78,7 @@ public class NoteRestController {
             note.setKeywords(keywords);
             note.setSubject(subject);
             note.setSubSubject(subSubject);
-            note.setCountry(country);
+            note.setCountry(recordRepository.findByTitle(titleRecord).getCountry());
             note.setLanguage(authenticationService.getPrincipal().getLanguage());
             note.setTreatment(treatment);
             note.setTitle(titleForNote);
@@ -110,7 +109,7 @@ public class NoteRestController {
             note.setKeywords(keywords);
             note.setSubject(subject);
             note.setSubSubject(subSubject);
-            note.setCountry(country);
+            note.setCountry(recordRepository.findByTitle(titleRecord).getCountry());
             note.setLanguage(authenticationService.getPrincipal().getLanguage());
             note.setTreatment(treatment);
             note.setTitle(titleForNote);
