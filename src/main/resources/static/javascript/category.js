@@ -210,7 +210,6 @@ function manageSubCategory() {
 }
 
 function editSubCategory() {
-    console.log("yes");
     var message = $('#message-container');
     if ($('#categoryName').val().trim().length == 0) {
         $(message).children().remove();
@@ -231,7 +230,7 @@ function editSubCategory() {
                 }).done(function (data) {
                     $(message).children().remove();
                     $('#categoryName').val(null);
-                    location.reload();
+                    getSubCategory(preCategoryName);
                 }).fail(function (data) {
                     $(message).children().remove();
                     message.append("<div id='error' class='alert alert-danger'><strong>" + data.responseText + "</strong></div>");
@@ -251,7 +250,7 @@ function editSubCategory() {
                 $(message).children().remove();
                 $('#companyName').val(null);
                 message.append("<div id='success' class='alert alert-success'><strong>" + data + "</strong></div>");
-                location.reload();
+                getSubCategory(preCategoryName);
             }).fail(function (data) {
                 $(message).children().remove();
                 message.append("<div id='error' class='alert alert-danger'><strong>" + data.responseText + "</strong></div>");
@@ -261,7 +260,6 @@ function editSubCategory() {
 }
 
 function deleteSubCategory(control) {
-    $(control).parent().parent().remove();
     $.ajax({
         method: "DELETE",
         url: "/subjects/sub/" + control.attr('id'),
@@ -269,7 +267,7 @@ function deleteSubCategory(control) {
             'X-CSRF-TOKEN': token
         }
     }).done(function (data) {
-
+        getSubCategory(preCategoryName);
     });
 }
 
@@ -283,12 +281,20 @@ function showTreatmentForSubCategory(event, companyName) {
     }
 
     if (elm == allTDs[0] || elm == allTDs[1] && elm == companyName) {
-        $('#titleForCategory').text("All treatment");
         getTreatment($(companyName).find('td').first()[0].innerText);
     }
 }
 
 function getTreatment(subcategoryName) {
+    preSubCategoryName = subcategoryName;
+    $('#titleForCategory').text("All treatment");
+    isSubCategory = true;
+    $('#titleFoCategory').html("Add treatment");
+    $('#create-category').html("Add treatment");
+    $('#categoryName').attr("placeholder", "Treatment name");
+    $('#modalButton').click(function () {
+        editTreatment();
+    });
     $.ajax({
         method: "GET",
         url: "/subjects/treatments/" + subcategoryName.toString(),
@@ -301,19 +307,110 @@ function getTreatment(subcategoryName) {
         var table = $('#table-body');
         table.find('tr').remove();
         Object.keys(arr).forEach(function (key) {
-            table.append('<tr onclick="showTreatmentForSubCategory(event,this)"><td>'
+            table.append('<tr><td>'
                 + arr[key].name + '</td><td></td><td class="text-right"><span id="' +
                 arr[key].name + '" data-singleton="true"' +
-                ' data-toggle="edit" class="glyphicon glyphicon glyphicon-pencil edit-control" ' +
+                ' data-toggle="edit" class="glyphicon glyphicon glyphicon-pencil treatment-edit-control" ' +
                 'aria-hidden="true"></span><td class="text-right"><span id="' + arr[key].name + '" ' +
-                'data-singleton="true" data-toggle="confirmation" class="glyphicon glyphicon-remove-circle company-control"' +
+                'data-singleton="true" data-toggle="confirmation" class="glyphicon glyphicon-remove-circle treatment-delete-control"' +
                 ' aria-hidden="true"></span></td></tr>');
 
         });
-        // manageCompany();
+        manageTreatment();
     }).fail(function (data) {
 
     });
+}
+
+function manageTreatment() {
+    var company_control = $('.treatment-delete-control');
+
+    $('[data-toggle=confirmation]').confirmation({
+        rootSelector: '[data-toggle=confirmation]'
+    });
+
+    company_control.click(function () {
+        var control = $(this);
+        control.confirmation('show');
+        $('#table-body').on('confirmed.bs.confirmation', deleteTreatment(control));
+    });
+
+
+    $('[data-toggle=confirmation]').confirmation({
+        rootSelector: '[data-toggle=edit]'
+    });
+
+    var edit = $('.treatment-edit-control');
+    edit.click(function () {
+        var control = $(this);
+        var edit = $('#editCategoryModal');
+        preSubCategoryName = control.attr('id');
+        $('#titleFoCategory').text("Edit sub-category");
+        $('#categoryName').val(preSubCategoryName);
+        edit.modal('show');
+    });
+}
+
+function deleteTreatment(control) {
+    $.ajax({
+        method: "DELETE",
+        url: "/subjects/treatments/" + control.attr('id'),
+        headers: {
+            'X-CSRF-TOKEN': token
+        }
+    }).done(function (data) {
+        getTreatment(preSubCategoryName);
+    });
+}
+
+function editTreatment() {
+    var message = $('#message-container');
+    if ($('#categoryName').val().trim().length == 0) {
+        $(message).children().remove();
+        message.append("<div id='success' class='alert alert-success'><strong>Field is empty</strong></div>");
+    } else {
+        try {
+            if (preSubCategoryName.trim().length > 0) {
+                $.ajax({
+                    method: "POST",
+                    url: "/subjects/sub/editSubCategory",
+                    data: {
+                        name: $('#categoryName').val(),
+                        oldName: preSubCategoryName,
+                        subject: preCategoryName
+                    }, headers: {
+                        'X-CSRF-TOKEN': token
+                    }
+                }).done(function (data) {
+                    $(message).children().remove();
+                    $('#categoryName').val(null);
+                    getSubCategory(preCategoryName);
+                }).fail(function (data) {
+                    $(message).children().remove();
+                    message.append("<div id='error' class='alert alert-danger'><strong>" + data.responseText + "</strong></div>");
+                });
+            }
+        } catch (err) {
+            $.ajax({
+                method: "POST",
+                url: "/subjects/sub",
+                data: {
+                    name: $('#categoryName').val(),
+                    subject: preCategoryName
+                }, headers: {
+                    'X-CSRF-TOKEN': token
+                }
+            }).done(function (data) {
+                $(message).children().remove();
+                $('#companyName').val(null);
+                message.append("<div id='success' class='alert alert-success'><strong>" + data + "</strong></div>");
+                getSubCategory(preCategoryName);
+            }).fail(function (data) {
+                $(message).children().remove();
+                message.append("<div id='error' class='alert alert-danger'><strong>" + data.responseText + "</strong></div>");
+            });
+        }
+    }
 }
 
 $(document).on('hide.bs.modal', '#addCompanyModal', function () {

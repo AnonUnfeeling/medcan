@@ -125,8 +125,8 @@ public class SubjectController {
         return ResponseEntity.ok(TREATMENT_WAS_CREATED);
     }
 
-    @DeleteMapping(value = "/treatments")
-    public ResponseEntity deleteTreatment(String treatmentName) {
+    @DeleteMapping(value = "/treatments/{treatmentName}")
+    public ResponseEntity deleteTreatment(@PathVariable String treatmentName) {
         final Treatment treatment = subjectService.getTreatmentByName(treatmentName).orElseThrow(() -> new TreatmentNotFoundException(treatmentName));
         subjectService.deleteTreatment(treatment);
         return ResponseEntity.ok(TREATMENT_WAS_DELETED);
