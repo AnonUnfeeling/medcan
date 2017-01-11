@@ -22,7 +22,8 @@ $(document).ready(function () {
             $('#companyLink').hide();
             $('#userLink').hide();
             if ($('#endStatus') != null) {
-                $('#endStatus').hide();
+                document.getElementById('endStatus').style.display = 'none';
+                // $('#endStatus').hide();
             }
         }
     })

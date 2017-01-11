@@ -156,8 +156,8 @@ function loadNote() {
         $('#countryNote').val(data.country);
         $('#languageNote').val(data.language);
         var select = $('#subjectNote').empty();
-            select.append('<option value="' + data.subject + '">' +
-                '' + data.subject + '</option>');
+        select.append('<option value="' + data.subject + '">' +
+            '' + data.subject + '</option>');
         var select = $('#subSubjectNote').empty();
         select.append('<option value="' + data.subSubject + '">' +
             '' + data.subSubject + '</option>');
@@ -309,7 +309,7 @@ function loadSubSubject(categoryName) {
 function loadTreatment(subcategoryName) {
     $.ajax({
         method: "GET",
-        url: "/subjects/treatments/"+subcategoryName.toString(),
+        url: "/subjects/treatments/" + subcategoryName.toString(),
         dataType: "json",
         headers: {
             'X-CSRF-TOKEN': token
@@ -337,6 +337,12 @@ function disableFields(boolean) {
 }
 
 function createEndReview() {
+    var status;
+    if (document.getElementById('endStatus').style.display == 'none') {
+        status = "In review";
+    } else {
+        status = $('#endStatus').val();
+    }
     var message = $('#message-container');
     if ($('#endDescription').val().trim().length !== 0 && $('#endConclusion').val().trim().length !== 0) {
         $.ajax({
@@ -347,7 +353,7 @@ function createEndReview() {
                 type: $('#typeNote').val(),
                 endDescription: $('#endDescription').val(),
                 endConclusion: $('#endConclusion').val(),
-                status: $('#endStatus').val(),
+                status: status,
                 country: $('#endCountry').val()
             },
             headers: {
