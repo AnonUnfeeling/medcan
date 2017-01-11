@@ -23,6 +23,13 @@ public class UserForm {
     public UserForm() {
     }
 
+    public UserForm(String login, String role, String company, String language) {
+        this.login = login;
+        this.role = role;
+        this.company = company;
+        this.language = language;
+    }
+
     public UserForm(String login, String password, String role, String company, String language) {
         this.login = login;
         this.password = password;

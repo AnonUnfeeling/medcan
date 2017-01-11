@@ -166,7 +166,7 @@ function manageCompany() {
         userLogin = control.attr('id');
         loadRole();
         loadLanguage();
-        loadCompanies();
+        loadCompanies(control.attr('id'));
         edit.modal('show');
     });
 }
@@ -311,7 +311,7 @@ function loadLanguage() {
     });
 }
 
-function loadCompanies() {
+function loadCompanies(id) {
     var select = $('#userCompany').empty();
     $(document).ready(function () {
         $.ajax({
@@ -331,6 +331,7 @@ function loadCompanies() {
                 }).done(function (data) {
                     select.append('<option value="' + data + '">' + data + '</option>');
                     select.hide();
+                    setSelectsForUser(id);
                 });
             } else {
                 $.ajax({
@@ -349,8 +350,25 @@ function loadCompanies() {
                             '' + company.name + '</option>');
 
                     });
+                    setSelectsForUser(id);
                 });
             }
         });
+    });
+}
+
+function setSelectsForUser(id){
+    $.ajax({
+        method: "POST",
+        url: "/getUser",
+        data: { login: id},
+        dataType: "json",
+        headers: {
+            'X-CSRF-TOKEN': token
+        }
+    }).done(function (data) {
+        $('#userRole').find('option[value="'+data.role+'"]').attr('selected', 'selected');
+        $('#userCompany').find('option[value="'+data.company+'"]').attr('selected', 'selected');
+        $('#usersLanguage').find('option[value="'+data.language+'"]').attr('selected', 'selected');
     });
 }
