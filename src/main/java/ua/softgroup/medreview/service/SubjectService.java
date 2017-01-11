@@ -49,6 +49,8 @@ public interface SubjectService {
 
     void createTreatment(TreatmentDto treatmentDto, SubSubject subSubject);
 
+    void editTreatment(TreatmentDto treatmentDto, Treatment treatment);
+
     void deleteTreatment(Treatment treatment);
 
 }

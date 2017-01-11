@@ -232,6 +232,7 @@ function editSubCategory() {
                     $('#categoryName').val(null);
                     getSubCategory(preCategoryName);
                 }).fail(function (data) {
+                    console.log(data);
                     $(message).children().remove();
                     message.append("<div id='error' class='alert alert-danger'><strong>" + data.responseText + "</strong></div>");
                 });
@@ -347,8 +348,8 @@ function manageTreatment() {
         var control = $(this);
         var edit = $('#editCategoryModal');
         preTreatment = control.attr('id');
-        $('#titleFoCategory').text("Edit sub-category");
-        $('#categoryName').val(preSubCategoryName);
+        $('#titleFoCategory').text("Edit treatment");
+        $('#categoryName').val(preTreatment);
         edit.modal('show');
     });
 }
@@ -373,24 +374,24 @@ function editTreatment() {
     } else {
         try {
             if (preTreatment.trim().length > 0) {
-                // $.ajax({
-                //     method: "POST",
-                //     url: "/subjects/treatments/editSubCategory",
-                //     data: {
-                //         name: $('#categoryName').val(),
-                //         oldName: preSubCategoryName,
-                //         subject: preCategoryName
-                //     }, headers: {
-                //         'X-CSRF-TOKEN': token
-                //     }
-                // }).done(function (data) {
-                //     $(message).children().remove();
-                //     $('#categoryName').val(null);
-                //     getTreatment(preSubCategoryName);
-                // }).fail(function (data) {
-                //     $(message).children().remove();
-                //     message.append("<div id='error' class='alert alert-danger'><strong>" + data.responseText + "</strong></div>");
-                // });
+                $.ajax({
+                    method: "POST",
+                    url: "/subjects/treatments/edit",
+                    data: {
+                        name: $('#categoryName').val(),
+                        oldName: preTreatment,
+                        subSubject: preSubCategoryName
+                    }, headers: {
+                        'X-CSRF-TOKEN': token
+                    }
+                }).done(function (data) {
+                    $(message).children().remove();
+                    $('#categoryName').val(null);
+                    getTreatment(preSubCategoryName);
+                }).fail(function (data) {
+                    $(message).children().remove();
+                    message.append("<div id='error' class='alert alert-danger'><strong>" + data.responseText + "</strong></div>");
+                });
             }
         } catch (err) {
             $.ajax({
