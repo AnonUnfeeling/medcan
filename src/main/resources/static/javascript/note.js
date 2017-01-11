@@ -489,7 +489,7 @@ function loadRecord() {
         } catch (err) {
         }
         try {
-            if (data.type !== "Website")
+            if (data.type == "Website")
                 if (data.url.trim().length > 0)
                     header.append("<label>URL: </label><span>" + data.url + "</span><br/>");
         } catch (err) {
