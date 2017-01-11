@@ -322,6 +322,8 @@ function getTreatment(subcategoryName) {
     });
 }
 
+var preTreatment;
+
 function manageTreatment() {
     var company_control = $('.treatment-delete-control');
 
@@ -344,7 +346,7 @@ function manageTreatment() {
     edit.click(function () {
         var control = $(this);
         var edit = $('#editCategoryModal');
-        preSubCategoryName = control.attr('id');
+        preTreatment = control.attr('id');
         $('#titleFoCategory').text("Edit sub-category");
         $('#categoryName').val(preSubCategoryName);
         edit.modal('show');
@@ -370,33 +372,33 @@ function editTreatment() {
         message.append("<div id='success' class='alert alert-success'><strong>Field is empty</strong></div>");
     } else {
         try {
-            if (preSubCategoryName.trim().length > 0) {
-                $.ajax({
-                    method: "POST",
-                    url: "/subjects/sub/editSubCategory",
-                    data: {
-                        name: $('#categoryName').val(),
-                        oldName: preSubCategoryName,
-                        subject: preCategoryName
-                    }, headers: {
-                        'X-CSRF-TOKEN': token
-                    }
-                }).done(function (data) {
-                    $(message).children().remove();
-                    $('#categoryName').val(null);
-                    getSubCategory(preCategoryName);
-                }).fail(function (data) {
-                    $(message).children().remove();
-                    message.append("<div id='error' class='alert alert-danger'><strong>" + data.responseText + "</strong></div>");
-                });
+            if (preTreatment.trim().length > 0) {
+                // $.ajax({
+                //     method: "POST",
+                //     url: "/subjects/treatments/editSubCategory",
+                //     data: {
+                //         name: $('#categoryName').val(),
+                //         oldName: preSubCategoryName,
+                //         subject: preCategoryName
+                //     }, headers: {
+                //         'X-CSRF-TOKEN': token
+                //     }
+                // }).done(function (data) {
+                //     $(message).children().remove();
+                //     $('#categoryName').val(null);
+                //     getTreatment(preSubCategoryName);
+                // }).fail(function (data) {
+                //     $(message).children().remove();
+                //     message.append("<div id='error' class='alert alert-danger'><strong>" + data.responseText + "</strong></div>");
+                // });
             }
         } catch (err) {
             $.ajax({
                 method: "POST",
-                url: "/subjects/sub",
+                url: "/subjects/treatments",
                 data: {
                     name: $('#categoryName').val(),
-                    subject: preCategoryName
+                    subSubject: preSubCategoryName
                 }, headers: {
                     'X-CSRF-TOKEN': token
                 }
@@ -404,7 +406,7 @@ function editTreatment() {
                 $(message).children().remove();
                 $('#companyName').val(null);
                 message.append("<div id='success' class='alert alert-success'><strong>" + data + "</strong></div>");
-                getSubCategory(preCategoryName);
+                getTreatment(preSubCategoryName);
             }).fail(function (data) {
                 $(message).children().remove();
                 message.append("<div id='error' class='alert alert-danger'><strong>" + data.responseText + "</strong></div>");
