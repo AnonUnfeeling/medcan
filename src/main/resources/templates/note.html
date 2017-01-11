@@ -69,16 +69,33 @@
                     <input class="form-control" name="t" placeholder="Search in this record..."/>
                     <input hidden name="p" value=""/>
                     <input hidden type="text" name="title" th:value="${param.title}">
+                    <input id="cat" hidden type="text" name="c" value="All">
+                    <input id="subCat" hidden type="text" name="sc" value="All">
+                    <input id="treat" hidden type="text" name="tr" value="All">
                     <div class="input-group-btn">
                         <button class="btn btn-default" type="submit">Go!</button>
-                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><span
+                        <button id="dropdown-toggle" class="btn btn-default"  type="button"><span
                                 class="glyphicon glyphicon-option-vertical"></span></button>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Action</a></li>
-                        </ul>
                     </div>
                 </div>
             </form>
+            <div  hidden id="dropdown" style="padding:17px; min-width: 300px;">
+                <label for="category">Category</label>
+                <select class="form-control" id="category">
+                    <option value="All">All</option>
+                </select>
+                <label for="subCategory">Sub. category</label>
+                <select class="form-control" id="subCategory">
+                    <option value="All">All</option>
+                </select>
+                <label for="treatments">Treatment</label>
+                <select class="form-control" id="treatments">
+                    <option value="All">All</option>
+                </select>
+                <br/>
+                <button id="submit" class="btn btn-sm btn-danger" type="button">Save</button>
+                <button id="cancel" class="btn btn-sm btn-default" type="button">Cancel</button>
+            </div>
         </div>
     </div>
     <div class="panel panel-default">

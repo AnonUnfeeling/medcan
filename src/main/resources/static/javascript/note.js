@@ -8,7 +8,101 @@ $(document).ready(function () {
     checkUser();
     loadRecord();
     loadNotes();
+
+    searchFilter();
 });
+
+function searchFilter() {
+    $('#dropdown-toggle').on('click',function () {
+        $('#dropdown').toggle();
+    });
+    $('#cancel').on('click',function () {
+        $('#dropdown').hide();
+    });
+    $('#submit').on('click',function () {
+        saveFilterSettings();
+        $('#dropdown').hide();
+    });
+
+    loadSubjects();
+
+    $('#category').on('change',function () {
+        var category = $(this).val();
+        console.log(category);
+        if(category=='All'){
+            var select = $('#subCategory').empty();
+            select.append("<option value=All>All</option>");
+        } else {
+            $.ajax({
+                method: "GET",
+                url: "/subjects/" + $("#category").val(),
+                dataType: "json",
+                headers: {
+                    'X-CSRF-TOKEN': token
+                }
+            }).done(function (data) {
+                var arr = data;
+                loadTreatment(arr[0].name);
+                var select = $('#subCategory').empty();
+                select.append("<option value=All>All</option>");
+                Object.keys(arr).forEach(function (key) {
+                    select.append('<option value="' + arr[key].name + '">' +
+                        '' + arr[key].name + '</option>');
+                });
+            });
+        }
+    });
+
+    $('#subCategory').on('change',function () {
+        var treatment = $(this).val();
+        if(treatment == 'All'){
+            var select = $('#treatments').empty();
+            select.append("<option value=All>All</option>");
+        } else {
+            $.ajax({
+                method: "GET",
+                url: "/subjects/treatments/"+treatment,
+                dataType: "json",
+                headers: {
+                    'X-CSRF-TOKEN': token
+                }
+            }).done(function (data) {
+                var arr = data;
+                var select = $('#treatments').empty();
+                select.append("<option value=All>All</option>");
+                Object.keys(arr).forEach(function (key) {
+                    select.append('<option value="' + arr[key].name + '">' +
+                        '' + arr[key].name + '</option>');
+                });
+            });
+        }
+    });
+}
+
+function loadSubjects() {
+    $.ajax({
+        method: "GET",
+        url: "/subjects",
+        headers: {
+            'X-CSRF-TOKEN': token
+        }
+    }).done(function (data) {
+        var categories = data;
+        loadSubSubject(categories[0].name);
+        var select = $('#category').empty();
+        select.append("<option value=All>All</option>");
+        Object.keys(categories).forEach(function (key) {
+            select.append('<option class="added-option" value="' + categories[key].name + '">' +
+                '' + categories[key].name + '</option>');
+        });
+    });
+}
+
+function saveFilterSettings() {
+    $("#cat").val($("#category").val());
+    $("#subCat").val($("#subCategory").val());
+    $("#treat").val($("#treatments").val());
+}
 
 function checkUser() {
     $.ajax({
