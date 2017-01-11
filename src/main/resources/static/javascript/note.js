@@ -491,17 +491,17 @@ function loadRecord() {
         try {
             if (data.type == "Website")
                 if (data.url.trim().length > 0)
-                    header.append("<label>URL: </label><span>" + data.url + "</span><br/>");
+                    header.append("<label>URL: </label> <span>" + data.url + "</span><br/>");
         } catch (err) {
         }
         try {
             if (data.country.trim().length > 0)
-                header.append("<label>Country:</label> <span>" + data.country + "</span><br/>");
+                header.append("<label>Country: </label> <span>" + data.country + "</span><br/>");
         } catch (err) {
         }
         try {
             if (data.status.trim().length > 0)
-                header.append("<label>Status:</label> <span>" + data.status + "</span><br/>");
+                header.append("<label>Status: </label> <span>" + data.status + "</span><br/>");
         } catch (err) {
         }
     });
