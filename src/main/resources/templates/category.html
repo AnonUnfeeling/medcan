@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <title>Categories</title>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Admin page</title>
     <link rel="stylesheet" href="/css/bootstrap.css"/>
     <link rel="stylesheet" href="/css/main.css"/>
     <meta name="_csrf" th:content="${_csrf.token}"/>
@@ -11,8 +11,8 @@
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <script src="/javascript/jquery-3.1.1.min.js"></script>
     <script src="/javascript/bootstrap.min.js"></script>
-    <script src="/javascript/user.js"></script>
     <script src="/javascript/checkRole.js"></script>
+    <script src="/javascript/category.js"></script>
     <script src="/javascript/bootstrap-confirmation.js"></script>
     <script src="/javascript/jquery.twbsPagination.min.js"></script>
 </head>
@@ -20,34 +20,40 @@
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
-            <ul class="nav navbar-nav navbar-right">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-collapse-1" style="margin-right: 20px;">
+            <ul class="nav navbar-nav navbar-left">
                 <li><a href="/records" class="glyphicon glyphicon-home"></a> </li>
                 <li><a href="/company" id="companyLink">Companies</a></li>
                 <li><a href="/users" id="userLink">Users</a></li>
                 <li><a href="/records" id="recordLink">Records</a></li>
                 <li><a href="/subjects/view" >Category</a></li>
             </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <button onclick="location.href = '/logout';" type="button"
+                            class="btn btn-danger navbar-btn btn-sm center-block">Sign out
+                    </button>
+                </li>
+            </ul>
         </div>
-        <ul class="nav navbar-nav navbar-right" style="margin-right: 20px;">
-            <li>
-                <button onclick="location.href = '/logout';" type="button"
-                        class="btn btn-danger navbar-btn btn-sm center-block">Sign out
-                </button>
-            </li>
-        </ul>
     </div>
 </nav>
 <div class="container">
-    <h3>All users</h3>
+    <h3 id="titleForCategory">All categories</h3>
     <hr/>
     <div class="table-responsive">
         <table class="table table-responsive table-hover table-striped">
             <thead>
             <tr>
-                <th id="login">Login</th>
-                <th id="role">Role</th>
-                <th id="company">Company</th>
-                <th id="language">Language</th>
+                <th>Name</th>
                 <th></th>
             </tr>
             </thead>
@@ -57,8 +63,8 @@
     </div>
     <div class="row">
         <div class="col-md-6">
-            <button id="create-company" type="button" class="btn btn-info" data-toggle="modal"
-                    onclick="loadRole(); loadCompanies(); loadLanguage();" data-target="#addCompanyModal">Add new user
+            <button id="create-company" type="button" class="btn btn-info bottom-left" data-toggle="modal"
+                    data-target="#editCategoryModal">Add Category
             </button>
         </div>
         <div class="col-md-6 text-right">
@@ -66,36 +72,26 @@
         </div>
     </div>
 
-    <!--Modal-->
-    <div class="modal fade" id="addCompanyModal" role="dialog">
+    <!-- Modal edit category-->
+    <div class="modal fade" id="editCategoryModal" role="dialog">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title" id="titleForUser">Add user</h4>
+                    <h4 class="modal-title" id="titleFoCategory">Add category</h4>
                 </div>
-                <div class="modal-body">
-                    <input id="userLogin" placeholder="User Login" type="text" class="form-control"/> <br/>
-                    <input id="userPassword" placeholder="User password" type="password" class="form-control"/> <br/>
-                    <select id="userRole" class="form-control"></select> <br/>
-                    <select id="userCompany" class="form-control"></select> <br/>
-                    <select id="usersLanguage" class="form-control"></select> <br/>
+                <div id="modal-body" class="modal-body">
+                    <input id="categoryName" placeholder="Category name" type="text" class="form-control"/>
+                    <br/>
                     <div id="message-container"></div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary" onclick="createUser();">Save</button>
+                    <button class="btn btn-primary" onclick="editCategory();">Save</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<input id="companyName" th:value="${param.companyName}" hidden/>
-<script th:if="${param.companyName}">
-    getUsersByCompany();
-</script>
-<script th:unless="${param.companyName}">
-    loadAllUsers();
-</script>
 </body>
 </html>

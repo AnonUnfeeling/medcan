@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import ua.softgroup.medreview.persistent.entity.SubSubject;
 import ua.softgroup.medreview.persistent.entity.Subject;
 import ua.softgroup.medreview.persistent.entity.Treatment;
@@ -35,6 +36,11 @@ public class SubjectController {
     private static final String TREATMENT_WAS_CREATED = "Treatment was created successfully.";
     private static final String TREATMENT_WAS_DELETED = "Treatment was deleted.";
 
+    @GetMapping(value = "/view")
+    public ModelAndView getView() {
+        return new ModelAndView("category");
+    }
+
     @GetMapping
     public ResponseEntity<List<SubjectDto>> getAllSubjects() {
         return ResponseEntity.ok(subjectService.getAllSubjectDtos());
@@ -54,7 +60,7 @@ public class SubjectController {
         return ResponseEntity.ok(SUBJECT_WAS_CREATED);
     }
 
-    @PutMapping
+    @PostMapping(value = "/removeCategory")
     public ResponseEntity editSubject(@Valid SubjectDto subjectDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
