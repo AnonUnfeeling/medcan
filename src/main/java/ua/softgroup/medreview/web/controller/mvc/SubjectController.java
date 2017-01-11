@@ -60,7 +60,7 @@ public class SubjectController {
         return ResponseEntity.ok(SUBJECT_WAS_CREATED);
     }
 
-    @PostMapping(value = "/removeCategory")
+    @PostMapping(value = "/editCategory")
     public ResponseEntity editSubject(@Valid SubjectDto subjectDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
@@ -83,16 +83,18 @@ public class SubjectController {
 
     @PostMapping(value = "/sub")
     public ResponseEntity createSubSubject(@Valid SubSubjectDto subSubjectDto, BindingResult bindingResult) {
+        System.out.println(subSubjectDto);
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
         }
-        final Subject subject = subjectService.getSubjectByName(subSubjectDto.getSubject()).orElseThrow(() -> new SubjectNotFoundException(subSubjectDto.getSubject()));
+        final Subject subject = subjectService.getSubjectByName(subSubjectDto.getSubject()).get();
         subjectService.createSubSubject(subSubjectDto, subject);
         return ResponseEntity.ok(SUB_SUBJECT_WAS_CREATED);
     }
 
-    @PutMapping(value = "/sub")
+    @PostMapping(value = "/sub/editSubCategory")
     public ResponseEntity editSubSubject(@Valid SubSubjectDto subSubjectDto, BindingResult bindingResult) {
+        System.out.println(subSubjectDto);
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
         }
@@ -101,8 +103,8 @@ public class SubjectController {
         return ResponseEntity.ok(SUB_SUBJECT_WAS_CHANGED);
     }
 
-    @DeleteMapping(value = "/sub")
-    public ResponseEntity deleteSubSubjectByName(String name) {
+    @DeleteMapping(value = "/sub/{name}")
+    public ResponseEntity deleteSubSubjectByName(@PathVariable String name) {
         subjectService.deleteSubSubjectByName(name);
         return ResponseEntity.ok(SUB_SUBJECT_WAS_DELETED);
     }
