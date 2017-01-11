@@ -28,6 +28,7 @@ import ua.softgroup.medreview.web.form.UserForm;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TreeMap;
 
 import ua.softgroup.medreview.service.CompanyService;
@@ -62,6 +63,14 @@ public class UserController {
     @ResponseBody
     String checkCompany() {
         return authenticationService.getPrincipal().getCompany().getName();
+    }
+
+    @PostMapping("/getUser")
+    @ResponseBody
+    public UserForm getUserByLogin(@RequestParam String login){
+        User user = userService.findUserByLogin(login);
+        String company = user.getCompany() == null ? "Non company" : user.getCompany().getName();
+        return new UserForm(user.getLogin(),user.getRoles().get(0).getRole().name(),company,user.getLanguage());
     }
 
     @PostMapping("/checkUser")
