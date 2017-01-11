@@ -23,7 +23,7 @@ import static com.ninja_squad.dbsetup.Operations.insertInto;
 import static com.ninja_squad.dbsetup.Operations.sequenceOf;
 import static com.ninja_squad.dbsetup.generator.ValueGenerators.sequence;
 import static com.ninja_squad.dbsetup.generator.ValueGenerators.stringSequence;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 /**
  * @author Sergiy Perevyazko <sg.sergiyp@gmail.com>
@@ -34,7 +34,7 @@ import static org.junit.Assert.assertNotNull;
 @SpringBootTest
 public class SubSubjectRepositoryTest {
 
-    private static final String SUB_SUBJECT_TABLE = "subject";
+    private static final String SUB_SUBJECT_TABLE = "sub_subject";
     private static final String SUB_SUBJECT_NAME_FIELD = "name-";
     private static final int SUB_SUBJECT_COUNT = 10;
     private static final Operation DELETE_ALL = sequenceOf(deleteAllFrom(SUB_SUBJECT_TABLE));
@@ -49,7 +49,7 @@ public class SubSubjectRepositoryTest {
     @Autowired
     private DataSource dataSource;
     @Autowired
-    private SubjectRepository subjectRepository;
+    private SubSubjectRepository subSubjectRepository;
 
     @Before
     public void setUp() throws Exception {
@@ -64,13 +64,18 @@ public class SubSubjectRepositoryTest {
     @Test
     public void findByName() throws Exception {
         int id = new Random().nextInt(SUB_SUBJECT_COUNT - 1) + 1;
-        assertNotNull(subjectRepository.findByName(SUB_SUBJECT_NAME_FIELD + id));
+        assertNotNull(subSubjectRepository.findByName(SUB_SUBJECT_NAME_FIELD + id));
+    }
+
+    @Test
+    public void findByName_notFound() throws Exception {
+        assertNull(subSubjectRepository.findByName(SUB_SUBJECT_NAME_FIELD + SUB_SUBJECT_COUNT + 77));
     }
 
     @Test
     public void deleteByName() throws Exception {
         int id = new Random().nextInt(SUB_SUBJECT_COUNT - 1) + 1;
-        subjectRepository.deleteByName(SUB_SUBJECT_NAME_FIELD + id);
+        subSubjectRepository.deleteByName(SUB_SUBJECT_NAME_FIELD + id);
     }
 
 }
