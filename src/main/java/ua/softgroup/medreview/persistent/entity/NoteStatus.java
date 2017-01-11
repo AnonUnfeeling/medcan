@@ -5,7 +5,7 @@ package ua.softgroup.medreview.persistent.entity;
  * Created by Vladimir on 05.01.2017.
  */
 public enum NoteStatus {
-    APPROVED("Approved"), DISAPPROVED("Disapproved"), IN_REVIEW("In review"), REMOVED("Removed");
+    APPROVED("Approved"), DISAPPROVED("Disapproved"), IN_REVIEW("In review"), REMOVED("Removed"), NEW("New");
     private String status;
 
     NoteStatus(String status) {

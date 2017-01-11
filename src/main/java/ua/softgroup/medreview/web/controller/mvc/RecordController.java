@@ -68,7 +68,7 @@ public class RecordController {
         User principal = authenticationService.getPrincipal();
         Record record = new Record(recordForm.getTitle(), recordForm.getType(), principal);
         record.setCountry(recordForm.getCountry());
-        record.setStatus(NoteStatus.IN_REVIEW.getStatus());
+        record.setStatus(NoteStatus.NEW.getStatus());
         record.setEndConclusion("");
         record.setEndDescription("");
         recordService.saveRecord(record);

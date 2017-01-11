@@ -90,9 +90,9 @@
                 <h5>Record name: <label th:text="${param.title}"></label></h5>
                 <h5>Record type: <label th:text="${param.type}"></label></h5>
             </div>
-            <button id="endReview" class="btn btn-sm btn-default right" onclick="loadStatus(); loadRecordEndSetData();"
+            <button id="endReview" class="btn btn-info" onclick="loadStatus(); loadRecordEndSetData();"
                     data-toggle="modal"
-                    data-target="#endReviewModal"> Edit
+                    data-target="#endReviewModal"> Add end review
             </button>
         </div>
     </div>
@@ -213,7 +213,6 @@
                                   class="form-control"></textarea> <br/>
                         <textarea id="endConclusion" placeholder="Conclusion" class="form-control"></textarea><br/>
                         <select id="endStatus" class="form-control"></select> <br/>
-                        <!--<input id="endCountry" placeholder="Country" type="text" class="form-control"/><br/>-->
                         <div id="end-message-container"></div>
                     </div>
                     <hr/>
