@@ -151,28 +151,6 @@ public class NoteRestController {
                 .collect(Collectors.toList()));
     }
 
-    @GetMapping("/getSubject")
-    @ResponseBody
-    public List<Subject> getSubject() {
-        return subjectService.getAllSubjects();
-    }
-
-    @GetMapping("/getSubSubject")
-    @ResponseBody
-    public List<SubSubject> getSubSubject() {
-        return subjectService.getAllSubSubjects();
-    }
-
-    @GetMapping("/getTreatment")
-    @ResponseBody
-    public List<String> getTreatment() {
-        List<String> treatment = new ArrayList<>();
-        treatment.add("Treatment1");
-        treatment.add("Treatment2");
-        treatment.add("Treatment3");
-        return treatment;
-    }
-
     @GetMapping(value = "/notes/search")
     @ResponseBody
     public ResponseEntity<List<Note>> searchNotes(@RequestParam String keyword) {
@@ -195,5 +173,4 @@ public class NoteRestController {
         System.out.println("response size: " + notes.size());
         return ResponseEntity.ok(notes);
     }
-
 }

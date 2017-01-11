@@ -273,31 +273,33 @@ function loadStatus() {
 function loadSubject() {
     $.ajax({
         method: "GET",
-        url: "/getSubject",
-        dataType: "json",
+        url: "/subjects",
         headers: {
             'X-CSRF-TOKEN': token
         }
     }).done(function (data) {
-        var arr = data;
+        var categories = data;
+        loadSubSubject(categories[0].name);
         var select = $('#subjectNote').empty();
-        Object.keys(arr).forEach(function (key) {
-            select.append('<option value="' + arr[key].name + '">' +
-                '' + arr[key].name + '</option>');
+        Object.keys(categories).forEach(function (key) {
+            select.append('<option value="' + categories[key].name + '">' +
+                '' + categories[key].name + '</option>');
         });
     });
 }
 
-function loadSubSubject() {
+function loadSubSubject(categoryName) {
+    console.log(categoryName);
     $.ajax({
         method: "GET",
-        url: "/getSubSubject",
+        url: "/subjects/" + categoryName.toString(),
         dataType: "json",
         headers: {
             'X-CSRF-TOKEN': token
         }
     }).done(function (data) {
         var arr = data;
+        loadTreatment(arr[0].name);
         var select = $('#subSubjectNote').empty();
         Object.keys(arr).forEach(function (key) {
             select.append('<option value="' + arr[key].name + '">' +
@@ -306,10 +308,10 @@ function loadSubSubject() {
     });
 }
 
-function loadTreatment() {
+function loadTreatment(subcategoryName) {
     $.ajax({
         method: "GET",
-        url: "/getTreatment",
+        url: "/subjects/treatments/"+subcategoryName.toString(),
         dataType: "json",
         headers: {
             'X-CSRF-TOKEN': token
@@ -417,3 +419,10 @@ function loadRecordEndSetData() {
         $('#endStatus').val(data.status);
     });
 }
+
+$(document).ready(function () {
+    $('#treatmentNote').change(function () {
+        var val = $("#treatmentNote option:selected").text();
+        console.log(val);
+    });
+});
