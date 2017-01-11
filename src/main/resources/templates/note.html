@@ -15,6 +15,7 @@
     <script src="/javascript/bootstrap-confirmation.js"></script>
     <script src="/javascript/jquery.twbsPagination.min.js"></script>
     <script src="/javascript/note.js"></script>
+    <script src="/javascript/records.js"></script>
 </head>
 <body>
 <nav class="navbar navbar-default navbar-fixed-top">
@@ -90,6 +91,10 @@
                 <h5>Record name: <label th:text="${param.title}"></label></h5>
                 <h5>Record type: <label th:text="${param.type}"></label></h5>
             </div>
+            <button id="editRecordButton" class="btn btn-sm btn-default right" onclick="loadType(); loadStatus(); loadRecordEndSetData();"
+                    data-toggle="modal"
+                    data-target="#editRecord"> Edit record
+            </button>
             <button id="endReview" class="btn btn-info" onclick="loadStatus(); loadRecordEndSetData();"
                     data-toggle="modal"
                     data-target="#endReviewModal"> Add end review
@@ -218,6 +223,36 @@
                     <hr/>
                     <div id="end-form-control" class="text-right">
                         <button id="end-submitButton" class="btn btn-info" onclick="createEndReview();">SUBMIT
+                        </button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Modal for edit record-->
+    <div id="editRecord" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4>EditRecord: <label th:text="${param.title}"></label></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-body">
+                        <input id="editTitle" type="text" placeholder="Title" class="form-control"/><br/>
+                        <input id="editCountry" type="text" placeholder="Country" class="form-control"/><br/>
+                        <select id="type" class="form-control"></select> <br/>
+                        <textarea rows="10" id="editEndDescription" placeholder="Description"
+                                  class="form-control"></textarea> <br/>
+                        <textarea id="editEndConclusion" placeholder="Conclusion" class="form-control"></textarea><br/>
+                        <div id="edit-message-container"></div>
+                    </div>
+                    <hr/>
+                    <div id="edit-form-control" class="text-right">
+                        <button id="edit-submitButton" class="btn btn-info" onclick="editRecord();">SUBMIT
                         </button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>

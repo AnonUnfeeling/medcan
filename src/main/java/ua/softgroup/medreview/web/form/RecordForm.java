@@ -21,6 +21,15 @@ public class RecordForm {
     private String endConclusion;
     private String status;
     private String country;
+    private String preRecordName;
+
+    public String getPreRecordName() {
+        return preRecordName;
+    }
+
+    public void setPreRecordName(String preRecordName) {
+        this.preRecordName = preRecordName;
+    }
 
     public String getType() {
         return type;

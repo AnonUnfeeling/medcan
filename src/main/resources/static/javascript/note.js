@@ -417,8 +417,12 @@ function loadRecordEndSetData() {
             'X-CSRF-TOKEN': token
         }
     }).done(function (data) {
-        $('#endDescription').val(data.endDescription);
+        $('#editTitle').val(data.title);
+        $('#editCountry').val(data.country);
+        $('#editEndConclusion').val(data.endConclusion);
+        $('#editEndDescription').val(data.endDescription);
         $('#endConclusion').val(data.endConclusion);
+        $('#endDescription').val(data.endDescription);
         $('#endStatus').val(data.status);
     });
 }
@@ -433,3 +437,32 @@ $(document).ready(function () {
         loadTreatment(val);
     });
 });
+
+function editRecord() {
+    var message = $('#edit-message-container');
+    if ($('#editTitle').val().trim().length !== 0) {
+        $.ajax({
+            method: "POST",
+            url: "/records/editRecord",
+            data: {
+                preRecordName: $('#titleNote').val(),
+                title: $('#editTitle').val(),
+                type: $('#type').val(),
+                endDescription: $('#editEndDescription').val(),
+                endConclusion: $('#editEndConclusion').val(),
+                country: $('#editCountry').val()
+            },
+            headers: {
+                'X-CSRF-TOKEN': token
+            }
+        }).done(function (data) {
+            window.location.href = "/records";
+        }).fail(function (data) {
+            $(message).children().remove();
+            message.append("<div id='error' class='alert alert-danger'><strong>Error! </strong>" + data.responseText + "</div>");
+        });
+    } else {
+        $(message).children().remove();
+        message.append("<div id='error' class='alert alert-danger'><strong>Error! </strong>Fields cannot be empty</div>");
+    }
+}

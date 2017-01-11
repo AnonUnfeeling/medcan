@@ -123,7 +123,7 @@ public class RecordController {
     }
 
     @PostMapping(value = "/edit")
-    public ResponseEntity editRecord(@Valid RecordForm recordForm, BindingResult bindingResult) {
+    public ResponseEntity edit(@Valid RecordForm recordForm, BindingResult bindingResult) {
         Record record = recordService.getByTitle(recordForm.getTitle());
         record.setTitle(recordForm.getTitle());
         record.setAuthor(record.getAuthor());
@@ -134,6 +134,22 @@ public class RecordController {
         record.setCreationDate(record.getCreationDate());
         record.setNotes(record.getNotes());
         record.setType(record.getType());
+        recordService.editRecord(record);
+        return ResponseEntity.ok("User was changed successfully.");
+    }
+
+    @PostMapping(value = "/editRecord")
+    public ResponseEntity editRecord(@Valid RecordForm recordForm, BindingResult bindingResult) {
+        Record record = recordService.getByTitle(recordForm.getPreRecordName());
+        record.setTitle(recordForm.getTitle());
+        record.setAuthor(record.getAuthor());
+        record.setCountry(recordForm.getCountry());
+        record.setEndDescription(recordForm.getEndDescription());
+        record.setEndConclusion(recordForm.getEndConclusion());
+        record.setStatus(NoteStatus.IN_REVIEW.getStatus());
+        record.setCreationDate(record.getCreationDate());
+        record.setNotes(record.getNotes());
+        record.setType(recordForm.getType());
         recordService.editRecord(record);
         return ResponseEntity.ok("User was changed successfully.");
     }
