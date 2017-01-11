@@ -63,7 +63,7 @@ function manageCategory() {
 }
 
 function editCategory() {
-    if (!isSubCategory) {
+    if (!isSubCategory&&!isTreatment) {
         var message = $('#message-container');
         if ($('#categoryName').val().trim().length == 0) {
             $(message).children().remove();
@@ -141,6 +141,8 @@ function showSubCategoryForCategory(event, companyName) {
     }
 }
 
+var isTreatment = false;
+
 function getSubCategory(categoryName) {
     $('#titleForCategory').text("All sub-category");
     isSubCategory = true;
@@ -210,52 +212,55 @@ function manageSubCategory() {
 }
 
 function editSubCategory() {
-    var message = $('#message-container');
-    if ($('#categoryName').val().trim().length == 0) {
-        $(message).children().remove();
-        message.append("<div id='success' class='alert alert-success'><strong>Field is empty</strong></div>");
-    } else {
-        try {
-            if (preSubCategoryName.trim().length > 0) {
+    if (!isTreatment) {
+        var message = $('#message-container');
+        if ($('#categoryName').val().trim().length == 0) {
+            $(message).children().remove();
+            message.append("<div id='success' class='alert alert-success'><strong>Field is empty</strong></div>");
+        } else {
+            try {
+                if (preSubCategoryName.trim().length > 0) {
+                    $.ajax({
+                        method: "POST",
+                        url: "/subjects/sub/editSubCategory",
+                        data: {
+                            name: $('#categoryName').val(),
+                            oldName: preSubCategoryName,
+                            subject: preCategoryName
+                        }, headers: {
+                            'X-CSRF-TOKEN': token
+                        }
+                    }).done(function (data) {
+                        $(message).children().remove();
+                        $('#categoryName').val(null);
+                        $('#editCategoryModal').modal('hide');
+                        getSubCategory(preCategoryName);
+                    }).fail(function (data) {
+                        $(message).children().remove();
+                        message.append("<div id='error' class='alert alert-danger'><strong>" + data.responseText + "</strong></div>");
+                    });
+                }
+            } catch (err) {
                 $.ajax({
                     method: "POST",
-                    url: "/subjects/sub/editSubCategory",
+                    url: "/subjects/sub",
                     data: {
                         name: $('#categoryName').val(),
-                        oldName: preSubCategoryName,
                         subject: preCategoryName
                     }, headers: {
                         'X-CSRF-TOKEN': token
                     }
                 }).done(function (data) {
                     $(message).children().remove();
-                    $('#categoryName').val(null);
+                    $('#companyName').val(null);
+                    $('#editCategoryModal').modal('hide');
+                    message.append("<div id='success' class='alert alert-success'><strong>" + data + "</strong></div>");
                     getSubCategory(preCategoryName);
                 }).fail(function (data) {
-                    console.log(data);
                     $(message).children().remove();
                     message.append("<div id='error' class='alert alert-danger'><strong>" + data.responseText + "</strong></div>");
                 });
             }
-        } catch (err) {
-            $.ajax({
-                method: "POST",
-                url: "/subjects/sub",
-                data: {
-                    name: $('#categoryName').val(),
-                    subject: preCategoryName
-                }, headers: {
-                    'X-CSRF-TOKEN': token
-                }
-            }).done(function (data) {
-                $(message).children().remove();
-                $('#companyName').val(null);
-                message.append("<div id='success' class='alert alert-success'><strong>" + data + "</strong></div>");
-                getSubCategory(preCategoryName);
-            }).fail(function (data) {
-                $(message).children().remove();
-                message.append("<div id='error' class='alert alert-danger'><strong>" + data.responseText + "</strong></div>");
-            });
         }
     }
 }
@@ -289,7 +294,8 @@ function showTreatmentForSubCategory(event, companyName) {
 function getTreatment(subcategoryName) {
     preSubCategoryName = subcategoryName;
     $('#titleForCategory').text("All treatment");
-    isSubCategory = true;
+    isSubCategory = false;
+    isTreatment = true;
     $('#titleFoCategory').html("Add treatment");
     $('#create-category').html("Add treatment");
     $('#categoryName').attr("placeholder", "Treatment name");
@@ -367,51 +373,55 @@ function deleteTreatment(control) {
 }
 
 function editTreatment() {
-    var message = $('#message-container');
-    if ($('#categoryName').val().trim().length == 0) {
-        $(message).children().remove();
-        message.append("<div id='success' class='alert alert-success'><strong>Field is empty</strong></div>");
-    } else {
-        try {
-            if (preTreatment.trim().length > 0) {
+    if (!isSubCategory) {
+        var message = $('#message-container');
+        if ($('#categoryName').val().trim().length == 0) {
+            $(message).children().remove();
+            message.append("<div id='success' class='alert alert-success'><strong>Field is empty</strong></div>");
+        } else {
+            try {
+                if (preTreatment.trim().length > 0) {
+                    $.ajax({
+                        method: "POST",
+                        url: "/subjects/treatments/edit",
+                        data: {
+                            name: $('#categoryName').val(),
+                            oldName: preTreatment,
+                            subSubject: preSubCategoryName
+                        }, headers: {
+                            'X-CSRF-TOKEN': token
+                        }
+                    }).done(function (data) {
+                        $(message).children().remove();
+                        $('#categoryName').val(null);
+                        $('#editCategoryModal').modal('hide');
+                        getTreatment(preSubCategoryName);
+                    }).fail(function (data) {
+                        $(message).children().remove();
+                        message.append("<div id='error' class='alert alert-danger'><strong>" + data.responseText + "</strong></div>");
+                    });
+                }
+            } catch (err) {
                 $.ajax({
                     method: "POST",
-                    url: "/subjects/treatments/edit",
+                    url: "/subjects/treatments",
                     data: {
                         name: $('#categoryName').val(),
-                        oldName: preTreatment,
                         subSubject: preSubCategoryName
                     }, headers: {
                         'X-CSRF-TOKEN': token
                     }
                 }).done(function (data) {
                     $(message).children().remove();
-                    $('#categoryName').val(null);
+                    $('#companyName').val(null);
+                    $('#editCategoryModal').modal('hide');
+                    message.append("<div id='success' class='alert alert-success'><strong>" + data + "</strong></div>");
                     getTreatment(preSubCategoryName);
                 }).fail(function (data) {
                     $(message).children().remove();
                     message.append("<div id='error' class='alert alert-danger'><strong>" + data.responseText + "</strong></div>");
                 });
             }
-        } catch (err) {
-            $.ajax({
-                method: "POST",
-                url: "/subjects/treatments",
-                data: {
-                    name: $('#categoryName').val(),
-                    subSubject: preSubCategoryName
-                }, headers: {
-                    'X-CSRF-TOKEN': token
-                }
-            }).done(function (data) {
-                $(message).children().remove();
-                $('#companyName').val(null);
-                message.append("<div id='success' class='alert alert-success'><strong>" + data + "</strong></div>");
-                getTreatment(preSubCategoryName);
-            }).fail(function (data) {
-                $(message).children().remove();
-                message.append("<div id='error' class='alert alert-danger'><strong>" + data.responseText + "</strong></div>");
-            });
         }
     }
 }
