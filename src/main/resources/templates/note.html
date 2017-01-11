@@ -35,7 +35,7 @@
                 <li><a href="/company" id="companyLink">Companies</a></li>
                 <li><a href="/users" id="userLink">Users</a></li>
                 <li><a href="/records" id="recordLink">Records</a></li>
-                <li><a href="/subjects/view" >Category</a></li>
+                <li><a href="/subjects/view">Category</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li style="margin-right: 50px;">
@@ -76,12 +76,12 @@
                     <input id="treat" hidden type="text" name="tr" value="All">
                     <div class="input-group-btn">
                         <button class="btn btn-default" type="submit">Go!</button>
-                        <button id="dropdown-toggle" class="btn btn-default"  type="button"><span
+                        <button id="dropdown-toggle" class="btn btn-default" type="button"><span
                                 class="glyphicon glyphicon-option-vertical"></span></button>
                     </div>
                 </div>
             </form>
-            <div  hidden id="dropdown" style="padding:17px; min-width: 300px;">
+            <div hidden id="dropdown" style="padding:17px; min-width: 300px;">
                 <label for="category">Category</label>
                 <select class="form-control" id="category">
                     <option value="All">All</option>
@@ -106,10 +106,12 @@
         </div>
         <div class="panel-body">
             <div id="noteHeader">
-                <h5>Record name: <label th:text="${param.title}"></label></h5>
-                <h5>Record type: <label th:text="${param.type}"></label></h5>
+                <label>Record name:</label> <span th:text="${param.title}"></span>
+                <br/>
+                <label>Record type:</label> <span th:text="${param.type}"></span>
             </div>
-            <button id="editRecordButton" class="btn btn-sm btn-default right" onclick="loadType(); loadStatus(); loadRecordEndSetData();"
+            <button id="editRecordButton" class="btn btn-sm btn-default right"
+                    onclick="loadType(); loadStatus(); loadRecordEndSetData();"
                     data-toggle="modal"
                     data-target="#editRecord"> Edit record
             </button>

@@ -480,28 +480,28 @@ function loadRecord() {
         var header = $('#noteHeader');
         try {
             if (data.endDescription.trim().length > 0)
-                header.append("<h5>End description:<label>" + data.endDescription + "</label></h5>");
+                header.append("<label>End description: </label><span>" + data.endDescription + "</span><br/>");
         } catch (err) {
         }
         try {
             if (data.endConclusion.trim().length > 0)
-                header.append("<h5>End conclusion: <label>" + data.endConclusion + "</label></h5>");
+                header.append("<label>End conclusion: </label><span>" + data.endConclusion + "</span><br/>");
         } catch (err) {
         }
         try {
             if (data.type !== "Website")
                 if (data.url.trim().length > 0)
-                    header.append("<h5>URL: <label>" + data.url + "</label></h5>");
+                    header.append("<label>URL: </label><span>" + data.url + "</span><br/>");
         } catch (err) {
         }
         try {
             if (data.country.trim().length > 0)
-                header.append("<h5>Country: <label>" + data.country + "</label></h5>");
+                header.append("<label>Country:</label> <span>" + data.country + "</span><br/>");
         } catch (err) {
         }
         try {
             if (data.status.trim().length > 0)
-                header.append("<h5>Status: <label>" + data.status + "</label></h5>");
+                header.append("<label>Status:</label> <span>" + data.status + "</span><br/>");
         } catch (err) {
         }
     });
