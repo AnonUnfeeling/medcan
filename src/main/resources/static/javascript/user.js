@@ -219,16 +219,14 @@ function create() {
                 company: $('#userCompany').val(),
                 language: $('#usersLanguage').val()
             },
-            // dataType: "json",
             headers: {
                 'X-CSRF-TOKEN': token
             }
         }).done(function (data) {
             location.reload();
         }).fail(function (data) {
-         
             $(message).children().remove();
-            message.append("<div id='success' class='alert alert-success'><strong>" + data + "</strong></div>");
+            message.append("<div id='success' class='alert alert-success'><strong>" + data.responseText + "</strong></div>");
         });
     }
 }
