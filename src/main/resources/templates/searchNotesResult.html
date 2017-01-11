@@ -48,26 +48,30 @@
 <div id="table-container" class="container">
     <h4>Search results for "<span id="keyword" th:text="${param.t}"></span>"</h4>
     <hr/>
+    <div th:if="${param.c}!=null">
+        <span>Filters: </span>
+        <span>category - <span id="category" th:text="${param.c}"></span>,</span>
+        <span>sub. category - <span id="subCategory" th:text="${param.sc}"></span>,</span>
+        <span>treatment - <span id="treatments" th:text="${param.tr}"></span>.</span>
+    </div>
     <table class="table table-responsive table-hover table-striped">
         <thead>
         <tr>
+            <th id="title">Title</th>
             <th id="description">Description</th>
             <th id="conclusion">Conclusion</th>
             <th id="keywords">Keywords</th>
-            <th id="subject">Subject</th>
-            <th id="subSubject">SubSubject</th>
+            <th id="subject">Category</th>
+            <th id="subSubject">Sub-category</th>
             <th id="treatment">Treatment</th>
-            <th id="country">Country</th>
-            <th id="language">Language</th>
-            <th id="status">Status</th>
-            <th id="creationDate">Create date</th>
+            <th id="creationDate">Date created</th>
         </tr>
         </thead>
         <tbody id="table-body">
         </tbody>
     </table>
     <div hidden id="search-type" th:text="${param.p}"></div>
-    <span  id="search-title" th:text="${param.title}"></span>
+    <span hidden id="search-title" th:text="${param.title}"></span>
 </div>
 <!--Modal for create note-->
 <div id="creteNote" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
@@ -80,26 +84,85 @@
             </div>
             <div class="modal-body">
                 <div class="modal-body">
-                        <textarea id="descriptionNote" placeholder="Description"
+                    <input id="titleForNote" required type="text" placeholder="Title" class="form-control"/> <br/>
+                        <textarea rows="10" id="descriptionNote" placeholder="Description"
                                   class="form-control"></textarea> <br/>
-                    <textarea id="conclusionNote" placeholder="Conclusion" class="form-control"></textarea><br/>
+                    <textarea id="conclusionNote" placeholder="Conclusion" class="form-control"></textarea>
+                    <br/>
                     <input id="keywordsNote" placeholder="Keywords" type="text" class="form-control"/><br/>
                     <select id="subjectNote" class="form-control"></select> <br/>
+                    <button id="createCategory" type="button"
+                            class="btn btn-primary bottom-left form-control"
+                            data-toggle="modal"
+                            data-target="#newCategoryModal">Add new Category
+                    </button>
+                    <br/>
+                    <br/>
                     <select id="subSubjectNote" class="form-control"></select> <br/>
                     <select id="treatmentNote" class="form-control"></select> <br/>
-                    <select id="statusNote" class="form-control"></select> <br/>
                     <input id="countryNote" placeholder="Country" type="text" class="form-control"/><br/>
-                    <input id="languageNote" placeholder="Language" type="text" class="form-control"/><br/>
-                    <div id="success" class="alert alert-success" hidden="hidden">
-                        <strong>Success!</strong> User was created.
-                    </div>
-                    <div id="error" class="alert  alert-danger" hidden="hidden">
-                        <strong>Error!</strong> User with such login is already exist.
-                    </div>
+                    <input id="languageNote" placeholder="Language" type="text" class="form-control" hidden/><br/>
+                    <div id="message-container"></div>
                 </div>
                 <hr/>
                 <div id="form-control" class="text-right">
-                    <button id="submitButton" class="btn btn-info" type="submit" onclick="createNote();">SUBMIT
+                    <button id="submitButton" class="btn btn-info" onclick="createNote();">SUBMIT
+                    </button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Modal for create new category-->
+<div id="newCategoryModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4>Create new category/sub-category/treatment</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body">
+                    Category: <select id="newCategory" class="form-control"></select> <br/> <br/>
+                    Sub-Category:<select id="newSubCategory" class="form-control"></select> <br/><br/>
+                    Treatment: <select id="newTreatment" class="form-control"></select> <br/>
+                    <div id="new-message-container"></div>
+                </div>
+                <hr/>
+                <div id="new-form-control" class="text-right">
+                    <button id="new-submitButton" class="btn btn-info" onclick="createEndReview();">SUBMIT
+                    </button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Modal for end review-->
+<div id="endReviewModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4>Record name: <label th:text="${param.title}"></label></h4>
+                <h4>Record type: <label th:text="${param.type}"></label></h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body">
+                        <textarea rows="10" id="endDescription" placeholder="Description"
+                                  class="form-control"></textarea> <br/>
+                    <textarea id="endConclusion" placeholder="Conclusion" class="form-control"></textarea><br/>
+                    <select id="endStatus" class="form-control"></select> <br/>
+                    <!--<input id="endCountry" placeholder="Country" type="text" class="form-control"/><br/>-->
+                    <div id="end-message-container"></div>
+                </div>
+                <hr/>
+                <div id="end-form-control" class="text-right">
+                    <button id="end-submitButton" class="btn btn-info" onclick="createEndReview();">SUBMIT
                     </button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
