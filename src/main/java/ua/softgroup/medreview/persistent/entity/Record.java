@@ -56,6 +56,9 @@ public class Record extends AbstractEntity<Long> {
     private String country;
 
     @Column
+    private String url;
+
+    @Column
     private String type = RecordType.BOOK.getType();
 
     @Column
@@ -149,6 +152,14 @@ public class Record extends AbstractEntity<Long> {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     @Override
