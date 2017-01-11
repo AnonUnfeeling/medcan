@@ -78,10 +78,6 @@ function loadPreNote(event, note, id) {
     if (elm !== allTDs[8] && elm !== allTDs[9] && elm !== note) {
         editId = id;
         isEdit = true;
-        loadSubject();
-        loadSubSubject();
-        // loadStatus();
-        loadTreatment();
         loadNote();
         $('#submitButton').hide();
         $('#languageNote').show();
@@ -117,10 +113,7 @@ function manageCompany() {
         editId = control.attr('id');
         $('#titleFoNote').text("Edit note");
         loadSubject();
-        loadSubSubject();
         $('#languageNote').hide();
-        // loadStatus();
-        loadTreatment();
         loadNote();
         disableFields(false);
         edit.modal('show');
@@ -159,12 +152,18 @@ function loadNote() {
         $('#descriptionNote').val(data.description);
         $('#conclusionNote').val(data.conclusion);
         $('#keywordsNote').val(data.keywords);
-        $('#subjectNote').val(data.subject);
-        $('#subSubjectNote').val(data.subSubject);
+        $('#titleForNote').val(data.title);
         $('#countryNote').val(data.country);
         $('#languageNote').val(data.language);
-        $('#treatmentNote').val(data.treatment);
-        $('#titleForNote').val(data.title);
+        var select = $('#subjectNote').empty();
+            select.append('<option value="' + data.subject + '">' +
+                '' + data.subject + '</option>');
+        var select = $('#subSubjectNote').empty();
+        select.append('<option value="' + data.subSubject + '">' +
+            '' + data.subSubject + '</option>');
+        var select = $('#treatmentNote').empty();
+        select.append('<option value="' + data.treatment + '">' +
+            '' + data.treatment + '</option>');
     });
 }
 
@@ -289,7 +288,6 @@ function loadSubject() {
 }
 
 function loadSubSubject(categoryName) {
-    console.log(categoryName);
     $.ajax({
         method: "GET",
         url: "/subjects/" + categoryName.toString(),
@@ -320,8 +318,8 @@ function loadTreatment(subcategoryName) {
         var arr = data;
         var select = $('#treatmentNote').empty();
         Object.keys(arr).forEach(function (key) {
-            select.append('<option value="' + arr[key] + '">' +
-                '' + arr[key] + '</option>');
+            select.append('<option value="' + arr[key].name + '">' +
+                '' + arr[key].name + '</option>');
         });
     });
 }
@@ -415,14 +413,17 @@ function loadRecordEndSetData() {
     }).done(function (data) {
         $('#endDescription').val(data.endDescription);
         $('#endConclusion').val(data.endConclusion);
-        // $('#endCountry').val(data.country);
         $('#endStatus').val(data.status);
     });
 }
 
 $(document).ready(function () {
-    $('#treatmentNote').change(function () {
-        var val = $("#treatmentNote option:selected").text();
-        console.log(val);
+    $('#subjectNote').change(function () {
+        var val = $("#subjectNote option:selected").text();
+        loadSubSubject(val);
+    });
+    $('#subSubjectNote').change(function () {
+        var val = $("#subSubjectNote option:selected").text();
+        loadTreatment(val);
     });
 });
