@@ -134,6 +134,7 @@ public class RecordController {
         record.setStatus(recordForm.getStatus());
         record.setCreationDate(record.getCreationDate());
         record.setNotes(record.getNotes());
+        record.setUrl(recordForm.getUrl());
         record.setType(record.getType());
         recordService.editRecord(record);
         return ResponseEntity.ok("User was changed successfully.");
@@ -145,6 +146,7 @@ public class RecordController {
         record.setTitle(recordForm.getTitle());
         record.setAuthor(record.getAuthor());
         record.setCountry(recordForm.getCountry());
+        record.setUrl(recordForm.getUrl());
         record.setEndDescription(recordForm.getEndDescription());
         record.setEndConclusion(recordForm.getEndConclusion());
         record.setStatus(NoteStatus.IN_REVIEW.getStatus());

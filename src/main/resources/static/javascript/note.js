@@ -13,24 +13,24 @@ $(document).ready(function () {
 });
 
 function searchFilter() {
-    $('#dropdown-toggle').on('click',function () {
+    $('#dropdown-toggle').on('click', function () {
         $('#dropdown').toggle();
     });
-    $('#cancel').on('click',function () {
+    $('#cancel').on('click', function () {
         $('#dropdown').hide();
         setFilterSettingsToDefault();
     });
-    $('#submit').on('click',function () {
+    $('#submit').on('click', function () {
         saveFilterSettings();
         $('#dropdown').hide();
     });
 
     loadSubjects();
 
-    $('#category').on('change',function () {
+    $('#category').on('change', function () {
         var category = $(this).val();
         console.log(category);
-        if(category=='All'){
+        if (category == 'All') {
             var select = $('#subCategory').empty();
             select.append("<option value=All>All</option>");
         } else {
@@ -54,15 +54,15 @@ function searchFilter() {
         }
     });
 
-    $('#subCategory').on('change',function () {
+    $('#subCategory').on('change', function () {
         var treatment = $(this).val();
-        if(treatment == 'All'){
+        if (treatment == 'All') {
             var select = $('#treatments').empty();
             select.append("<option value=All>All</option>");
         } else {
             $.ajax({
                 method: "GET",
-                url: "/subjects/treatments/"+treatment,
+                url: "/subjects/treatments/" + treatment,
                 dataType: "json",
                 headers: {
                     'X-CSRF-TOKEN': token
@@ -448,7 +448,8 @@ function createEndReview() {
                 endDescription: $('#endDescription').val(),
                 endConclusion: $('#endConclusion').val(),
                 status: status,
-                country: $('#endCountry').val()
+                country: $('#endCountry').val(),
+                url: $('#editUrl').val()
             },
             headers: {
                 'X-CSRF-TOKEN': token
@@ -488,6 +489,12 @@ function loadRecord() {
         } catch (err) {
         }
         try {
+            if (data.type !== "Website")
+                if (data.url.trim().length > 0)
+                    header.append("<h5>URL: <label>" + data.url + "</label></h5>");
+        } catch (err) {
+        }
+        try {
             if (data.country.trim().length > 0)
                 header.append("<h5>Country: <label>" + data.country + "</label></h5>");
         } catch (err) {
@@ -518,6 +525,11 @@ function loadRecordEndSetData() {
         $('#endConclusion').val(data.endConclusion);
         $('#endDescription').val(data.endDescription);
         $('#endStatus').val(data.status);
+        if(data.type!=="Website"){
+            document.getElementById('editUrl').style.display ='none';
+        }else{
+            $('#editUrl').val(data.url);
+        }
     });
 }
 
@@ -544,7 +556,8 @@ function editRecord() {
                 type: $('#type').val(),
                 endDescription: $('#editEndDescription').val(),
                 endConclusion: $('#editEndConclusion').val(),
-                country: $('#editCountry').val()
+                country: $('#editCountry').val(),
+                url: $('#editUrl').val()
             },
             headers: {
                 'X-CSRF-TOKEN': token
