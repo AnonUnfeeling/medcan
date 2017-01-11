@@ -11,6 +11,19 @@ var defaultOpts = {
     }
 };
 
+$(document).ready(function () {
+    $('#type').on('change',function () {
+        if($(this).val()=='Website'){
+            createAdditionalInput($('#record-data'),'url','website-input');
+        } else {
+            $('#record-data').find('.website-input').remove();
+        }
+    })
+});
+function createAdditionalInput(place,id,cls) {
+    $(place).append('<div class="form-group ' + cls + '"> <label>'+id.toUpperCase()+':</label><input id="' + id + '" class="form-control ' + cls + '"/><br/></div>');
+}
+
 //Load pagination on page loaded
 function loadAllRecords() {
     $pagination = $('#pagination');
@@ -163,7 +176,8 @@ function createRecord() {
             data: {
                 title: $('#title').val(),
                 type: $('#type').val(),
-                country: $('#country').val()
+                country: $('#country').val(),
+                url:$('#url').val()
             },
             headers: {
                 'X-CSRF-TOKEN': token

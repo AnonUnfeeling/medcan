@@ -18,6 +18,7 @@ function searchFilter() {
     });
     $('#cancel').on('click',function () {
         $('#dropdown').hide();
+        setFilterSettingsToDefault();
     });
     $('#submit').on('click',function () {
         saveFilterSettings();
@@ -102,6 +103,11 @@ function saveFilterSettings() {
     $("#cat").val($("#category").val());
     $("#subCat").val($("#subCategory").val());
     $("#treat").val($("#treatments").val());
+}
+function setFilterSettingsToDefault() {
+    $("#cat").val('All');
+    $("#subCat").val('All');
+    $("#treat").val('All');
 }
 
 function checkUser() {

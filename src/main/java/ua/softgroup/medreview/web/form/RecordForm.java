@@ -22,6 +22,7 @@ public class RecordForm {
     private String status;
     private String country;
     private String preRecordName;
+    private String url;
 
     public String getPreRecordName() {
         return preRecordName;
@@ -89,5 +90,13 @@ public class RecordForm {
                 ", status='" + status + '\'' +
                 ", country='" + country + '\'' +
                 '}';
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }
