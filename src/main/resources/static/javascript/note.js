@@ -183,7 +183,6 @@ function loadPreNote(event, note, id) {
 }
 
 function manageCompany() {
-    console.log("dsa");
     var record_control = $('.users-control');
     $('[data-toggle=confirmation]').confirmation({
         rootSelector: '[data-toggle=confirmation]'
@@ -433,7 +432,7 @@ function createEndReview() {
         status = $('#endStatus').val();
     }
     var message = $('#message-container');
-    if ($('#endDescription').val().trim().length !== 0 && $('#endConclusion').val().trim().length !== 0) {
+    if ($('#endDescription').val().trim().length !== 0 || $('#endConclusion').val().trim().length !== 0) {
         $.ajax({
             method: "POST",
             url: "/records/edit",

@@ -45,8 +45,10 @@ public class Record extends AbstractEntity<Long> {
     @Field(analyzer = @Analyzer(definition = "en"))
     private String title;
 
+    @Column(columnDefinition = "text")
     private String endDescription;
 
+    @Column(columnDefinition = "text")
     private String endConclusion;
 
     @Column

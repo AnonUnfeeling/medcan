@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import ua.softgroup.medreview.persistent.entity.Record;
 import ua.softgroup.medreview.persistent.entity.Role;
 import ua.softgroup.medreview.persistent.entity.User;
+import ua.softgroup.medreview.persistent.repository.NoteRepository;
 import ua.softgroup.medreview.persistent.repository.RecordRepository;
 import ua.softgroup.medreview.service.AuthenticationService;
 import ua.softgroup.medreview.service.RecordService;
@@ -27,6 +28,8 @@ public class RecordServiceImpl implements RecordService {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private RecordRepository recordRepository;
+    @Autowired
+    private NoteRepository noteRepository;
     @Autowired
     private AuthenticationService authenticationService;
     private final SimpleGrantedAuthority adminAuthority = new SimpleGrantedAuthority(Role.ADMIN.name());
@@ -71,6 +74,7 @@ public class RecordServiceImpl implements RecordService {
 
     @Override
     public void deleteRecordByName(String name) {
+        noteRepository.delete(noteRepository.findByRecordTitle(name));
         recordRepository.delete(recordRepository.findByTitle(name));
     }
 
