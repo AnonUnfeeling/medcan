@@ -65,7 +65,8 @@ public class SubjectController {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
         }
-        final Subject subjectForEdit = subjectService.getSubjectByName(subjectDto.getOldName()).orElseThrow(() -> new SubjectNotFoundException(subjectDto.getOldName()));
+        final Subject subjectForEdit = subjectService.getSubjectByName(subjectDto.getOldName())
+                                                     .orElseThrow(() -> new SubjectNotFoundException(subjectDto.getOldName()));
         subjectService.editSubject(subjectDto, subjectForEdit);
         return ResponseEntity.ok(SUBJECT_WAS_CHANGED);
     }
@@ -83,22 +84,22 @@ public class SubjectController {
 
     @PostMapping(value = "/sub")
     public ResponseEntity createSubSubject(@Valid SubSubjectDto subSubjectDto, BindingResult bindingResult) {
-        System.out.println(subSubjectDto);
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
         }
-        final Subject subject = subjectService.getSubjectByName(subSubjectDto.getSubject()).get();
+        final Subject subject = subjectService.getSubjectByName(subSubjectDto.getSubject())
+                                              .orElseThrow(() -> new SubjectNotFoundException(subSubjectDto.getSubject()));
         subjectService.createSubSubject(subSubjectDto, subject);
         return ResponseEntity.ok(SUB_SUBJECT_WAS_CREATED);
     }
 
     @PostMapping(value = "/sub/editSubCategory")
     public ResponseEntity editSubSubject(@Valid SubSubjectDto subSubjectDto, BindingResult bindingResult) {
-        System.out.println(subSubjectDto);
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
         }
-        final SubSubject subSubject = subjectService.getSubSubjectByName(subSubjectDto.getSubject()).orElseThrow(() -> new SubjectNotFoundException(subSubjectDto.getSubject()));
+        final SubSubject subSubject = subjectService.getSubSubjectByName(subSubjectDto.getOldName())
+                                                    .orElseThrow(() -> new SubjectNotFoundException(subSubjectDto.getSubject()));
         subjectService.editSubSubject(subSubjectDto, subSubject);
         return ResponseEntity.ok(SUB_SUBJECT_WAS_CHANGED);
     }
@@ -111,7 +112,8 @@ public class SubjectController {
 
     @GetMapping(value = "/treatments/{subSubjectName}")
     public ResponseEntity<List<TreatmentDto>> getTreatmentsBySubsubject(@PathVariable String subSubjectName) {
-        final SubSubject subSubject = subjectService.getSubSubjectByName(subSubjectName).orElseThrow(() -> new SubjectNotFoundException(subSubjectName));
+        final SubSubject subSubject = subjectService.getSubSubjectByName(subSubjectName)
+                                                    .orElseThrow(() -> new SubjectNotFoundException(subSubjectName));
         return ResponseEntity.ok(subjectService.getTreatmentsBySubSubject(subSubject));
     }
 
@@ -120,14 +122,27 @@ public class SubjectController {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
         }
-        final SubSubject subSubject = subjectService.getSubSubjectByName(treatmentDto.getSubSubject()).orElseThrow(() -> new SubjectNotFoundException(treatmentDto.getSubSubject()));
+        final SubSubject subSubject = subjectService.getSubSubjectByName(treatmentDto.getSubSubject())
+                                                    .orElseThrow(() -> new SubjectNotFoundException(treatmentDto.getSubSubject()));
         subjectService.createTreatment(treatmentDto, subSubject);
+        return ResponseEntity.ok(TREATMENT_WAS_CREATED);
+    }
+
+    @PostMapping(value = "/treatments/edit")
+    public ResponseEntity editTreatment(@Valid TreatmentDto treatmentDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
+        }
+        final Treatment treatment = subjectService.getTreatmentByName(treatmentDto.getOldName())
+                                                  .orElseThrow(() -> new SubjectNotFoundException(treatmentDto.getOldName()));
+        subjectService.editTreatment(treatmentDto, treatment);
         return ResponseEntity.ok(TREATMENT_WAS_CREATED);
     }
 
     @DeleteMapping(value = "/treatments/{treatmentName}")
     public ResponseEntity deleteTreatment(@PathVariable String treatmentName) {
-        final Treatment treatment = subjectService.getTreatmentByName(treatmentName).orElseThrow(() -> new TreatmentNotFoundException(treatmentName));
+        final Treatment treatment = subjectService.getTreatmentByName(treatmentName)
+                                                  .orElseThrow(() -> new TreatmentNotFoundException(treatmentName));
         subjectService.deleteTreatment(treatment);
         return ResponseEntity.ok(TREATMENT_WAS_DELETED);
     }

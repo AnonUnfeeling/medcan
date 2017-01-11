@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 public class Treatment extends AbstractEntity<Long> {
     private static final long serialVersionUID = -531834217433114165L;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String name;
 
     @ManyToOne

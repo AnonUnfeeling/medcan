@@ -16,9 +16,11 @@ import ua.softgroup.medreview.web.dto.TreatmentDto;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /**
  * @author Sergiy Perevyazko <sg.sergiyp@gmail.com>
+ * @author Oleksandr Tyshkovets <sg.olexander@gmail.com>
  */
 @Service
 public class SubjectServiceImpl implements SubjectService {
@@ -28,7 +30,8 @@ public class SubjectServiceImpl implements SubjectService {
     private final TreatmentRepository treatmentRepository;
 
     @Autowired
-    public SubjectServiceImpl(SubjectRepository subjectRepository, SubSubjectRepository subSubjectRepository, TreatmentRepository treatmentRepository) {
+    public SubjectServiceImpl(SubjectRepository subjectRepository, SubSubjectRepository subSubjectRepository,
+                              TreatmentRepository treatmentRepository) {
         this.subjectRepository = subjectRepository;
         this.subSubjectRepository = subSubjectRepository;
         this.treatmentRepository = treatmentRepository;
@@ -41,8 +44,7 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public List<SubjectDto> getAllSubjectDtos() {
-        return ((List<Subject>) subjectRepository.findAll())
-                .stream()
+        return StreamSupport.stream(subjectRepository.findAll().spliterator(), false)
                 .map(this::convertSubjectToDto)
                 .collect(Collectors.toList());
     }
@@ -54,16 +56,14 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public List<SubSubjectDto> getAllSubSubjectsDtos() {
-        return ((List<SubSubject>) subSubjectRepository.findAll())
-                .stream()
+        return StreamSupport.stream(subSubjectRepository.findAll().spliterator(), false)
                 .map(this::convertSubSubjectToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<SubSubjectDto> getSubSubjectDtosBySubjectName(String name) {
-        return subjectRepository.findByName(name).getSubSubjects()
-                .stream()
+        return subjectRepository.findByName(name).getSubSubjects().stream()
                 .map(this::convertSubSubjectToDto)
                 .collect(Collectors.toList());
     }
@@ -117,16 +117,14 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public List<TreatmentDto> getAllTreatments() {
-        return ((List<Treatment>) treatmentRepository.findAll())
-                .stream()
+        return StreamSupport.stream(treatmentRepository.findAll().spliterator(), false)
                 .map(this::convertTreatmentToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<TreatmentDto> getTreatmentsBySubSubject(SubSubject subSubject) {
-        return subSubject.getTreatments()
-                .stream()
+        return subSubject.getTreatments().stream()
                 .map(this::convertTreatmentToDto)
                 .collect(Collectors.toList());
     }
@@ -134,6 +132,12 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     public void createTreatment(TreatmentDto treatmentDto, SubSubject subSubject) {
         treatmentRepository.save(new Treatment(treatmentDto.getName(), subSubject));
+    }
+
+    @Override
+    public void editTreatment(TreatmentDto treatmentDto, Treatment treatment) {
+        treatment.setName(treatmentDto.getName());
+        treatmentRepository.save(treatment);
     }
 
     @Override
