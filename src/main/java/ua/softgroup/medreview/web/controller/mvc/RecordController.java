@@ -163,7 +163,7 @@ public class RecordController {
         record.setCountry(record.getCountry());
         record.setEndDescription(recordForm.getEndDescription());
         record.setEndConclusion(recordForm.getEndConclusion());
-        record.setStatus(recordForm.getStatus());
+        record.setStatus(NoteStatus.IN_REVIEW.getStatus());
         record.setCreationDate(record.getCreationDate());
         record.setNotes(record.getNotes());
         record.setUrl(recordForm.getUrl());
@@ -181,7 +181,7 @@ public class RecordController {
         record.setUrl(recordForm.getUrl());
         record.setEndDescription(recordForm.getEndDescription());
         record.setEndConclusion(recordForm.getEndConclusion());
-        record.setStatus(NoteStatus.IN_REVIEW.getStatus());
+        record.setStatus(recordForm.getStatus());
         record.setCreationDate(record.getCreationDate());
         record.setNotes(record.getNotes());
         record.setType(recordForm.getType());

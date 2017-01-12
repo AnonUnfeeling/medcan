@@ -125,7 +125,7 @@
                     data-toggle="modal"
                     data-target="#editRecord"> Edit record
             </button>
-            <button id="endReview" class="btn btn-info" onclick="loadStatus(); loadRecordEndSetData();"
+            <button id="endReview" class="btn btn-info" onclick="loadRecordEndSetData();"
                     data-toggle="modal"
                     data-target="#endReviewModal"> Add end review
             </button>
@@ -217,7 +217,6 @@
                         <textarea rows="10" id="endDescription" placeholder="End description"
                                   class="form-control"></textarea> <br/>
                         <textarea id="endConclusion" placeholder="End conclusion" class="form-control"></textarea><br/>
-                        <select id="endStatus" class="form-control"></select> <br/>
                         <div id="end-message-container"></div>
                     </div>
                     <hr/>
@@ -250,6 +249,7 @@
                                   class="form-control"></textarea> <br/>
                         <textarea id="editEndConclusion" placeholder="End conclusion"
                                   class="form-control"></textarea><br/>
+                        <select id="endStatus" class="form-control"></select> <br/>
                         <div id="edit-message-container"></div>
                     </div>
                     <hr/>

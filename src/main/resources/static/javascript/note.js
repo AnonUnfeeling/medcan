@@ -497,12 +497,7 @@ function disableFields(boolean) {
 }
 
 function createEndReview() {
-    var status;
-    if (document.getElementById('endStatus').style.display == 'none') {
-        status = "In review";
-    } else {
-        status = $('#endStatus').val();
-    }
+
     var message = $('#message-container');
     if ($('#endDescription').val().trim().length !== 0 || $('#endConclusion').val().trim().length !== 0) {
         $.ajax({
@@ -513,7 +508,6 @@ function createEndReview() {
                 type: $('#typeNote').val(),
                 endDescription: $('#endDescription').val(),
                 endConclusion: $('#endConclusion').val(),
-                status: status,
                 country: $('#endCountry').val(),
                 url: $('#editUrl').val()
             },
@@ -613,6 +607,12 @@ $(document).ready(function () {
 });
 
 function editRecord() {
+    var status;
+    if (document.getElementById('endStatus').style.display == 'none') {
+        status = "In review";
+    } else {
+        status = $('#endStatus').val();
+    }
     var message = $('#edit-message-container');
     if ($('#editTitle').val().trim().length !== 0) {
         $.ajax({
@@ -622,6 +622,7 @@ function editRecord() {
                 preRecordName: $('#titleNote').val(),
                 title: $('#editTitle').val(),
                 type: $('#type').val(),
+                status: status,
                 endDescription: $('#editEndDescription').val(),
                 endConclusion: $('#editEndConclusion').val(),
                 country: $('#editCountry').val(),
