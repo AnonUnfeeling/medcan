@@ -63,16 +63,30 @@ public abstract class SearchableRepository<T> {
         Optional.ofNullable(from)
                 .map(date -> aboveBelowQuery(queryBuilder, to, dateField))
                 .ifPresent(junction::must);
-        junction.must(queryBuilder
-                .keyword()
-                .wildcard()
-                .onFields(fields.toArray(new String[fields.size()]))
-                .matching(text)
-                .createQuery());
+        junction.must((text == null || text.trim().isEmpty())
+                ? createQueryForSearchingByFieldsWithWildcard(queryBuilder, "*", fields)
+                : createQueryForSearchingByFields(queryBuilder, text, fields));
 
         return fullTextEntityManager
                 .createFullTextQuery(junction.createQuery(), clazz)
                 .getResultList();
+    }
+
+    private Query createQueryForSearchingByFields(QueryBuilder queryBuilder, String text, List<String> fields) {
+        return queryBuilder
+                .keyword()
+                .onFields(fields.toArray(new String[fields.size()]))
+                .matching(text)
+                .createQuery();
+    }
+
+    private Query createQueryForSearchingByFieldsWithWildcard(QueryBuilder queryBuilder, String text, List<String> fields) {
+        return queryBuilder
+                .keyword()
+                .wildcard()
+                .onFields(fields.toArray(new String[fields.size()]))
+                .matching(text)
+                .createQuery();
     }
 
     private QueryBuilder getQueryBuilder(FullTextEntityManager fullTextEntityManager) {

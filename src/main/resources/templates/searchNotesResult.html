@@ -48,7 +48,12 @@
     </div>
 </nav>
 <div id="table-container" class="container">
-    <h4>Search results for "<span id="keyword" th:text="${param.t}"></span>"</h4>
+    <div th:if="${param.t}==' '">
+        <h1>LOOOOH</h1>
+    </div>
+    <div th:if="(${param.t}!='')">
+        <h4>Search results for "<span id="keyword" th:text="${param.t}"></span>"</h4>
+    </div>
     <hr/>
     <div th:if="${param.c}!=null">
         <span>Filters: </span>
@@ -60,13 +65,8 @@
         <thead>
         <tr>
             <th id="title">Title</th>
-            <th id="description">Description</th>
-            <th id="conclusion">Conclusion</th>
-            <th id="keywords">Keywords</th>
-            <th id="subject">Category</th>
-            <th id="subSubject">Sub-category</th>
-            <th id="treatment">Treatment</th>
-            <th id="creationDate">Date created</th>
+            <th id="description" class="description">Description</th>
+            <th id="conclusion" class="conclusion">Conclusion</th>
         </tr>
         </thead>
         <tbody id="table-body">
@@ -74,6 +74,8 @@
     </table>
     <div hidden id="search-type" th:text="${param.p}"></div>
     <span hidden id="search-title" th:text="${param.title}"></span>
+    <span hidden id="conc" th:text="${param.conc}"></span>
+    <span hidden id="desc" th:text="${param.desc}"></span>
 </div>
 <!--Modal for create note-->
 <div id="creteNote" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">

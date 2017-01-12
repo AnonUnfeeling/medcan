@@ -12,6 +12,7 @@ $(document).ready(function () {
 });
 
 function searchFilter() {
+    setFilterSettingsToDefault();
     $('#dropdown-toggle').on('click', function () {
         $('#dropdown').toggle();
     });
@@ -21,7 +22,19 @@ function searchFilter() {
     });
     $('#submit').on('click', function () {
         saveFilterSettings();
-        $('#dropdown').hide();
+        $('#search-form').submit();
+    });
+
+    $('#conc-filter').on('change',function () {
+        if ($(this).is(':checked') == true) {
+            $(this).val('true');
+        } else $(this).val('false');
+    });
+
+    $('#desc-filter').on('change',function () {
+        if ($(this).is(':checked') == true) {
+            $(this).val('true');
+        } else $(this).val('false');
     });
 
     loadSubjects();
@@ -97,13 +110,17 @@ function saveFilterSettings() {
     $("#cat").val($("#category").val());
     $("#subCat").val($("#subCategory").val());
     $("#treat").val($("#treatments").val());
+    $('#conc').val($('#conc-filter').val());
+    $('#desc').val($('#desc-filter').val());
 }
 function setFilterSettingsToDefault() {
     $("#cat").val('All');
     $("#subCat").val('All');
     $("#treat").val('All');
+    $('#conc').val('true');
+    $('#desc').val('true');
 }
-
+//SCode 
 function checkUser() {
     $.ajax({
         method: "GET",

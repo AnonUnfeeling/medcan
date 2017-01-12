@@ -28,11 +28,12 @@ function searchInRecord() {
     (category=='All')?category = null:category;
     (subCategory=='All')?subCategory = null:subCategory;
     (treatment=='All')?treatment = null:treatment;
-    
+    var text = $('#keyword').html();
+
     $.ajax({
         method: "POST",
         url: "/search/records/"+title+"/notes/",
-        data: { text: $('#keyword').html(),
+        data: { text: text,
                 category: category,
                 treatment: treatment,
                 subCategory: subCategory
@@ -47,15 +48,11 @@ function searchInRecord() {
         table.find('tr').remove();
         $(arr).each(function () {
             var note = $(this)[0];
-            table.append('<tr onclick="loadPreNote(event,this,' + $(this)[0].id + ');"><td>' + note.title.slice(0, 8) + '</td><td>' + note.description.slice(0, 8) + '</td>' +
-                '<td>' + note.conclusion.slice(0, 8) + '</td>' +
-                '<td>' + note.keywords.slice(0, 8) + '</td>' +
-                '<td>' + note.subject.slice(0, 8) + '</td>' +
-                '<td>' + note.subSubject.slice(0, 8) + '</td>' +
-                '<td>' + note.treatment + '</td>' +
-                '<td>' + note.updateDate.dayOfMonth + ' ' + note.updateDate.month +
-                ' ' + note.updateDate.year +
-                '</td><td></td><td class="cotrol-class text-right"><span id="' +
+            table.append(
+                '<tr onclick="loadPreNote(event,this,' + $(this)[0].id + ');"><td>' + note.title.slice(0, 20) + '...</td>'+
+                '<td class="description">' + note.description.slice(0, 255) + '...</td>' +
+                '<td class="conclusion">' + note.conclusion.slice(0, 255) + '...</td>' +
+                '<td class="cotrol-class text-right"><span id="' +
                 note.id + '" data-singleton="true"' +
                 ' data-toggle="edit" class="glyphicon glyphicon glyphicon-pencil user-control" ' +
                 'aria-hidden="true"></span>' +
@@ -65,9 +62,13 @@ function searchInRecord() {
                 'aria-hidden="true"></span></td></tr>');
         });
         manageCompany();
+        menageSearchResults();
     });
+/*    '<td>' + note.keywords.slice(0, 8) + '</td>' +
+    '<td>' + note.updateDate.dayOfMonth + ' ' + note.updateDate.month +
+    ' ' + note.updateDate.year +
+    '</td>*/
 }
-
 function searchInAllNotes() {
     $.ajax({
         method: "GET",
@@ -83,15 +84,11 @@ function searchInAllNotes() {
         table.find('tr').remove();
         $(arr).each(function () {
             var note = $(this)[0];
-            table.append('<tr onclick="loadPreNote(event,this,' + $(this)[0].id + ');"><td>' + note.title.slice(0, 8) + '</td><td>' + note.description.slice(0, 8) + '</td>' +
-                '<td>' + note.conclusion.slice(0, 8) + '</td>' +
-                '<td>' + note.keywords.slice(0, 8) + '</td>' +
-                '<td>' + note.subject.slice(0, 8) + '</td>' +
-                '<td>' + note.subSubject.slice(0, 8) + '</td>' +
-                '<td>' + note.treatment + '</td>' +
-                '<td>' + note.updateDate.dayOfMonth + ' ' + note.updateDate.month +
-                ' ' + note.updateDate.year +
-                '</td><td></td><td class="cotrol-class text-right"><span id="' +
+            table.append(
+                '<tr onclick="loadPreNote(event,this,' + $(this)[0].id + ');"><td>' + note.title.slice(0, 20) + '...</td>'+
+                '<td class="description">' + note.description.slice(0, 255) + '...</td>' +
+                '<td class="conclusion">' + note.conclusion.slice(0, 255) + '...</td>' +
+                '<td class="cotrol-class text-right"><span id="' +
                 note.id + '" data-singleton="true"' +
                 ' data-toggle="edit" class="glyphicon glyphicon glyphicon-pencil user-control" ' +
                 'aria-hidden="true"></span>' +
@@ -104,9 +101,18 @@ function searchInAllNotes() {
     });
 }
 
+function menageSearchResults() {
+    if($('#conc').html()=='false'){
+        $('.conclusion').hide();
+    }
+    if($('#desc').html()=='false'){
+        $('.description').hide();
+    }
+}
+
 function checkUser() {
     $.ajax({
-        method: "GET",
+        method: "POST",
         url: "/records/getRecord",
         data: {recordName: $('#titleNote').val()},
         dataType: "json",
@@ -132,7 +138,7 @@ function loadPreNote(event, note, id) {
         elm = elm.parentNode;
     }
 
-    if (elm !== allTDs[8] && elm !== allTDs[9] && elm !== note) {
+    if (elm !== allTDs[3] && elm !== allTDs[4] && elm !== note) {
         editId = id;
         isEdit = true;
         loadNote();
