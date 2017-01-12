@@ -55,11 +55,11 @@ function searchInRecord() {
                 '<td>' + note.treatment + '</td>' +
                 '<td>' + note.updateDate.dayOfMonth + ' ' + note.updateDate.month +
                 ' ' + note.updateDate.year +
-                '</td><td></td><td class="text-right"><span id="' +
+                '</td><td></td><td class="cotrol-class text-right"><span id="' +
                 note.id + '" data-singleton="true"' +
                 ' data-toggle="edit" class="glyphicon glyphicon glyphicon-pencil user-control" ' +
                 'aria-hidden="true"></span>' +
-                '<td class="text-right"><span id="' + note.id + '" ' +
+                '<td class="cotrol-class text-right"><span id="' + note.id + '" ' +
                 'data-singleton="true" data-toggle="confirmation" ' +
                 'class="glyphicon glyphicon-remove-circle users-control" ' +
                 'aria-hidden="true"></span></td></tr>');
@@ -91,11 +91,11 @@ function searchInAllNotes() {
                 '<td>' + note.treatment + '</td>' +
                 '<td>' + note.updateDate.dayOfMonth + ' ' + note.updateDate.month +
                 ' ' + note.updateDate.year +
-                '</td><td></td><td class="text-right"><span id="' +
+                '</td><td></td><td class="cotrol-class text-right"><span id="' +
                 note.id + '" data-singleton="true"' +
                 ' data-toggle="edit" class="glyphicon glyphicon glyphicon-pencil user-control" ' +
                 'aria-hidden="true"></span>' +
-                '<td class="text-right"><span id="' + note.id + '" ' +
+                '<td class="cotrol-class text-right"><span id="' + note.id + '" ' +
                 'data-singleton="true" data-toggle="confirmation" ' +
                 'class="glyphicon glyphicon-remove-circle users-control" ' +
                 'aria-hidden="true"></span></td></tr>');

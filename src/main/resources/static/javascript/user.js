@@ -55,11 +55,11 @@ function getUsersByCompanyName(page) {
             var user = $(this)[0];
             table.append('<tr onclick="showRecord(event,this)"><td>' + user.login + '</td><td>' + user.roles[0].role + '</td>' +
                 '<td>' + user.company.name + '</td><td>' + user.language + '</td><td></td>' +
-                '<td class="text-right"><span id="' +
+                '<td class="cotrol-class text-right"><span id="' +
                 user.login + '" data-singleton="true"' +
                 ' data-toggle="edit" class="glyphicon glyphicon glyphicon-pencil user-control" ' +
                 'aria-hidden="true"></span>' +
-                '<td class="text-right"><span id="' + user.login + '" ' +
+                '<td class="cotrol-class text-right"><span id="' + user.login + '" ' +
                 'data-singleton="true" data-toggle="confirmation" ' +
                 'class="glyphicon glyphicon-remove-circle users-control" ' +
                 'aria-hidden="true"></span></td>');
@@ -109,11 +109,11 @@ function getUsers(page) {
             if (user.company == null) company = "No company"; else company = user.company;
             table.append('<tr onclick="showRecord(event,this)"><td>' + user.login + '</td><td>' + user.role + '</td>' +
                 '<td>' + company + '</td><td>' + user.language + '</td><td></td>' +
-                '<td class="text-right"><span id="' +
+                '<td class="cotrol-class text-right"><span id="' +
                 user.login + '" data-singleton="true"' +
                 ' data-toggle="edit" class="glyphicon glyphicon glyphicon-pencil user-control" ' +
                 'aria-hidden="true"></span>' +
-                '<td class="text-right"><span id="' + user.login + '" ' +
+                '<td class="cotrol-class text-right"><span id="' + user.login + '" ' +
                 'data-singleton="true" data-toggle="confirmation" ' +
                 'class="glyphicon glyphicon-remove-circle users-control" ' +
                 'aria-hidden="true"></span></td>');

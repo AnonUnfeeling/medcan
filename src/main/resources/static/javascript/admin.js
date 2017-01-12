@@ -40,10 +40,10 @@ function getCompanies(page) {
         $(arr).each(function () {
             var company = $(this)[0];
             table.append('<tr onclick="showUserInCompany(event,this)"><td>'
-                + company.name + '</td><td></td><td class="text-right"><span id="' +
+                + company.name + '</td><td></td><td class="cotrol-class text-right"><span id="' +
                 company.name + '" data-singleton="true"' +
                 ' data-toggle="edit" class="glyphicon glyphicon glyphicon-pencil edit-control" ' +
-                'aria-hidden="true"></span><td class="text-right"><span id="' + company.name + '" ' +
+                'aria-hidden="true"></span><td class="cotrol-class text-right"><span id="' + company.name + '" ' +
                 'data-singleton="true" data-toggle="confirmation" class="glyphicon glyphicon-remove-circle company-control"' +
                 ' aria-hidden="true"></span></td></tr>');
         });
