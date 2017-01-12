@@ -445,14 +445,7 @@ function loadSubject() {
     }).done(function (data) {
         var categories = data;
         loadSubSubject(categories[0].name.toString());
-        // var subj;
-        // if (categories[0].name.toString() == "Select category") {
-        //     subj = "";
-        // } else {
-        //     subj =categories[0].name.toString();
-        // }
         $('#wayCat').text(null);
-        // $('#wayCat').text(subj);
         var select = $('#subjectNote').empty();
         select.append('<option selected="selected">Select category</option>');
         Object.keys(categories).forEach(function (key) {
@@ -474,7 +467,6 @@ function loadSubSubject(categoryName) {
         var arr = data;
         var select = $('#subSubjectNote').empty();
         $('#waySubCat').text(null);
-        // $('#waySubCat').text(arr[0].name);
         select.append('<option selected="selected">Select sub-category</option>');
         Object.keys(arr).forEach(function (key) {
             select.append('<option value="' + arr[key].name + '">' +
