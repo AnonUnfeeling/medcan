@@ -18,10 +18,10 @@ function getTreatment() {
         table.find('tr').remove();
         Object.keys(arr).forEach(function (key) {
             table.append('<tr><td>'
-                + arr[key].name + '</td><td></td><td class="text-right"><span id="' +
+                + arr[key].name + '</td><td></td><td class="cotrol-class text-right"><span id="' +
                 arr[key].name + '" data-singleton="true"' +
                 ' data-toggle="edit" class="glyphicon glyphicon glyphicon-pencil treatment-edit-control" ' +
-                'aria-hidden="true"></span><td class="text-right"><span id="' + arr[key].name + '" ' +
+                'aria-hidden="true"></span><td class="cotrol-class text-right"><span id="' + arr[key].name + '" ' +
                 'data-singleton="true" data-toggle="confirmation" class="glyphicon glyphicon-remove-circle treatment-delete-control"' +
                 ' aria-hidden="true"></span></td></tr>');
 
@@ -57,6 +57,7 @@ function manageTreatment() {
         var control = $(this);
         var edit = $('#editCategoryModal');
         preTreatment = control.attr('id');
+        $('#titleFoCategory').text("Edit treatment");
         $('#categoryName').val(preTreatment);
         edit.modal('show');
     });
@@ -82,6 +83,7 @@ function editTreatment() {
     } else {
         try {
             if (preTreatment.trim().length > 0) {
+                console.log("preTreatment = " + preTreatment);
                 $.ajax({
                     method: "POST",
                     url: "/subjects/treatments/edit",
@@ -95,13 +97,14 @@ function editTreatment() {
                     $(message).children().remove();
                     $('#categoryName').val(null);
                     $('#editCategoryModal').modal('hide');
-                    location.reload();
+                    getTreatment();
                 }).fail(function (data) {
                     $(message).children().remove();
                     message.append("<div id='error' class='alert alert-danger'><strong>" + data.responseText + "</strong></div>");
                 });
             }
         } catch (err) {
+            console.log("create");
             $.ajax({
                 method: "POST",
                 url: "/subjects/treatments",

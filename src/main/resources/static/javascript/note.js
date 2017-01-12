@@ -25,6 +25,7 @@ function searchFilter() {
     });
 
     loadSubjects();
+    loadTreatments();
 
     $('#category').on('change', function () {
         var category = $(this).val();
@@ -52,31 +53,6 @@ function searchFilter() {
             });
         }
     });
-
-    $('#subCategory').on('change', function () {
-        var treatment = $(this).val();
-        if (treatment == 'All') {
-            var select = $('#treatments').empty();
-            select.append("<option value=All>All</option>");
-        } else {
-            $.ajax({
-                method: "GET",
-                url: "/subjects/treatments/" + treatment,
-                dataType: "json",
-                headers: {
-                    'X-CSRF-TOKEN': token
-                }
-            }).done(function (data) {
-                var arr = data;
-                var select = $('#treatments').empty();
-                select.append("<option value=All>All</option>");
-                Object.keys(arr).forEach(function (key) {
-                    select.append('<option value="' + arr[key].name + '">' +
-                        '' + arr[key].name + '</option>');
-                });
-            });
-        }
-    });
 }
 
 function loadSubjects() {
@@ -96,6 +72,25 @@ function loadSubjects() {
                 '' + categories[key].name + '</option>');
         });
     });
+}
+
+function loadTreatments() {
+            $.ajax({
+                method: "GET",
+                url: "/subjects/treatments/get",
+                dataType: "json",
+                headers: {
+                    'X-CSRF-TOKEN': token
+                }
+            }).done(function (data) {
+                var arr = data;
+                var select = $('#treatments').empty();
+                select.append("<option value=All>All</option>");
+                Object.keys(arr).forEach(function (key) {
+                    select.append('<option value="' + arr[key].name + '">' +
+                        '' + arr[key].name + '</option>');
+                });
+            });
 }
 
 function saveFilterSettings() {
@@ -149,11 +144,11 @@ function loadNotes() {
                 '<td>' + note.treatment + '</td>' +
                 '<td>' + note.updateDate.dayOfMonth + ' ' + note.updateDate.month +
                 ' ' + note.updateDate.year +
-                '</td><td></td><td class="text-right"><span id="' +
+                '</td><td></td><td class="cotrol-class text-right"><span id="' +
                 note.id + '" data-singleton="true"' +
                 ' data-toggle="edit" class="glyphicon glyphicon glyphicon-pencil user-control" ' +
                 'aria-hidden="true"></span>' +
-                '<td class="text-right"><span id="' + note.id + '" ' +
+                '<td class="cotrol-class text-right"><span id="' + note.id + '" ' +
                 'data-singleton="true" data-toggle="confirmation" ' +
                 'class="glyphicon glyphicon-remove-circle users-control" ' +
                 'aria-hidden="true"></span></td></tr>');

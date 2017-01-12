@@ -25,7 +25,9 @@ $(document).ready(function () {
                 table.append('<tr onclick="showNote(event,this)"><td>' + record.title +
                     '<td>' + record.type + '</td>' +
                     '<td>' + record.author.login + '</td>' +
-                    '</td><td></td><td class="text-right"><span id=' + record.title + ' data-singleton="true" data-toggle="confirmation" class="glyphicon glyphicon-remove-circle records-control" aria-hidden="true"></span></td></tr>');
+                    '</td><td></td><td class="cotrol-class text-right">' +
+                    '<span id=' + record.title + ' data-singleton="true" data-toggle="confirmation" ' +
+                    'class="glyphicon glyphicon-remove-circle records-control" aria-hidden="true"></span></td></tr>');
             });
             manageCompany();
         });
