@@ -113,7 +113,7 @@ public class NoteRepositoryImplTest {
 
     @Test
     public void searchByAllFieldsInRecord_withWildcard() throws Exception {
-        assertThat(noteRepository.searchByAllFieldsInRecord(RECORD_2_TITLE, "*")).hasSize(3);
+        assertThat(noteRepository.searchByAllFieldsInRecord(RECORD_2_TITLE, "")).hasSize(3);
     }
 
     private void createNote(String title, String description, String conclusion, String keywords, String subject, String subSubject,

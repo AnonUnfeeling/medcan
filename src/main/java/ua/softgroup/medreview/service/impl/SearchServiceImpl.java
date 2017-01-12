@@ -64,7 +64,7 @@ public class SearchServiceImpl implements SearchService {
     @Override
     public List<Note> searchNotesInRecord(String recordTitle, String text, String category, String subCategory, String treatment) {
         logger.debug("Search notes in record {} by text {}", recordTitle, text);
-        return noteRepository.searchByAllFieldsInRecord(recordTitle, (text == null || text.trim().isEmpty()) ? "*" : text).stream()
+        return noteRepository.searchByAllFieldsInRecord(recordTitle, text).stream()
                 .peek(System.out::println)
                 .filter(note -> category == null || category.isEmpty() || note.getSubject().equals(category))
                 .filter(note -> subCategory == null || subCategory.isEmpty() || note.getSubSubject().equals(subCategory))
