@@ -217,3 +217,8 @@ function loadType() {
         });
     });
 }
+
+//sort by title
+function sortByTitle() {
+    console.log("sort");
+}

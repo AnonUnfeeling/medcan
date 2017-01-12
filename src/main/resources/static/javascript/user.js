@@ -53,7 +53,15 @@ function getUsersByCompanyName(page) {
         table.find('tr').remove();
         $(arr).each(function () {
             var user = $(this)[0];
-            table.append('<tr onclick="showRecord(event,this)"><td>' + user.login + '</td><td>' + user.roles[0].role + '</td>' +
+            var roleName;
+            if (user.roles[0].role == "ADMIN") {
+                roleName = "Super Admin";
+            } else if (user.roles[0].role == "COMPANY") {
+                roleName = "Company Admin";
+            }else {
+                roleName = "User"
+            }
+            table.append('<tr onclick="showRecord(event,this)"><td>' + user.login + '</td><td>' + roleName + '</td>' +
                 '<td>' + user.company.name + '</td><td>' + user.language + '</td><td></td>' +
                 '<td class="cotrol-class text-right"><span id="' +
                 user.login + '" data-singleton="true"' +
@@ -98,7 +106,7 @@ function getUsers(page) {
 
             }));
         }).fail(function (data) {
-          
+
         });
 
         var table = $('#table-body');
@@ -106,8 +114,16 @@ function getUsers(page) {
         $(arr).each(function () {
             var user = $(this)[0];
             var company;
+            var roleName;
+            if (user.role == "ADMIN") {
+                roleName = "Super Admin";
+            } else if (user.role == "COMPANY") {
+                roleName = "Company Admin";
+            }else {
+                roleName = "User"
+            }
             if (user.company == null) company = "No company"; else company = user.company;
-            table.append('<tr onclick="showRecord(event,this)"><td>' + user.login + '</td><td>' + user.role + '</td>' +
+            table.append('<tr onclick="showRecord(event,this)"><td>' + user.login + '</td><td>' + roleName + '</td>' +
                 '<td>' + company + '</td><td>' + user.language + '</td><td></td>' +
                 '<td class="cotrol-class text-right"><span id="' +
                 user.login + '" data-singleton="true"' +
@@ -271,7 +287,7 @@ function loadRole() {
         }).done(function (data) {
             var select = $('#userRole').empty();
             if (data == "COMPANY") {
-                select.append('<option value="USER">USER</option>');
+                select.append('<option value="User">User</option>');
             } else {
                 $.ajax({
                     method: "GET",
@@ -283,8 +299,16 @@ function loadRole() {
                 }).done(function (data) {
                     var arr = data;
                     Object.keys(arr).forEach(function (key) {
+                        var roleName;
+                        if (arr[key] == "ADMIN") {
+                            roleName = "Super Admin";
+                        } else if (arr[key] == "COMPANY") {
+                            roleName = "Company Admin";
+                        }else {
+                            roleName = "User"
+                        }
                         select.append('<option value="' + arr[key] + '">' +
-                            '' + arr[key] + '</option>');
+                            '' + roleName + '</option>');
                     });
                 });
             }
@@ -357,18 +381,18 @@ function loadCompanies(id) {
     });
 }
 
-function setSelectsForUser(id){
+function setSelectsForUser(id) {
     $.ajax({
         method: "POST",
         url: "/getUser",
-        data: { login: id},
+        data: {login: id},
         dataType: "json",
         headers: {
             'X-CSRF-TOKEN': token
         }
     }).done(function (data) {
-        $('#userRole').find('option[value="'+data.role+'"]').attr('selected', 'selected');
-        $('#userCompany').find('option[value="'+data.company+'"]').attr('selected', 'selected');
-        $('#usersLanguage').find('option[value="'+data.language+'"]').attr('selected', 'selected');
+        $('#userRole').find('option[value="' + data.role + '"]').attr('selected', 'selected');
+        $('#userCompany').find('option[value="' + data.company + '"]').attr('selected', 'selected');
+        $('#usersLanguage').find('option[value="' + data.language + '"]').attr('selected', 'selected');
     });
 }

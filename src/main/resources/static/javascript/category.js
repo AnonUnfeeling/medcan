@@ -12,6 +12,9 @@ function getCategories() {
             'X-CSRF-TOKEN': token
         }
     }).done(function (data) {
+        $('#modalButton').click(function () {
+            editCategory();
+        });
         var arr = data;
         var table = $('#table-body');
         table.find('tr').remove();
@@ -63,7 +66,7 @@ function manageCategory() {
 }
 
 function editCategory() {
-    if (!isSubCategory&&!isTreatment) {
+    if (!isSubCategory && !isTreatment) {
         var message = $('#message-container');
         if ($('#categoryName').val().trim().length == 0) {
             $(message).children().remove();
@@ -100,7 +103,7 @@ function editCategory() {
                     }
                 }).done(function (data) {
                     $(message).children().remove();
-                    $('#companyName').val(null);
+                    $('#categoryName').val(null);
                     message.append("<div id='success' class='alert alert-success'><strong>" + data + "</strong></div>");
                     location.reload();
                 }).fail(function (data) {
@@ -137,6 +140,9 @@ function showSubCategoryForCategory(event, companyName) {
     }
 
     if (elm == allTDs[0] || elm == allTDs[1] && elm == companyName) {
+        $('#modalButton').click(function () {
+            editSubCategory();
+        });
         getSubCategory($(companyName).find('td').first()[0].innerText);
     }
 }
@@ -149,9 +155,6 @@ function getSubCategory(categoryName) {
     $('#titleFoCategory').html("Add sub-category");
     $('#create-category').html("Add sub-category");
     $('#categoryName').attr("placeholder", "Sub-category name");
-    $('#modalButton').click(function () {
-        editSubCategory();
-    });
     preCategoryName = categoryName;
     $.ajax({
         method: "GET",
@@ -165,7 +168,7 @@ function getSubCategory(categoryName) {
         var table = $('#table-body');
         table.find('tr').remove();
         Object.keys(arr).forEach(function (key) {
-            table.append('<tr onclick="showTreatmentForSubCategory(event,this)"><td>'
+            table.append('<tr><td>'
                 + arr[key].name + '</td><td></td><td class="cotrol-class text-right"><span id="' +
                 arr[key].name + '" data-singleton="true"' +
                 ' data-toggle="edit" class="glyphicon glyphicon glyphicon-pencil subcategory-edit-control" ' +
@@ -233,7 +236,6 @@ function editSubCategory() {
                     }).done(function (data) {
                         $(message).children().remove();
                         $('#categoryName').val(null);
-                        $('#editCategoryModal').modal('hide');
                         getSubCategory(preCategoryName);
                     }).fail(function (data) {
                         $(message).children().remove();
@@ -252,7 +254,7 @@ function editSubCategory() {
                     }
                 }).done(function (data) {
                     $(message).children().remove();
-                    $('#companyName').val(null);
+                    $('#categoryName').val(null);
                     $('#editCategoryModal').modal('hide');
                     message.append("<div id='success' class='alert alert-success'><strong>" + data + "</strong></div>");
                     getSubCategory(preCategoryName);
@@ -275,20 +277,6 @@ function deleteSubCategory(control) {
     }).done(function (data) {
         getSubCategory(preCategoryName);
     });
-}
-
-function showTreatmentForSubCategory(event, companyName) {
-    var e = event || window.event,
-        elm = e.target || e.srcElement,
-        allTDs = companyName.getElementsByTagName('td');
-
-    while (elm.nodeName.toLowerCase() !== 'td' && elm !== companyName) {
-        elm = elm.parentNode;
-    }
-
-    if (elm == allTDs[0] || elm == allTDs[1] && elm == companyName) {
-        getTreatment($(companyName).find('td').first()[0].innerText);
-    }
 }
 
 $(document).on('hide.bs.modal', '#addCompanyModal', function () {
