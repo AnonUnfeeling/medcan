@@ -277,10 +277,22 @@ function loadNote() {
             select.append('<option value="' + data.treatment + '">' +
                 '' + data.treatment + '</option>');
         }
+        var sSubj;
+        if (data.subSubject == "Select sub-category") {
+            sSubj = "";
+        } else {
+            sSubj =data.subSubject;
+        }
         $('#waySubCat').text(null);
-        $('#waySubCat').text(data.subSubject);
+        $('#waySubCat').text(sSubj);
+        var subj;
+        if (data.subject == "Select category") {
+            subj = "";
+        } else {
+            subj =data.subject;
+        }
         $('#wayCat').text(null);
-        $('#wayCat').text(data.subject);
+        $('#wayCat').text(subj);
     });
 }
 
@@ -433,8 +445,14 @@ function loadSubject() {
     }).done(function (data) {
         var categories = data;
         loadSubSubject(categories[0].name.toString());
+        // var subj;
+        // if (categories[0].name.toString() == "Select category") {
+        //     subj = "";
+        // } else {
+        //     subj =categories[0].name.toString();
+        // }
         $('#wayCat').text(null);
-        $('#wayCat').text(categories[0].name.toString());
+        // $('#wayCat').text(subj);
         var select = $('#subjectNote').empty();
         select.append('<option selected="selected">Select category</option>');
         Object.keys(categories).forEach(function (key) {
@@ -456,7 +474,7 @@ function loadSubSubject(categoryName) {
         var arr = data;
         var select = $('#subSubjectNote').empty();
         $('#waySubCat').text(null);
-        $('#waySubCat').text(arr[0].name);
+        // $('#waySubCat').text(arr[0].name);
         select.append('<option selected="selected">Select sub-category</option>');
         Object.keys(arr).forEach(function (key) {
             select.append('<option value="' + arr[key].name + '">' +
@@ -497,7 +515,6 @@ function disableFields(boolean) {
 }
 
 function createEndReview() {
-
     var message = $('#message-container');
     if ($('#endDescription').val().trim().length !== 0 || $('#endConclusion').val().trim().length !== 0) {
         $.ajax({
@@ -596,13 +613,25 @@ function loadRecordEndSetData() {
 $(document).ready(function () {
     $('#subjectNote').change(function () {
         var val = $("#subjectNote option:selected").text();
-        $('#wayCat').text(val);
+        var subj;
+        if (val == "Select category") {
+            subj = "";
+        } else {
+            subj =val;
+        }
+        $('#wayCat').text(subj);
         loadSubSubject(val);
     });
     $('#subSubjectNote').change(function () {
         var val = $("#subSubjectNote option:selected").text();
+        var sSubj;
+        if (val == "Select sub-category") {
+            sSubj = "";
+        } else {
+            sSubj =val;
+        }
         $('#waySubCat').text(null);
-        $('#waySubCat').text(val);
+        $('#waySubCat').text(sSubj);
     });
 });
 
