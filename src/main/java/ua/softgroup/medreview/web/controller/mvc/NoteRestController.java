@@ -99,7 +99,7 @@ public class NoteRestController {
                                    @RequestParam String keywords,
                                    @RequestParam String subject,
                                    @RequestParam String subSubject,
-                                   @RequestParam String country,
+//                                   @RequestParam String country,
                                    @RequestParam String treatment,
                                    @RequestParam String titleForNote) {
         try {

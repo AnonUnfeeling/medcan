@@ -8,7 +8,6 @@ $(document).ready(function () {
     checkUser();
     loadRecord();
     loadNotes();
-
     searchFilter();
 });
 
@@ -43,7 +42,7 @@ function searchFilter() {
                 }
             }).done(function (data) {
                 var arr = data;
-                loadTreatment(arr[0].name);
+                loadTreatment();
                 var select = $('#subCategory').empty();
                 select.append("<option value=All>All</option>");
                 Object.keys(arr).forEach(function (key) {
@@ -210,6 +209,7 @@ function manageCompany() {
         editId = control.attr('id');
         $('#titleFoNote').text("Edit note");
         loadSubject();
+        loadTreatment();
         $('#languageNote').hide();
         loadNote();
         disableFields(false);
@@ -249,15 +249,22 @@ function loadNote() {
         $('#titleForNote').val(data.title);
         $('#countryNote').val(data.country);
         $('#languageNote').val(data.language);
-        var select = $('#subjectNote').empty();
-        select.append('<option value="' + data.subject + '">' +
-            '' + data.subject + '</option>');
-        var select = $('#subSubjectNote').empty();
-        select.append('<option value="' + data.subSubject + '">' +
-            '' + data.subSubject + '</option>');
-        var select = $('#treatmentNote').empty();
-        select.append('<option value="' + data.treatment + '">' +
-            '' + data.treatment + '</option>');
+        if (!isEdit) {
+            loadSubSubject(data.subject);
+            $('#subjectNote').find('option[value="' + data.subject + '"]').attr('selected', 'selected');
+            $('#subSubjectNote').find('option[value="' + data.subSubject + '"]').attr('selected', 'selected');
+            $('#treatmentNote').find('option[value="' + data.treatment + '"]').attr('selected', 'selected');
+        } else {
+            var select = $('#subjectNote').empty();
+            select.append('<option value="' + data.subject + '">' +
+                '' + data.subject + '</option>');
+            var select = $('#subSubjectNote').empty();
+            select.append('<option value="' + data.subSubject + '">' +
+                '' + data.subSubject + '</option>');
+            var select = $('#treatmentNote').empty();
+            select.append('<option value="' + data.treatment + '">' +
+                '' + data.treatment + '</option>');
+        }
     });
 }
 
@@ -367,12 +374,13 @@ function loadSubject() {
     $.ajax({
         method: "GET",
         url: "/subjects",
+        dataType: "json",
         headers: {
             'X-CSRF-TOKEN': token
         }
     }).done(function (data) {
         var categories = data;
-        loadSubSubject(categories[0].name);
+        loadSubSubject(categories[0].name.toString());
         var select = $('#subjectNote').empty();
         Object.keys(categories).forEach(function (key) {
             select.append('<option value="' + categories[key].name + '">' +
@@ -391,7 +399,6 @@ function loadSubSubject(categoryName) {
         }
     }).done(function (data) {
         var arr = data;
-        loadTreatment(arr[0].name);
         var select = $('#subSubjectNote').empty();
         Object.keys(arr).forEach(function (key) {
             select.append('<option value="' + arr[key].name + '">' +
@@ -400,10 +407,10 @@ function loadSubSubject(categoryName) {
     });
 }
 
-function loadTreatment(subcategoryName) {
+function loadTreatment() {
     $.ajax({
         method: "GET",
-        url: "/subjects/treatments/" + subcategoryName.toString(),
+        url: "/subjects/treatments/get",
         dataType: "json",
         headers: {
             'X-CSRF-TOKEN': token
@@ -525,9 +532,9 @@ function loadRecordEndSetData() {
         $('#endConclusion').val(data.endConclusion);
         $('#endDescription').val(data.endDescription);
         $('#endStatus').val(data.status);
-        if(data.type!=="Website"){
-            document.getElementById('editUrl').style.display ='none';
-        }else{
+        if (data.type !== "Website") {
+            document.getElementById('editUrl').style.display = 'none';
+        } else {
             $('#editUrl').val(data.url);
         }
     });
@@ -537,10 +544,6 @@ $(document).ready(function () {
     $('#subjectNote').change(function () {
         var val = $("#subjectNote option:selected").text();
         loadSubSubject(val);
-    });
-    $('#subSubjectNote').change(function () {
-        var val = $("#subSubjectNote option:selected").text();
-        loadTreatment(val);
     });
 });
 
