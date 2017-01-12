@@ -85,6 +85,11 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
                 <h3 id="titleFoNote">Creating new note</h3>
+                <ul class="nav navbar-nav navbar-right">
+                    <li style="margin-right: 50px;">
+                        <label id="wayCat"></label>/<label id="waySubCat"></label>
+                    </li>
+                </ul>
             </div>
             <div class="modal-body">
                 <div class="modal-body">
@@ -95,17 +100,8 @@
                     <br/>
                     <input id="keywordsNote" placeholder="Keywords" type="text" class="form-control"/><br/>
                     <select id="subjectNote" class="form-control"></select> <br/>
-                    <button id="createCategory" type="button"
-                            class="btn btn-primary bottom-left form-control"
-                            data-toggle="modal"
-                            data-target="#newCategoryModal">Add new Category
-                    </button>
-                    <br/>
-                    <br/>
                     <select id="subSubjectNote" class="form-control"></select> <br/>
                     <select id="treatmentNote" class="form-control"></select> <br/>
-                    <input id="countryNote" placeholder="Country" type="text" class="form-control"/><br/>
-                    <input id="languageNote" placeholder="Language" type="text" class="form-control" hidden/><br/>
                     <div id="message-container"></div>
                 </div>
                 <hr/>
@@ -119,32 +115,6 @@
     </div>
 </div>
 
-<!--Modal for create new category-->
-<div id="newCategoryModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h4>Create new category/sub-category/treatment</h4>
-            </div>
-            <div class="modal-body">
-                <div class="modal-body">
-                    Category: <select id="newCategory" class="form-control"></select> <br/> <br/>
-                    Sub-Category:<select id="newSubCategory" class="form-control"></select> <br/><br/>
-                    Treatment: <select id="newTreatment" class="form-control"></select> <br/>
-                    <div id="new-message-container"></div>
-                </div>
-                <hr/>
-                <div id="new-form-control" class="text-right">
-                    <button id="new-submitButton" class="btn btn-info" onclick="createEndReview();">SUBMIT
-                    </button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 <!--Modal for end review-->
 <div id="endReviewModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-lg" role="document">
@@ -157,16 +127,47 @@
             </div>
             <div class="modal-body">
                 <div class="modal-body">
-                        <textarea rows="10" id="endDescription" placeholder="Description"
+                        <textarea rows="10" id="endDescription" placeholder="End description"
                                   class="form-control"></textarea> <br/>
-                    <textarea id="endConclusion" placeholder="Conclusion" class="form-control"></textarea><br/>
+                    <textarea id="endConclusion" placeholder="End conclusion" class="form-control"></textarea><br/>
                     <select id="endStatus" class="form-control"></select> <br/>
-                    <!--<input id="endCountry" placeholder="Country" type="text" class="form-control"/><br/>-->
                     <div id="end-message-container"></div>
                 </div>
                 <hr/>
                 <div id="end-form-control" class="text-right">
                     <button id="end-submitButton" class="btn btn-info" onclick="createEndReview();">SUBMIT
+                    </button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Modal for edit record-->
+<div id="editRecord" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4>EditRecord: <label th:text="${param.title}"></label></h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body">
+                    <input id="editTitle" type="text" placeholder="Title" class="form-control"/><br/>
+                    <input id="editCountry" type="text" placeholder="Country" class="form-control"/><br/>
+                    <input id="editUrl" type="text" placeholder="URL" class="form-control"/><br/>
+                    <select id="type" class="form-control"></select> <br/>
+                        <textarea rows="10" id="editEndDescription" placeholder="End description"
+                                  class="form-control"></textarea> <br/>
+                        <textarea id="editEndConclusion" placeholder="End conclusion"
+                                  class="form-control"></textarea><br/>
+                    <div id="edit-message-container"></div>
+                </div>
+                <hr/>
+                <div id="edit-form-control" class="text-right">
+                    <button id="edit-submitButton" class="btn btn-info" onclick="editRecord();">SUBMIT
                     </button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
