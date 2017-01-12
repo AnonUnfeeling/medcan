@@ -75,22 +75,22 @@ function loadSubjects() {
 }
 
 function loadTreatments() {
-            $.ajax({
-                method: "GET",
-                url: "/subjects/treatments/get",
-                dataType: "json",
-                headers: {
-                    'X-CSRF-TOKEN': token
-                }
-            }).done(function (data) {
-                var arr = data;
-                var select = $('#treatments').empty();
-                select.append("<option value=All>All</option>");
-                Object.keys(arr).forEach(function (key) {
-                    select.append('<option value="' + arr[key].name + '">' +
-                        '' + arr[key].name + '</option>');
-                });
-            });
+    $.ajax({
+        method: "GET",
+        url: "/subjects/treatments/get",
+        dataType: "json",
+        headers: {
+            'X-CSRF-TOKEN': token
+        }
+    }).done(function (data) {
+        var arr = data;
+        var select = $('#treatments').empty();
+        select.append("<option value=All>All</option>");
+        Object.keys(arr).forEach(function (key) {
+            select.append('<option value="' + arr[key].name + '">' +
+                '' + arr[key].name + '</option>');
+        });
+    });
 }
 
 function saveFilterSettings() {
@@ -260,6 +260,10 @@ function loadNote() {
             select.append('<option value="' + data.treatment + '">' +
                 '' + data.treatment + '</option>');
         }
+        $('#waySubCat').text(null);
+        $('#waySubCat').text(data.subSubject);
+        $('#wayCat').text(null);
+        $('#wayCat').text(data.subject);
     });
 }
 
@@ -376,6 +380,7 @@ function loadSubject() {
     }).done(function (data) {
         var categories = data;
         loadSubSubject(categories[0].name.toString());
+        $('#way').text(categories[0].name.toString());
         var select = $('#subjectNote').empty();
         Object.keys(categories).forEach(function (key) {
             select.append('<option value="' + categories[key].name + '">' +
@@ -395,6 +400,8 @@ function loadSubSubject(categoryName) {
     }).done(function (data) {
         var arr = data;
         var select = $('#subSubjectNote').empty();
+        $('#waySubCat').text(null);
+        $('#waySubCat').text(arr[0].name);
         Object.keys(arr).forEach(function (key) {
             select.append('<option value="' + arr[key].name + '">' +
                 '' + arr[key].name + '</option>');
@@ -538,7 +545,13 @@ function loadRecordEndSetData() {
 $(document).ready(function () {
     $('#subjectNote').change(function () {
         var val = $("#subjectNote option:selected").text();
+        $('#wayCat').text(val);
         loadSubSubject(val);
+    });
+    $('#subSubjectNote').change(function () {
+        var val = $("#subSubjectNote option:selected").text();
+        $('#waySubCat').text(null);
+        $('#waySubCat').text(val);
     });
 });
 
