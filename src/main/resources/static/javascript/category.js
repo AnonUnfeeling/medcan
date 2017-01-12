@@ -150,6 +150,8 @@ function showSubCategoryForCategory(event, companyName) {
 var isTreatment = false;
 
 function getSubCategory(categoryName) {
+    var message = $('#message-container');
+    $(message).children().remove();
     $('#titleForCategory').text("All sub-category");
     isSubCategory = true;
     $('#titleFoCategory').html("Add sub-category");
@@ -279,8 +281,7 @@ function deleteSubCategory(control) {
     });
 }
 
-$(document).on('hide.bs.modal', '#addCompanyModal', function () {
-    preCategoryName = null;
-    $('#categoryName').val(null);
-    $('#titleFoCategory').text("Add category");
+$(document).on('hide.bs.modal', '#editCategoryModal', function () {
+    var message = $('#message-container');
+    $(message).children().remove();
 });
