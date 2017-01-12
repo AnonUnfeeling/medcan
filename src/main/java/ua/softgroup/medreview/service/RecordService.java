@@ -15,9 +15,13 @@ public interface RecordService {
 
     Page<Record> getByAuthor(User author, Pageable pageable);
 
+    Page<Record> getSortedRecordsByAuthor(User user, int page, String sortDirection, String sortField);
+
     Page<Record> getAll(Pageable pageable);
 
     Page<Record> getRecordsByAuthorities(Pageable pageable);
+
+    Page<Record> getSortedRecordsByAuthorities(int page, String sortDirection, String sortField);
 
     void saveRecord(Record recordForm);
 

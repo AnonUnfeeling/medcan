@@ -19,4 +19,6 @@ public interface RecordRepository extends PagingAndSortingRepository<Record, Lon
 
     Page<Record> findByAuthorCompany(Company company, Pageable pageable);
 
+    Page<Record> findAll(Pageable pageable);
+
 }

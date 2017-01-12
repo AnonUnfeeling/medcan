@@ -4,7 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
@@ -15,7 +17,6 @@ import ua.softgroup.medreview.persistent.repository.NoteRepository;
 import ua.softgroup.medreview.persistent.repository.RecordRepository;
 import ua.softgroup.medreview.service.AuthenticationService;
 import ua.softgroup.medreview.service.RecordService;
-import ua.softgroup.medreview.web.form.RecordForm;
 
 import java.util.Collection;
 
@@ -32,8 +33,9 @@ public class RecordServiceImpl implements RecordService {
     private NoteRepository noteRepository;
     @Autowired
     private AuthenticationService authenticationService;
-    private final SimpleGrantedAuthority adminAuthority = new SimpleGrantedAuthority(Role.ADMIN.name());
-    private final SimpleGrantedAuthority companyAuthority = new SimpleGrantedAuthority(Role.COMPANY.name());
+    private static final SimpleGrantedAuthority adminAuthority = new SimpleGrantedAuthority(Role.ADMIN.name());
+    private static final SimpleGrantedAuthority companyAuthority = new SimpleGrantedAuthority(Role.COMPANY.name());
+    private static final int NUMBER_OF_PAGES = 10;
 
     @Override
     public Record getByTitle(String title) {
@@ -45,6 +47,20 @@ public class RecordServiceImpl implements RecordService {
     public Page<Record> getByAuthor(User author, Pageable pageable) {
         logger.debug("getByAuthor");
         return recordRepository.findByAuthor(author, pageable);
+    }
+
+    @Override
+    public Page<Record> getSortedRecordsByAuthor(User user, int page, String sortDirection, String sortField) {
+        logger.debug("getSortedRecordsByAuthor");
+        Page<Record> sortedRecords;
+        try {
+            sortedRecords = getByAuthor(user, new PageRequest(page - 1, NUMBER_OF_PAGES, new Sort(Sort.Direction.valueOf(sortDirection), sortField)));
+            logger.debug("successful!");
+        } catch (org.springframework.data.mapping.PropertyReferenceException e) {
+            logger.debug(":( doesn't work " + e.getMessage());
+            sortedRecords = getByAuthor(user, new PageRequest(page - 1, NUMBER_OF_PAGES));
+        }
+        return sortedRecords;
     }
 
     @Override
@@ -65,6 +81,17 @@ public class RecordServiceImpl implements RecordService {
         } else {
             return recordRepository.findByAuthor(currentUser, pageable);
         }
+    }
+
+    @Override
+    public Page<Record> getSortedRecordsByAuthorities(int page, String sortDirection, String sortField) {
+        Page<Record> sortedRecords;
+        try {
+            sortedRecords = getRecordsByAuthorities(new PageRequest(page - 1, NUMBER_OF_PAGES, new Sort(Sort.Direction.valueOf(sortDirection), sortField)));
+        } catch (org.springframework.data.mapping.PropertyReferenceException e) {
+            sortedRecords = getRecordsByAuthorities(new PageRequest(page - 1, NUMBER_OF_PAGES));
+        }
+        return sortedRecords;
     }
 
     @Override

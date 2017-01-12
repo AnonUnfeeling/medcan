@@ -1,7 +1,11 @@
 package ua.softgroup.medreview.web.controller.mvc;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -20,6 +24,7 @@ import ua.softgroup.medreview.service.AuthenticationService;
 import ua.softgroup.medreview.service.RecordService;
 import ua.softgroup.medreview.service.SearchService;
 import ua.softgroup.medreview.service.UserService;
+import ua.softgroup.medreview.web.exception.UserNotFoundException;
 import ua.softgroup.medreview.web.form.RecordForm;
 
 import javax.validation.Valid;
@@ -41,6 +46,7 @@ public class RecordController {
     private static final int NUMBER_OF_PAGES = 10;
     private final RecordService recordService;
     private final SearchService searchService;
+    final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     public RecordController(RecordService recordService, SearchService searchService, UserService userService, AuthenticationService authenticationService) {
@@ -58,13 +64,21 @@ public class RecordController {
 
     //TODO secure this url
     @GetMapping(value = "all")
-    public ResponseEntity<?> showPrincipalRecords(@RequestParam int page) {
-        return ResponseEntity.ok(recordService.getRecordsByAuthorities(new PageRequest(page - 1, NUMBER_OF_PAGES)));
+    public ResponseEntity<Page<Record>> showPrincipalRecords(@RequestParam int page) {
+        return ResponseEntity.ok(
+                recordService.getRecordsByAuthorities(new PageRequest(page - 1, NUMBER_OF_PAGES)));
+    }
+
+    @GetMapping(value = "/all/sorted")
+    public ResponseEntity<Page<Record>> showSortedPrincipalRecords(@RequestParam int page, @RequestParam String sortDirection, @RequestParam String sortField) {
+        return ResponseEntity.ok(
+                recordService.getSortedRecordsByAuthorities(page, sortDirection, sortField));
     }
 
     @PostMapping(value = "/add")
     public ResponseEntity createRecord(@Valid RecordForm recordForm, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()) return ResponseEntity.badRequest().body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
+        if (bindingResult.hasErrors())
+            return ResponseEntity.badRequest().body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
         User principal = authenticationService.getPrincipal();
         Record record = new Record(recordForm.getTitle(), recordForm.getType(), principal);
         record.setCountry(recordForm.getCountry());
@@ -73,7 +87,7 @@ public class RecordController {
         record.setEndConclusion("");
         record.setEndDescription("");
         recordService.saveRecord(record);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Record '"+record.getTitle()+"' was created.");
+        return ResponseEntity.status(HttpStatus.CREATED).body("Record '" + record.getTitle() + "' was created.");
     }
 
     @PostMapping(value = "/removeRecord")
@@ -87,12 +101,30 @@ public class RecordController {
     }
 
     @PostMapping(value = "/getRecordByUser")
-    public ResponseEntity<?> getRecordByUser(@RequestParam String userName, @RequestParam int page) {
+    public ResponseEntity<Page<Record>> getRecordsByUser(@RequestParam String userName, @RequestParam int page) {
         try {
-            return ResponseEntity.ok(recordService.getByAuthor(userService.findUserByLogin(userName), new PageRequest(page - 1, 10)));
+            return ResponseEntity.ok(recordService.getByAuthor(
+                    userService.findUserByLogin(userName), new PageRequest(page - 1, NUMBER_OF_PAGES)));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(null);
         }
+    }
+
+    @PostMapping(value = "/getSortedRecordByUser")
+    public ResponseEntity<Page<Record>> getSortedRecordsByUsername(
+            @RequestParam String userName,
+            @RequestParam int page,
+            @RequestParam String sortDirection,
+            @RequestParam String sortField) {
+
+        final User user = userService.getUserByLogin(userName)
+                .orElseThrow(() -> new UserNotFoundException(userName));
+        //logs especially for you Andriy!
+        recordService.getSortedRecordsByAuthor(user, 1, sortDirection, sortField)
+                .forEach(record -> logger.debug(record.getTitle()));
+
+        return ResponseEntity.ok(
+                recordService.getSortedRecordsByAuthor(user, page, sortDirection, sortField));
     }
 
     @GetMapping(value = "/record")
@@ -158,7 +190,7 @@ public class RecordController {
     }
 
     @RequestMapping(value = "/getRecordDetails")
-    public ResponseEntity<?> getRecordDeatils(@RequestParam String recordName){
+    public ResponseEntity<?> getRecordDeatils(@RequestParam String recordName) {
         return ResponseEntity.ok(recordService.getByTitle(recordName));
     }
 }

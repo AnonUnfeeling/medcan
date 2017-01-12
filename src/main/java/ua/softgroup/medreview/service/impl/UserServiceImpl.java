@@ -7,10 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ua.softgroup.medreview.persistent.entity.Company;
-import ua.softgroup.medreview.persistent.entity.Role;
-import ua.softgroup.medreview.persistent.entity.User;
-import ua.softgroup.medreview.persistent.entity.UserRole;
+import ua.softgroup.medreview.persistent.entity.*;
 import ua.softgroup.medreview.persistent.repository.CompanyRepository;
 import ua.softgroup.medreview.persistent.repository.UserRepository;
 import ua.softgroup.medreview.service.UserService;
@@ -20,6 +17,7 @@ import ua.softgroup.medreview.web.form.UserForm;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static ua.softgroup.medreview.persistent.entity.Role.*;
 
@@ -65,6 +63,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Optional<User> getUserByLogin(String login) {
+        return Optional.ofNullable(userRepository.findByLogin(login));
+    }
+
+    @Override
     public void deleteUserById(Long id) {
         userRepository.delete(id);
     }
@@ -75,7 +78,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<User> findAll(Pageable pageable) {
+    public Page<User> getAll(Pageable pageable) {
         return userRepository.findAll(pageable);
     }
 
@@ -85,7 +88,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findAllUsers() {
+    public List<User> getAllUsers() {
         return (List<User>) userRepository.findAll();
     }
 
