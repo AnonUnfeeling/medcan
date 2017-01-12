@@ -33,6 +33,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 public class NoteRepositoryImplTest {
 
+    private static final String RECORD_1_TITLE = "Record_1";
+    private static final String RECORD_2_TITLE = "Record_2";
+
     @Autowired
     private NoteRepository noteRepository;
     @Autowired
@@ -47,8 +50,8 @@ public class NoteRepositoryImplTest {
         userRepository.save(user);
         userRepository.save(admin);
 
-        Record record1 = recordRepository.save(new Record("Record_1", "Type", user));
-        Record record2 = recordRepository.save(new Record("Record_2", "Type", admin));
+        Record record1 = recordRepository.save(new Record(RECORD_1_TITLE, "Type", user));
+        Record record2 = recordRepository.save(new Record(RECORD_2_TITLE, "Type", admin));
 
         createNote("Title1", "Genetic testing looks for specific inherited changes in a person’s chromosomes, genes, or proteins",
                    "Genetic testing of tumor samples can also be performed, but this doc does not cover such testing",
@@ -65,6 +68,8 @@ public class NoteRepositoryImplTest {
         createNote("Title4", "Many people don't realize this -- but football is kind of a gay sport",
                    "Football is for gays", "gays, football, cancer", "10 Reasons Football is Gay", "Football is Gay",
                    "England", "english", "treatment", LocalDateTime.now(), record2);
+        createNote("Title5", "Dummy description", "Dummy conclusion", "dummy", "Dummy category", "Dummy sub-category",
+                   "Ukraine", "ukrainian", "treatment", LocalDateTime.now(), record2);
     }
 
     @After
@@ -103,7 +108,12 @@ public class NoteRepositoryImplTest {
 
     @Test
     public void searchByAllFieldsInRecord() throws Exception {
-        assertThat(noteRepository.searchByAllFieldsInRecord("Record_1", "english")).hasSize(2);
+        assertThat(noteRepository.searchByAllFieldsInRecord(RECORD_1_TITLE, "english")).hasSize(2);
+    }
+
+    @Test
+    public void searchByAllFieldsInRecord_withWildcard() throws Exception {
+        assertThat(noteRepository.searchByAllFieldsInRecord(RECORD_2_TITLE, "*")).hasSize(3);
     }
 
     private void createNote(String title, String description, String conclusion, String keywords, String subject, String subSubject,

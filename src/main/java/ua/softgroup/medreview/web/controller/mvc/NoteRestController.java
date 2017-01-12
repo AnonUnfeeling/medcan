@@ -99,6 +99,7 @@ public class NoteRestController {
                                    @RequestParam String keywords,
                                    @RequestParam String subject,
                                    @RequestParam String subSubject,
+//                                   @RequestParam String country,
                                    @RequestParam String treatment,
                                    @RequestParam String titleForNote) {
         try {
@@ -164,6 +165,9 @@ public class NoteRestController {
     public ResponseEntity<List<Note>> searchNotesInCurrentRecord(@PathVariable String title, @RequestParam String text,
                                                                  @RequestParam String category, @RequestParam String subCategory,
                                                                  @RequestParam String treatment) {
+        System.out.println("category " + category);
+        System.out.println("subCategory " + subCategory);
+        System.out.println("treatment " + treatment);
         List<Note> notes = searchService.searchNotesInRecord(title, text, category, subCategory, treatment);
         System.out.println("response size: " + notes.size());
         return ResponseEntity.ok(notes);
