@@ -30,11 +30,11 @@
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse-1" style="margin-right: 20px;">
             <ul class="nav navbar-nav navbar-left">
-                <li><a href="/records" class="glyphicon glyphicon-home"></a> </li>
+                <li><a href="/records" class="glyphicon glyphicon-home"></a></li>
                 <li><a href="/company" id="companyLink">Companies</a></li>
                 <li><a href="/users" id="userLink">Users</a></li>
                 <li><a href="/records" id="recordLink">Records</a></li>
-                <li><a href="/subjects/view" >Categories</a></li>
+                <li><a href="/subjects/view">Categories</a></li>
                 <li><a href="/subjects/view/treatment">Treatments</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -61,17 +61,19 @@
         <span>sub. category - <span id="subCategory" th:text="${param.sc}"></span>,</span>
         <span>treatment - <span id="treatments" th:text="${param.tr}"></span>.</span>
     </div>
-    <table class="table table-responsive table-hover table-striped">
-        <thead>
-        <tr>
-            <th id="title">Title</th>
-            <th id="description" class="description">Description</th>
-            <th id="conclusion" class="conclusion">Conclusion</th>
-        </tr>
-        </thead>
-        <tbody id="table-body">
-        </tbody>
-    </table>
+    <div class="table-responsive">
+        <table class="table table-responsive table-hover table-striped">
+            <thead>
+            <tr>
+                <th id="title">Title</th>
+                <th id="description" class="description">Description</th>
+                <th id="conclusion" class="conclusion">Conclusion</th>
+            </tr>
+            </thead>
+            <tbody id="table-body">
+            </tbody>
+        </table>
+    </div>
     <div hidden id="search-type" th:text="${param.p}"></div>
     <span hidden id="search-title" th:text="${param.title}"></span>
     <span hidden id="conc" th:text="${param.conc}"></span>
