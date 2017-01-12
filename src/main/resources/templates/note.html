@@ -67,7 +67,7 @@
             <h4>All notes in <label th:text="${param.title}"></label></h4>
         </div>
         <div class="col-lg-4">
-            <form method="get" action="/notes/results">
+            <form id="search-form" method="get" action="/notes/results">
                 <div class="input-group">
                     <input class="form-control" name="t" placeholder="Search in this record..."/>
                     <input hidden name="p" value=""/>
@@ -75,6 +75,8 @@
                     <input id="cat" hidden type="text" name="c" value="All">
                     <input id="subCat" hidden type="text" name="sc" value="All">
                     <input id="treat" hidden type="text" name="tr" value="All">
+                    <input id="conc" hidden name="conc" value="true">
+                    <input id="desc" hidden name="desc" value="true">
                     <div class="input-group-btn">
                         <button class="btn btn-default" type="submit">Go!</button>
                         <button id="dropdown-toggle" class="btn btn-default" type="button"><span
@@ -95,8 +97,14 @@
                 <select class="form-control" id="treatments">
                     <option value="All">All</option>
                 </select>
+                <div class="checkbox">
+                    <label><input checked id="conc-filter" value="true" type="checkbox">Description</label>
+                </div>
+                <div class="checkbox">
+                    <label><input checked id="desc-filter" value="true" type="checkbox">Conclusion</label>
+                </div>
                 <br/>
-                <button id="submit" class="btn btn-sm btn-danger" type="button">Save</button>
+                <button id="submit" class="btn btn-sm btn-danger" type="button">Go</button>
                 <button id="cancel" class="btn btn-sm btn-default" type="button">Cancel</button>
             </div>
         </div>
