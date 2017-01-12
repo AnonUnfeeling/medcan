@@ -2,39 +2,35 @@ package ua.softgroup.medreview.web.controller.mvc;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import ua.softgroup.medreview.persistent.entity.Role;
 import ua.softgroup.medreview.persistent.entity.User;
-
-import ua.softgroup.medreview.persistent.entity.UserRole;
 import ua.softgroup.medreview.service.AuthenticationService;
+import ua.softgroup.medreview.service.CompanyService;
+import ua.softgroup.medreview.service.UserService;
 import ua.softgroup.medreview.web.dto.UserDto;
 import ua.softgroup.medreview.web.form.UserForm;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.TreeMap;
-
-import ua.softgroup.medreview.service.CompanyService;
-import ua.softgroup.medreview.service.UserService;
-
-import javax.validation.Valid;
 
 /**
  * Created by jdroidcoder on 28.12.2016.
@@ -129,7 +125,7 @@ public class UserController {
         ObjectMapper mapper = new ObjectMapper();
         try {
             List<UserForm> userForms = new ArrayList<>();
-            Page<User> userPage = userService.findAll(new PageRequest(page - 1, NUMBER_OF_PAGES));
+            Page<User> userPage = userService.getAll(new PageRequest(page - 1, NUMBER_OF_PAGES));
             for (User user : userPage) {
                 if (authenticationService.getPrincipal().getRoles().get(0).getRole().equals(Role.ADMIN)) {
                     userForms.add(new UserForm(user));
@@ -189,6 +185,6 @@ public class UserController {
     private
     @ResponseBody
     int countPageUsers() {
-        return userService.findAll(new PageRequest(0, NUMBER_OF_PAGES)).getTotalPages();
+        return userService.getAll(new PageRequest(0, NUMBER_OF_PAGES)).getTotalPages();
     }
 }
