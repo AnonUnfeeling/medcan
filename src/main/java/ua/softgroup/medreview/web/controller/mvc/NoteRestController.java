@@ -12,15 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import ua.softgroup.medreview.persistent.entity.Note;
 import ua.softgroup.medreview.persistent.entity.NoteStatus;
-import ua.softgroup.medreview.persistent.entity.SubSubject;
-import ua.softgroup.medreview.persistent.entity.Subject;
 import ua.softgroup.medreview.persistent.repository.NoteRepository;
 import ua.softgroup.medreview.persistent.repository.RecordRepository;
 import ua.softgroup.medreview.service.AuthenticationService;
 import ua.softgroup.medreview.service.SearchService;
 import ua.softgroup.medreview.service.SubjectService;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -165,11 +162,8 @@ public class NoteRestController {
     public ResponseEntity<List<Note>> searchNotesInCurrentRecord(@PathVariable String title, @RequestParam String text,
                                                                  @RequestParam String category, @RequestParam String subCategory,
                                                                  @RequestParam String treatment) {
-        System.out.println("category " + category);
-        System.out.println("subCategory " + subCategory);
-        System.out.println("treatment " + treatment);
+
         List<Note> notes = searchService.searchNotesInRecord(title, text, category, subCategory, treatment);
-        System.out.println("response size: " + notes.size());
         return ResponseEntity.ok(notes);
     }
 }

@@ -65,6 +65,7 @@ public abstract class SearchableRepository<T> {
                 .ifPresent(junction::must);
         junction.must(queryBuilder
                 .keyword()
+                .wildcard()
                 .onFields(fields.toArray(new String[fields.size()]))
                 .matching(text)
                 .createQuery());
