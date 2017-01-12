@@ -21,8 +21,8 @@ public class SubSubject extends AbstractEntity<Long> {
     @ManyToOne
     private Subject subject;
 
-    @OneToMany(mappedBy = "subSubject", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Treatment> treatments = new ArrayList<>();
+//    @OneToMany(mappedBy = "subSubject", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Treatment> treatments = new ArrayList<>();
 
     public SubSubject() {
     }
@@ -48,14 +48,14 @@ public class SubSubject extends AbstractEntity<Long> {
         this.subject = subject;
     }
 
-    public List<Treatment> getTreatments() {
-        return treatments;
-    }
+//    public List<Treatment> getTreatments() {
+//        return treatments;
+//    }
 
-    public void setTreatments(List<Treatment> treatments) {
-        this.treatments.clear();
-        if (treatments != null) {
-            this.treatments = treatments;
-        }
-    }
+//    public void setTreatments(List<Treatment> treatments) {
+//        this.treatments.clear();
+//        if (treatments != null) {
+//            this.treatments = treatments;
+//        }
+//    }
 }

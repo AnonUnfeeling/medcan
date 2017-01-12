@@ -14,15 +14,16 @@ public class Treatment extends AbstractEntity<Long> {
     @Column(nullable = false)
     private String name;
 
-    @ManyToOne
-    private SubSubject subSubject;
+//    @ManyToOne
+//    private SubSubject subSubject;
 
     public Treatment() {
     }
 
-    public Treatment(String name, SubSubject subSubject) {
+    public Treatment(String name){
+//    , SubSubject subSubject) {
         this.name = name;
-        this.subSubject = subSubject;
+//        this.subSubject = subSubject;
     }
 
     public String getName() {
@@ -33,11 +34,11 @@ public class Treatment extends AbstractEntity<Long> {
         this.name = name;
     }
 
-    public SubSubject getSubSubject() {
-        return subSubject;
-    }
-
-    public void setSubSubject(SubSubject subSubject) {
-        this.subSubject = subSubject;
-    }
+//    public SubSubject getSubSubject() {
+//        return subSubject;
+//    }
+//
+//    public void setSubSubject(SubSubject subSubject) {
+//        this.subSubject = subSubject;
+//    }
 }

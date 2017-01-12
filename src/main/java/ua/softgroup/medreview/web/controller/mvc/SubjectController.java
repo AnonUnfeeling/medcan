@@ -16,6 +16,7 @@ import ua.softgroup.medreview.web.exception.SubjectNotFoundException;
 import ua.softgroup.medreview.web.exception.TreatmentNotFoundException;
 
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -39,6 +40,11 @@ public class SubjectController {
     @GetMapping(value = "/view")
     public ModelAndView getView() {
         return new ModelAndView("category");
+    }
+
+    @GetMapping(value = "/view/treatment")
+    public ModelAndView getviewTreatment() {
+        return new ModelAndView("treatment");
     }
 
     @GetMapping
@@ -110,21 +116,23 @@ public class SubjectController {
         return ResponseEntity.ok(SUB_SUBJECT_WAS_DELETED);
     }
 
-    @GetMapping(value = "/treatments/{subSubjectName}")
-    public ResponseEntity<List<TreatmentDto>> getTreatmentsBySubsubject(@PathVariable String subSubjectName) {
-        final SubSubject subSubject = subjectService.getSubSubjectByName(subSubjectName)
-                                                    .orElseThrow(() -> new SubjectNotFoundException(subSubjectName));
-        return ResponseEntity.ok(subjectService.getTreatmentsBySubSubject(subSubject));
+    //// TODO: 12.01.2017
+    @GetMapping(value = "/treatments/get")
+    public ResponseEntity<List<TreatmentDto>> getTreatmentsBySubsubject() {
+//        final SubSubject subSubject = subjectService.getSubSubjectByName(subSubjectName)
+//                                                    .orElseThrow(() -> new SubjectNotFoundException(subSubjectName));
+        return ResponseEntity.ok(subjectService.getAllTreatments());
     }
 
+    //// TODO: 12.01.2017
     @PostMapping(value = "/treatments")
     public ResponseEntity createTreatment(@Valid TreatmentDto treatmentDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
         }
-        final SubSubject subSubject = subjectService.getSubSubjectByName(treatmentDto.getSubSubject())
-                                                    .orElseThrow(() -> new SubjectNotFoundException(treatmentDto.getSubSubject()));
-        subjectService.createTreatment(treatmentDto, subSubject);
+//        final SubSubject subSubject = subjectService.getSubSubjectByName(treatmentDto.getSubSubject())
+//                                                    .orElseThrow(() -> new SubjectNotFoundException(treatmentDto.getSubSubject()));
+        subjectService.createTreatment(treatmentDto);
         return ResponseEntity.ok(TREATMENT_WAS_CREATED);
     }
 

@@ -122,16 +122,18 @@ public class SubjectServiceImpl implements SubjectService {
                 .collect(Collectors.toList());
     }
 
+    //// TODO: 12.01.2017
     @Override
     public List<TreatmentDto> getTreatmentsBySubSubject(SubSubject subSubject) {
-        return subSubject.getTreatments().stream()
-                .map(this::convertTreatmentToDto)
-                .collect(Collectors.toList());
+//        return subSubject.getTreatments().stream()
+//                .map(this::convertTreatmentToDto)
+//                .collect(Collectors.toList());
+        return null;
     }
 
     @Override
-    public void createTreatment(TreatmentDto treatmentDto, SubSubject subSubject) {
-        treatmentRepository.save(new Treatment(treatmentDto.getName(), subSubject));
+    public void createTreatment(TreatmentDto treatmentDto) {
+        treatmentRepository.save(new Treatment(treatmentDto.getName()));
     }
 
     @Override

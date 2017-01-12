@@ -47,7 +47,7 @@ public interface SubjectService {
 
     List<TreatmentDto> getTreatmentsBySubSubject(SubSubject subSubject);
 
-    void createTreatment(TreatmentDto treatmentDto, SubSubject subSubject);
+    void createTreatment(TreatmentDto treatmentDto);
 
     void editTreatment(TreatmentDto treatmentDto, Treatment treatment);
 

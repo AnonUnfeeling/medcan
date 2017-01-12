@@ -13,8 +13,8 @@ public class TreatmentDto {
     @Size(max = 64, message = "Name is too long (maximum is 64 characters)")
     private String name;
     private String oldName;
-    @NotEmpty(message = "Subcategory can not be empty")
-    private String subSubject;
+//    @NotEmpty(message = "Subcategory can not be empty")
+//    private String subSubject;
 
     public TreatmentDto() {
     }
@@ -39,20 +39,20 @@ public class TreatmentDto {
         this.oldName = oldName;
     }
 
-    public String getSubSubject() {
-        return subSubject;
-    }
-
-    public void setSubSubject(String subSubject) {
-        this.subSubject = subSubject;
-    }
+//    public String getSubSubject() {
+//        return subSubject;
+//    }
+//
+//    public void setSubSubject(String subSubject) {
+//        this.subSubject = subSubject;
+//    }
 
     @Override
     public String toString() {
         return "TreatmentDto{" +
                 "name='" + name + '\'' +
                 ", oldName='" + oldName + '\'' +
-                ", subSubject='" + subSubject + '\'' +
+//                ", subSubject='" + subSubject + '\'' +
                 '}';
     }
 }
