@@ -52,7 +52,6 @@ function gerRecordsByUser(page) {
             'X-CSRF-TOKEN': token
         }
     }).done(function (data) {
-        console.log(data);
         var arr = data.content;
         var table = $('#table-body');
         var totalPages = data.totalPages;
@@ -78,7 +77,6 @@ function gerRecordsByUser(page) {
         });
         manageRecord();
     }).fail(function (data) {
-        console.log(data);
     });
 }
 
@@ -93,9 +91,7 @@ function getRecords(page) {
             'X-CSRF-TOKEN': token
         }
     }).done(function (data) {
-        console.log(data);
         var arr = data.content;
-
         var totalPages = data.totalPages;
         var currentPage = $pagination.twbsPagination('getCurrentPage');
         $pagination.twbsPagination('destroy');
