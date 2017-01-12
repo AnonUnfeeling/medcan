@@ -238,6 +238,7 @@ function editSubCategory() {
                     }).done(function (data) {
                         $(message).children().remove();
                         $('#categoryName').val(null);
+                        $('#editCategoryModal').modal('hide');
                         getSubCategory(preCategoryName);
                     }).fail(function (data) {
                         $(message).children().remove();

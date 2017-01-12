@@ -104,6 +104,7 @@ public class SubjectController {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
         }
+        System.out.println(subSubjectDto);
         final SubSubject subSubject = subjectService.getSubSubjectByName(subSubjectDto.getOldName())
                                                     .orElseThrow(() -> new SubjectNotFoundException(subSubjectDto.getSubject()));
         subjectService.editSubSubject(subSubjectDto, subSubject);
