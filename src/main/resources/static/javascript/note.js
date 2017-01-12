@@ -25,13 +25,13 @@ function searchFilter() {
         $('#search-form').submit();
     });
 
-    $('#conc-filter').on('change',function () {
+    $('#conc-filter').on('change', function () {
         if ($(this).is(':checked') == true) {
             $(this).val('true');
         } else $(this).val('false');
     });
 
-    $('#desc-filter').on('change',function () {
+    $('#desc-filter').on('change', function () {
         if ($(this).is(':checked') == true) {
             $(this).val('true');
         } else $(this).val('false');
@@ -311,6 +311,24 @@ function createNote() {
 function create() {
     var message = $('#message-container');
     if ($('#titleForNote').val().trim().length !== 0) {
+        var subj;
+        var sSubj;
+        var tr;
+        if ($('#subjectNote').val() == "Select category") {
+            subj = "";
+        } else {
+            subj = $('#subjectNote').val();
+        }
+        if ($('#subSubjectNote').val() == "Select sub-category") {
+            sSubj = "";
+        } else {
+            sSubj = $('#subSubjectNote').val();
+        }
+        if ($('#treatmentNote').val() == "Select treatment") {
+            tr = "";
+        } else {
+            tr = $('#treatmentNote').val();
+        }
         $.ajax({
             method: "POST",
             url: "/records/note/add",
@@ -319,10 +337,10 @@ function create() {
                 description: $('#descriptionNote').val(),
                 conclusion: $('#conclusionNote').val(),
                 keywords: $('#keywordsNote').val(),
-                subject: $('#subjectNote').val(),
-                subSubject: $('#subSubjectNote').val(),
+                subject: subj,
+                subSubject: sSubj,
                 country: $('#countryNote').val(),
-                treatment: $('#treatmentNote').val(),
+                treatment: tr,
                 titleForNote: $('#titleForNote').val()
             },
             headers: {
@@ -341,6 +359,24 @@ function create() {
 function update() {
     var message = $('#message-container');
     if ($('#titleForNote').val().trim().length !== 0) {
+        var subj;
+        var sSubj;
+        var tr;
+        if ($('#subjectNote').val() == "Select category") {
+            subj = "";
+        } else {
+            subj = $('#subjectNote').val();
+        }
+        if ($('#subSubjectNote').val() == "Select sub-category") {
+            sSubj = "";
+        } else {
+            sSubj = $('#subSubjectNote').val();
+        }
+        if ($('#treatmentNote').val() == "Select treatment") {
+            tr = "";
+        } else {
+            tr = $('#treatmentNote').val();
+        }
         $.ajax({
             method: "POST",
             url: "/records/note/edit",
@@ -350,10 +386,10 @@ function update() {
                 description: $('#descriptionNote').val(),
                 conclusion: $('#conclusionNote').val(),
                 keywords: $('#keywordsNote').val(),
-                subject: $('#subjectNote').val(),
-                subSubject: $('#subSubjectNote').val(),
+                subject: subj,
+                subSubject: sSubj,
                 country: $('#countryNote').val(),
-                treatment: $('#treatmentNote').val(),
+                treatment: tr,
                 titleForNote: $('#titleForNote').val()
             },
             headers: {
@@ -397,8 +433,10 @@ function loadSubject() {
     }).done(function (data) {
         var categories = data;
         loadSubSubject(categories[0].name.toString());
-        $('#way').text(categories[0].name.toString());
+        $('#wayCat').text(null);
+        $('#wayCat').text(categories[0].name.toString());
         var select = $('#subjectNote').empty();
+        select.append('<option selected="selected">Select category</option>');
         Object.keys(categories).forEach(function (key) {
             select.append('<option value="' + categories[key].name + '">' +
                 '' + categories[key].name + '</option>');
@@ -419,6 +457,7 @@ function loadSubSubject(categoryName) {
         var select = $('#subSubjectNote').empty();
         $('#waySubCat').text(null);
         $('#waySubCat').text(arr[0].name);
+        select.append('<option selected="selected">Select sub-category</option>');
         Object.keys(arr).forEach(function (key) {
             select.append('<option value="' + arr[key].name + '">' +
                 '' + arr[key].name + '</option>');
@@ -437,6 +476,7 @@ function loadTreatment() {
     }).done(function (data) {
         var arr = data;
         var select = $('#treatmentNote').empty();
+        select.append('<option selected="selected">Select treatment</option>');
         Object.keys(arr).forEach(function (key) {
             select.append('<option value="' + arr[key].name + '">' +
                 '' + arr[key].name + '</option>');
