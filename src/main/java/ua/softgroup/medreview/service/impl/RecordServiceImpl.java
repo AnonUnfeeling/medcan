@@ -73,11 +73,8 @@ public class RecordServiceImpl implements RecordService {
     public Page<Record> getAllSortedRecords(int page, String sortDirection, String sortField) {
         Page<Record> sortedRecords;
         try {
-            System.out.println(page + " " + sortDirection + " " + sortField);
             sortedRecords = getAll(new PageRequest(page, NUMBER_OF_PAGES, new Sort(Sort.Direction.valueOf(sortDirection), sortField)));
-            sortedRecords.forEach(record -> logger.debug(""+record));
         } catch (org.springframework.data.mapping.PropertyReferenceException e) {
-            logger.debug("fail");
             sortedRecords = getAll(new PageRequest(page, NUMBER_OF_PAGES));
         }
         return sortedRecords;

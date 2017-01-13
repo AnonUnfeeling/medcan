@@ -115,7 +115,6 @@ public class RecordController {
             @RequestParam int page,
             @RequestParam String sortDirection,
             @RequestParam String sortField) {
-        logger.debug("page={}", page);
         return ResponseEntity.ok(
                 recordService.getAllSortedRecords(page - 1, sortDirection, sortField));
     }
