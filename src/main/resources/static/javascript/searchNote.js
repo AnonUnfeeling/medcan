@@ -17,6 +17,30 @@ $(document).ready(function () {
     } else {
         searchInRecord();
     }
+
+    $('#subjectNote').change(function () {
+        var val = $("#subjectNote option:selected").text();
+        var subj;
+        if (val == "Select category") {
+            subj = "";
+        } else {
+            subj =val;
+        }
+        $('#wayCat').text(subj);
+        loadSubSubject(val);
+    });
+    
+    $('#subSubjectNote').change(function () {
+        var val = $("#subSubjectNote option:selected").text();
+        var sSubj;
+        if (val == "Select sub-category") {
+            sSubj = "";
+        } else {
+            sSubj = val;
+        }
+        $('#waySubCat').text(null);
+        $('#waySubCat').text(sSubj);
+    });
 });
 
 function searchInRecord() {
@@ -172,9 +196,8 @@ function manageCompany() {
         var control = $(this);
         editId = control.attr('id');
         $('#titleFoNote').text("Edit note");
-        loadSubject();
-        loadTreatment();
         $('#languageNote').hide();
+        loadSubject();
         loadNote();
         disableFields(false);
         edit.modal('show');
@@ -214,10 +237,8 @@ function loadNote() {
         $('#countryNote').val(data.country);
         $('#languageNote').val(data.language);
         if (!isEdit) {
-            loadSubSubject(data.subject);
-            $('#subjectNote').find('option[value="' + data.subject + '"]').attr('selected', 'selected');
-            $('#subSubjectNote').find('option[value="' + data.subSubject + '"]').attr('selected', 'selected');
-            $('#treatmentNote').find('option[value="' + data.treatment + '"]').attr('selected', 'selected');
+            loadSubSubject(data.subject,data.subSubject);
+            loadTreatment(data.treatment);
         } else {
             var select = $('#subjectNote').empty();
             select.append('<option value="' + data.subject + '">' +
@@ -396,7 +417,7 @@ function loadSubject() {
         }
     }).done(function (data) {
         var categories = data;
-        loadSubSubject(categories[0].name.toString());
+        //loadSubSubject(categories[0].name.toString());
         // var subj;
         // if (categories[0].name.toString() == "Select category") {
         //     subj = "";
@@ -414,7 +435,7 @@ function loadSubject() {
     });
 }
 
-function loadSubSubject(categoryName) {
+function loadSubSubject(categoryName,sb) {
     $.ajax({
         method: "GET",
         url: "/subjects/" + categoryName.toString(),
@@ -427,15 +448,42 @@ function loadSubSubject(categoryName) {
         var select = $('#subSubjectNote').empty();
         $('#waySubCat').text(null);
         // $('#waySubCat').text(arr[0].name);
-        select.append('<option selected="selected">Select sub-category</option>');
+        if(sb==null){
+            select.append('<option selected="selected">Select sub-category</option>');
+        } else {
+            select.append('<option>Select sub-category</option>');
+        }
         Object.keys(arr).forEach(function (key) {
             select.append('<option value="' + arr[key].name + '">' +
                 '' + arr[key].name + '</option>');
         });
+        if(sb!=null) {
+            $('#subjectNote').find('option[value="' + categoryName + '"]').attr('selected', 'selected');
+            setTimeout(function () {
+                $('#subSubjectNote').find('option[value="' + sb + '"]').attr('selected', 'selected');
+                var sSubj;
+                if (sb == "Select sub-category") {
+                    sSubj = "";
+                } else {
+                    sSubj =sb;
+                }
+                $('#waySubCat').text(null);
+                $('#waySubCat').text(sSubj);
+                var subj;
+                if (categoryName == "Select category") {
+                    subj = "";
+                } else {
+                    subj = categoryName;
+                }
+                $('#wayCat').text(null);
+                $('#wayCat').text(subj);
+            },228);
+            console.log(sb);
+        }
     });
 }
 
-function loadTreatment() {
+function loadTreatment(tr) {
     $.ajax({
         method: "GET",
         url: "/subjects/treatments/get",
@@ -451,6 +499,7 @@ function loadTreatment() {
             select.append('<option value="' + arr[key].name + '">' +
                 '' + arr[key].name + '</option>');
         });
+        if(tr!=null)$('#treatmentNote').find('option[value="' + tr + '"]').attr('selected', 'selected');
     });
 }
 
