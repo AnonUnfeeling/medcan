@@ -22,14 +22,15 @@ import java.util.stream.Collectors;
  */
 @Service
 public class SearchServiceImpl implements SearchService {
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private static final Logger logger = LoggerFactory.getLogger(SearchServiceImpl.class);
     
     private final NoteRepository noteRepository;
     private final RecordRepository recordRepository;
     private final AuthenticationService authenticationService;
 
     @Autowired
-    public SearchServiceImpl(NoteRepository noteRepository, RecordRepository recordRepository,
+    public SearchServiceImpl(NoteRepository noteRepository,
+                             RecordRepository recordRepository,
                              AuthenticationService authenticationService) {
         this.noteRepository = noteRepository;
         this.recordRepository = recordRepository;
@@ -37,25 +38,20 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public List<Record> searchByTitle(String text, LocalDate from, LocalDate to) {
-        logger.debug("searchByTitle. text:  {}, from: {}, to: {}", text, from, to);
+    public List<Record> searchRecords(String text, LocalDate from, LocalDate to) {
+        logger.debug("Search records by text '{}', from: {}, to: {}", text, from, to);
         List<String> userRoles = authenticationService.getUserRoles();
         if (userRoles.contains(Role.ADMIN.name())) {
-            return recordRepository.searchByTitle(text, from, to);
-        } else if (userRoles.contains(Role.COMPANY.name())) {
-            //TODO: must be implemented
-            return null;
-        } else if (userRoles.contains(Role.USER.name())) {
-            return recordRepository.searchByTitleAndAuthor(authenticationService.getPrincipal().getUsername(), text, from, to);
+            return recordRepository.searchByKeywords(text, from, to);
         }
-        return null;
+        return recordRepository.searchByKeywordsAndAuthor(authenticationService.getPrincipal().getUsername(), text, from, to);
     }
 
     @Override
-    public List<Note> searchByAllFields(String text, LocalDate from, LocalDate to) {
-        logger.debug("Search notes, text {}, from: {}, to: {}", text, from, to);
+    public List<Note> searchNotes(String text, LocalDate from, LocalDate to) {
+        logger.debug("Search notes by text '{}', from: {}, to: {}", text, from, to);
         List<String> userRoles = authenticationService.getUserRoles();
-        if (userRoles.contains(Role.ADMIN.name()) || userRoles.contains(Role.COMPANY.name())) {
+        if (userRoles.contains(Role.ADMIN.name())) {
             return noteRepository.searchByAllFields(text, from, to);
         }
         return noteRepository.searchByAllFieldsAndAuthor(authenticationService.getPrincipal().getUsername(), text, from, to);
@@ -63,7 +59,7 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public List<Note> searchNotesInRecord(String recordTitle, String text, String category, String subCategory, String treatment) {
-        logger.debug("Search notes in record {} by text {}", recordTitle, text);
+        logger.debug("Search notes in record '{}' by text '{}'", recordTitle, text);
         return noteRepository.searchByAllFieldsInRecord(recordTitle, text).stream()
                 .peek(System.out::println)
                 .filter(note -> category == null || category.isEmpty() || note.getSubject().equals(category))

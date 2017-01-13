@@ -41,15 +41,15 @@ public class NoteRepositoryImpl extends SearchableRepository<Note> implements No
                 Search.getFullTextEntityManager(entityManager),
                 from, to, NOTE_CREATION_DATE_FIELD,
                 text, Arrays.asList(NOTE_TITLE_FIELD, NOTE_DESCRIPTION_FIELD, NOTE_CONCLUSION_FIELD, NOTE_KEYWORDS_FIELD,
-                        NOTE_SUBJECT_FIELD, NOTE_SUB_SUBJECT_FIELD, NOTE_COUNTRY_FIELD,
-                        NOTE_LANGUAGE_FIELD, NOTE_TREATMENT_FIELD)
+                                    NOTE_SUBJECT_FIELD, NOTE_SUB_SUBJECT_FIELD, NOTE_COUNTRY_FIELD,
+                                    NOTE_LANGUAGE_FIELD, NOTE_TREATMENT_FIELD)
         );
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Note> searchByAllFieldsAndAuthor(String username, String text, LocalDate from, LocalDate to) {
-        return searchByKeywordsAndAuthorAndDateRange(
+        return searchByKeywordsAndFilter(
                 Search.getFullTextEntityManager(entityManager),
                 username, NOTE_AUTHOR_USERNAME_FIELD,
                 from, to, NOTE_CREATION_DATE_FIELD,
@@ -62,7 +62,7 @@ public class NoteRepositoryImpl extends SearchableRepository<Note> implements No
     @Override
     @Transactional(readOnly = true)
     public List<Note> searchByAllFieldsInRecord(String recordTitle, String text) {
-        return searchByKeywordsAndAuthorAndDateRange(
+        return searchByKeywordsAndFilter(
                 Search.getFullTextEntityManager(entityManager),
                 recordTitle, NOTE_RECORD_TITLE_FIELD,
                 null, null, null,

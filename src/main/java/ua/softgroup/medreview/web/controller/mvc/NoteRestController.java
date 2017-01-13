@@ -171,7 +171,7 @@ public class NoteRestController {
     @GetMapping(value = "/notes/search")
     @ResponseBody
     public ResponseEntity<List<Note>> searchNotes(@RequestParam String keyword) {
-        return ResponseEntity.ok(searchService.searchByAllFields(keyword, null, null));
+        return ResponseEntity.ok(searchService.searchNotes(keyword, null, null));
     }
 
     @GetMapping(value = "/notes/results")

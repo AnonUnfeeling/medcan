@@ -6,22 +6,26 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
+ * Repository for searching records. Supports stemming in English.
+ *
  * @author Oleksandr Tyshkovets <sg.olexander@gmail.com>
  */
 public interface RecordRepositorySearch {
 
     /**
-     * Searches records by title's keywords
+     * Searches records by record's {@code title}, {@code endConclusion}, {@code endDescription}
+     * and {@code creationDate} fields
      *
      * @param keywords the keywords to search, separate by blanks
      * @param from optional date range (start)
      * @param to optional date range (end)
      * @return a list of matching records
      */
-    List<Record> searchByTitle(String keywords, LocalDate from, LocalDate to);
+    List<Record> searchByKeywords(String keywords, LocalDate from, LocalDate to);
 
     /**
-     * Searches {@code username}'s records by title. Supports stemming in English.
+     * Searches {@code username}'s records by record's {@code title}, {@code endConclusion}, {@code endDescription}
+     * and {@code creationDate} fields
      *
      * @param username the author's username of records
      * @param text the text to search
@@ -29,6 +33,6 @@ public interface RecordRepositorySearch {
      * @param to optional date range (end)
      * @return a list of matching records
      */
-    List<Record> searchByTitleAndAuthor(String username, String text, LocalDate from, LocalDate to);
+    List<Record> searchByKeywordsAndAuthor(String username, String text, LocalDate from, LocalDate to);
 
 }

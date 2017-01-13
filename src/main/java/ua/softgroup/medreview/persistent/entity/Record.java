@@ -1,7 +1,9 @@
 package ua.softgroup.medreview.persistent.entity;
 
 import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
+import org.apache.lucene.analysis.core.StopFilterFactory;
 import org.apache.lucene.analysis.snowball.SnowballPorterFilterFactory;
+import org.apache.lucene.analysis.standard.StandardFilterFactory;
 import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.search.annotations.Analyze;
@@ -33,7 +35,9 @@ import java.util.List;
 @AnalyzerDef(name = "en",
         tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
         filters = {
+                @TokenFilterDef(factory = StandardFilterFactory.class),
                 @TokenFilterDef(factory = LowerCaseFilterFactory.class),
+                @TokenFilterDef(factory = StopFilterFactory.class),
                 @TokenFilterDef(factory = SnowballPorterFilterFactory.class, params = {
                         @Parameter(name = "language", value = "English")
                 })
@@ -46,9 +50,11 @@ public class Record extends AbstractEntity<Long> {
     private String title;
 
     @Column(columnDefinition = "text")
+    @Field(analyzer = @Analyzer(definition = "en"))
     private String endDescription;
 
     @Column(columnDefinition = "text")
+    @Field(analyzer = @Analyzer(definition = "en"))
     private String endConclusion;
 
     @Column
@@ -81,6 +87,13 @@ public class Record extends AbstractEntity<Long> {
     public Record(String title, String type, User author) {
         this.title = title;
         this.type = type;
+        this.author = author;
+    }
+
+    public Record(String title, String endConclusion, String endDescription, User author) {
+        this.title = title;
+        this.endConclusion = endConclusion;
+        this.endDescription = endDescription;
         this.author = author;
     }
 

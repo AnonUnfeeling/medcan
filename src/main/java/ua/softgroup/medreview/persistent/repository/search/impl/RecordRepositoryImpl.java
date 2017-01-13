@@ -7,7 +7,7 @@ import ua.softgroup.medreview.persistent.repository.search.RecordRepositorySearc
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -16,6 +16,8 @@ import java.util.List;
 public class RecordRepositoryImpl extends SearchableRepository<Record> implements RecordRepositorySearch {
 
     private static final String RECORD_TITLE_FIELD = "title";
+    private static final String RECORD_END_DESCRIPTION_FIELD = "endDescription";
+    private static final String RECORD_END_CONCLUSION_FIELD = "endConclusion";
     private static final String RECORD_CREATION_DATE_FIELD = "creationDate";
     private static final String RECORD_AUTHOR_USERNAME_FIELD = "author.login";
 
@@ -27,22 +29,22 @@ public class RecordRepositoryImpl extends SearchableRepository<Record> implement
 
     @Override
     @Transactional(readOnly = true)
-    public List<Record> searchByTitle(final String keywords, final LocalDate from, final LocalDate to) {
+    public List<Record> searchByKeywords(final String keywords, final LocalDate from, final LocalDate to) {
         return searchByKeywords(
                 Search.getFullTextEntityManager(entityManager),
                 from, to, RECORD_CREATION_DATE_FIELD,
-                keywords, Collections.singletonList(RECORD_TITLE_FIELD)
+                keywords, Arrays.asList(RECORD_TITLE_FIELD, RECORD_END_CONCLUSION_FIELD, RECORD_END_DESCRIPTION_FIELD)
         );
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Record> searchByTitleAndAuthor(String username, String text, LocalDate from, LocalDate to) {
-        return searchByKeywordsAndAuthorAndDateRange(
+    public List<Record> searchByKeywordsAndAuthor(String username, String text, LocalDate from, LocalDate to) {
+        return searchByKeywordsAndFilter(
                 Search.getFullTextEntityManager(entityManager),
                 username, RECORD_AUTHOR_USERNAME_FIELD,
                 from, to, RECORD_CREATION_DATE_FIELD,
-                text, Collections.singletonList(RECORD_TITLE_FIELD)
+                text, Arrays.asList(RECORD_TITLE_FIELD, RECORD_END_CONCLUSION_FIELD, RECORD_END_DESCRIPTION_FIELD)
         );
     }
 
