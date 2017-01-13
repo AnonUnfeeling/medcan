@@ -61,7 +61,7 @@ public class NoteRestController {
         return new ResponseEntity<>(noteRepository.findByRecordTitle(title), HttpStatus.OK);
     }
 
-    @GetMapping("/records/note/sort")
+    @PostMapping("/records/note/sort")
     public ResponseEntity<List<Note>> getSortedNotesByRecordTitle(@RequestParam String title,
                                                                   @RequestParam String sortDirection,
                                                                   @RequestParam String sortField) {

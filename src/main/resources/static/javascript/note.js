@@ -707,14 +707,11 @@ function clickForSortNote(title) {
 }
 //sort by title
 function sortByNote(title, sortDirection) {
-    console.log($('#titleNote').val());
-    console.log( $(title).text().toLowerCase());
     $.ajax({
         method: "POST",
         url: "/records/note/sort",
         data: {
             title: $('#titleNote').val(),
-            page: 1,
             sortDirection: sortDirection,
             sortField: $(title).text().toLowerCase()
         },
@@ -722,9 +719,9 @@ function sortByNote(title, sortDirection) {
             'X-CSRF-TOKEN': token
         }
     }).done(function (data) {
-        console.log(data);
-        var arr = data.content;
+        var arr = data;
         var table = $('#table-body');
+        table.find('tr').remove();
         $(arr).each(function () {
             var note = $(this)[0];
             table.append('<tr onclick="loadPreNote(event,this,' + $(this)[0].id + ');"><td>' + note.title.slice(0, 8) + '</td><td>' + note.description.slice(0, 8) + '</td>' +
