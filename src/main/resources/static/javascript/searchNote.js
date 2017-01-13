@@ -230,9 +230,10 @@ function loadNote() {
             'X-CSRF-TOKEN': token
         }
     }).done(function (data) {
+        $('#keywordsNote').importTags(data.keywords);
         $('#descriptionNote').val(data.description);
         $('#conclusionNote').val(data.conclusion);
-        $('#keywordsNote').val(data.keywords);
+        //$('#keywordsNote').val(data.keywords);
         $('#titleForNote').val(data.title);
         $('#countryNote').val(data.country);
         $('#languageNote').val(data.language);
@@ -513,4 +514,5 @@ function disableFields(boolean) {
     $('#languageNote').prop("disabled", boolean);
     $('#treatmentNote').prop("disabled", boolean);
     $('#titleForNote').prop("disabled", boolean);
+    $('#keywordsNote_tagsinput ').toggleClass("disabledFields",boolean);
 }

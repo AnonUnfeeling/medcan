@@ -49,7 +49,10 @@ tr{
 textarea {
     max-width: 838px;
 }
-
 .cotrol-class{
     width: 37px;
+}
+.disabledFields{
+    pointer-events: none;
+    opacity: 0.5;
 }
