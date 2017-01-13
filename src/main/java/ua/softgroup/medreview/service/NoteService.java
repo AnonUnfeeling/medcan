@@ -5,6 +5,7 @@ import ua.softgroup.medreview.persistent.entity.Note;
 import ua.softgroup.medreview.persistent.entity.Record;
 import ua.softgroup.medreview.web.dto.NoteDto;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -24,11 +25,15 @@ public interface NoteService {
 
     Optional<Note> findByTitle(String title);
 
-    Page<Note> getNotesByRecordTitle(String title, int page);
+    Page<Note> getSortedNotesByRecordTitle(String title, int page);
 
-    Page<NoteDto> getNoteDtosByRecordTitle(String title, int page);
+    Page<NoteDto> getSortedNoteDtosByRecordTitle(String title, int page);
 
     Page<Note> getSortedNotesByRecordTitle(String title, int page, String sortDirection, String sortField);
 
     Page<NoteDto> getSortedNoteDtosByRecordTitle(String title, int page, String sortDirection, String sortField);
+
+    List<Note> getSortedNotesByRecordTitle(String title, String sortDirection, String sortField);
+
+    List<NoteDto> getSortedNoteDtosByRecordTitle(String title, String sortDirection, String sortField);
 }

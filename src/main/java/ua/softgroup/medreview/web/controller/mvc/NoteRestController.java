@@ -1,5 +1,7 @@
 package ua.softgroup.medreview.web.controller.mvc;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,15 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import ua.softgroup.medreview.persistent.entity.Note;
 import ua.softgroup.medreview.persistent.entity.NoteStatus;
-import ua.softgroup.medreview.persistent.entity.SubSubject;
-import ua.softgroup.medreview.persistent.entity.Subject;
 import ua.softgroup.medreview.persistent.repository.NoteRepository;
 import ua.softgroup.medreview.persistent.repository.RecordRepository;
 import ua.softgroup.medreview.service.AuthenticationService;
+import ua.softgroup.medreview.service.NoteService;
 import ua.softgroup.medreview.service.SearchService;
 import ua.softgroup.medreview.service.SubjectService;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -40,15 +40,20 @@ public class NoteRestController {
     private final RecordRepository recordRepository;
     private final SubjectService subjectService;
     private final SearchService searchService;
+    private final NoteService noteService;
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     @Autowired
     public NoteRestController(NoteRepository noteRepository, RecordRepository recordRepository,
                               SubjectService subjectService,
-                              SearchService searchService) {
+                              SearchService searchService, NoteService noteService) {
         this.noteRepository = noteRepository;
         this.recordRepository = recordRepository;
         this.subjectService = subjectService;
         this.searchService = searchService;
+        this.noteService = noteService;
     }
 
     @GetMapping("/records/notes")
@@ -56,7 +61,20 @@ public class NoteRestController {
         return new ResponseEntity<>(noteRepository.findByRecordTitle(title), HttpStatus.OK);
     }
 
+    @GetMapping("/records/note/sort")
+    public ResponseEntity<List<Note>> getSortedNotesByRecordTitle(@RequestParam String title,
+                                                                  @RequestParam String sortDirection,
+                                                                  @RequestParam String sortField) {
+
+        logger.debug("test");
+        List<Note> sortedNotes = noteService.getSortedNotesByRecordTitle(title, sortDirection, sortField);
+        sortedNotes.forEach(note -> logger.debug(""+note));
+        return ResponseEntity.ok(
+                noteService.getSortedNotesByRecordTitle(title, sortDirection, sortField));
+    }
+
     @GetMapping(value = "/records/note")
+
     public ModelAndView getNoteView(@RequestParam String title, @RequestParam String type) {
         return new ModelAndView("note");
     }
