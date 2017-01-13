@@ -261,7 +261,7 @@ function loadNote() {
         $('#countryNote').val(data.country);
         $('#languageNote').val(data.language);
         if (!isEdit) {
-            loadSubSubject(data.subject,data.subSubject);
+            loadSubSubject(data.subject, data.subSubject);
             loadTreatment(data.treatment);
         } else {
             var select = $('#subjectNote').empty();
@@ -278,7 +278,7 @@ function loadNote() {
         if (data.subSubject == "Select sub-category") {
             sSubj = "";
         } else {
-            sSubj =data.subSubject;
+            sSubj = data.subSubject;
         }
         $('#waySubCat').text(null);
         $('#waySubCat').text(sSubj);
@@ -286,7 +286,7 @@ function loadNote() {
         if (data.subject == "Select category") {
             subj = "";
         } else {
-            subj =data.subject;
+            subj = data.subject;
         }
         $('#wayCat').text(null);
         $('#wayCat').text(subj);
@@ -452,7 +452,7 @@ function loadSubject() {
     });
 }
 
-function loadSubSubject(categoryName,sb) {
+function loadSubSubject(categoryName, sb) {
     $.ajax({
         method: "GET",
         url: "/subjects/" + categoryName.toString(),
@@ -468,7 +468,7 @@ function loadSubSubject(categoryName,sb) {
 //         select.append('<option selected="selected">Select sub-category</option>');
 // =======
         // $('#waySubCat').text(arr[0].name);
-        if(sb==null){
+        if (sb == null) {
             select.append('<option selected="selected">Select sub-category</option>');
         } else {
             select.append('<option>Select sub-category</option>');
@@ -478,7 +478,7 @@ function loadSubSubject(categoryName,sb) {
             select.append('<option value="' + arr[key].name + '">' +
                 '' + arr[key].name + '</option>');
         });
-        if(sb!=null) {
+        if (sb != null) {
             $('#subjectNote').find('option[value="' + categoryName + '"]').attr('selected', 'selected');
             setTimeout(function () {
                 $('#subSubjectNote').find('option[value="' + sb + '"]').attr('selected', 'selected');
@@ -486,7 +486,7 @@ function loadSubSubject(categoryName,sb) {
                 if (sb == "Select sub-category") {
                     sSubj = "";
                 } else {
-                    sSubj =sb;
+                    sSubj = sb;
                 }
                 $('#waySubCat').text(null);
                 $('#waySubCat').text(sSubj);
@@ -494,11 +494,11 @@ function loadSubSubject(categoryName,sb) {
                 if (categoryName == "Select category") {
                     subj = "";
                 } else {
-                    subj =categoryName;
+                    subj = categoryName;
                 }
                 $('#wayCat').text(null);
                 $('#wayCat').text(subj);
-            },144);
+            }, 144);
             console.log(sb);
         }
     });
@@ -520,7 +520,7 @@ function loadTreatment(tr) {
             select.append('<option value="' + arr[key].name + '">' +
                 '' + arr[key].name + '</option>');
         });
-        if(tr!=null)$('#treatmentNote').find('option[value="' + tr + '"]').attr('selected', 'selected');
+        if (tr != null)$('#treatmentNote').find('option[value="' + tr + '"]').attr('selected', 'selected');
     });
 }
 
@@ -639,7 +639,7 @@ $(document).ready(function () {
         if (val == "Select category") {
             subj = "";
         } else {
-            subj =  val;
+            subj = val;
         }
         $('#wayCat').text(subj);
         loadSubSubject(val);
@@ -650,7 +650,7 @@ $(document).ready(function () {
         if (val == "Select sub-category") {
             sSubj = "";
         } else {
-            sSubj =val;
+            sSubj = val;
         }
         $('#waySubCat').text(null);
         $('#waySubCat').text(sSubj);
@@ -692,4 +692,56 @@ function editRecord() {
         $(message).children().remove();
         message.append("<div id='error' class='alert alert-danger'><strong>Error! </strong>Fields cannot be empty</div>");
     }
+}
+var countClickIntoFailed = 0;
+function clickForSortNote(title) {
+    if (countClickIntoFailed == 0) {
+        countClickIntoFailed = 1;
+        sortByNote(title, "ASC");
+    } else {
+        countClickIntoFailed = 0;
+        sortByNote(title, "DESC");
+    }
+}
+//sort by title
+function sortByNote(title, sortDirection) {
+    console.log($('#titleNote').val());
+    console.log( $(title).text().toLowerCase());
+    $.ajax({
+        method: "POST",
+        url: "/records/note/sort",
+        data: {
+            title: $('#titleNote').val(),
+            page: 1,
+            sortDirection: sortDirection,
+            sortField: $(title).text().toLowerCase()
+        },
+        headers: {
+            'X-CSRF-TOKEN': token
+        }
+    }).done(function (data) {
+        console.log(data);
+        var arr = data.content;
+        var table = $('#table-body');
+        $(arr).each(function () {
+            var note = $(this)[0];
+            table.append('<tr onclick="loadPreNote(event,this,' + $(this)[0].id + ');"><td>' + note.title.slice(0, 8) + '</td><td>' + note.description.slice(0, 8) + '</td>' +
+                '<td>' + note.conclusion.slice(0, 8) + '</td>' +
+                '<td>' + note.keywords.slice(0, 8) + '</td>' +
+                '<td>' + note.subject.slice(0, 8) + '</td>' +
+                '<td>' + note.subSubject.slice(0, 8) + '</td>' +
+                '<td>' + note.treatment + '</td>' +
+                '<td>' + note.updateDate.dayOfMonth + ' ' + note.updateDate.month +
+                ' ' + note.updateDate.year +
+                '</td><td></td><td class="cotrol-class text-right"><span id="' +
+                note.id + '" data-singleton="true"' +
+                ' data-toggle="edit" class="glyphicon glyphicon glyphicon-pencil user-control" ' +
+                'aria-hidden="true"></span>' +
+                '<td class="cotrol-class text-right"><span id="' + note.id + '" ' +
+                'data-singleton="true" data-toggle="confirmation" ' +
+                'class="glyphicon glyphicon-remove-circle users-control" ' +
+                'aria-hidden="true"></span></td></tr>');
+            manageRecord();
+        });
+    });
 }
