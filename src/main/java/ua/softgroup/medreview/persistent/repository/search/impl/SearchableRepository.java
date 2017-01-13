@@ -45,17 +45,17 @@ public abstract class SearchableRepository<T> {
                 .getResultList();
     }
 
-    protected List<T> searchByKeywordsAndAuthorAndDateRange(FullTextEntityManager fullTextEntityManager,
-                                                            String username, String usernameField,
-                                                            LocalDate from, LocalDate to, String dateField,
-                                                            String text, List<String> fields) {
+    protected List<T> searchByKeywordsAndFilter(FullTextEntityManager fullTextEntityManager,
+                                                String filterText, String filterField,
+                                                LocalDate from, LocalDate to, String dateField,
+                                                String text, List<String> fields) {
 
         QueryBuilder queryBuilder = getQueryBuilder(fullTextEntityManager);
         BooleanJunction<BooleanJunction> junction = queryBuilder.bool();
         junction.must(queryBuilder
                 .keyword()
-                .onField(usernameField)
-                .matching(username)
+                .onField(filterField)
+                .matching(filterText)
                 .createQuery());
         Optional.ofNullable(from)
                 .map(date -> aboveRangeQuery(queryBuilder, date, dateField))

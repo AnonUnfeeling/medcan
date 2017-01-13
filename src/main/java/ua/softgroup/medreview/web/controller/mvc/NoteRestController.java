@@ -12,15 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import ua.softgroup.medreview.persistent.entity.Note;
 import ua.softgroup.medreview.persistent.entity.NoteStatus;
-import ua.softgroup.medreview.persistent.entity.SubSubject;
-import ua.softgroup.medreview.persistent.entity.Subject;
 import ua.softgroup.medreview.persistent.repository.NoteRepository;
 import ua.softgroup.medreview.persistent.repository.RecordRepository;
 import ua.softgroup.medreview.service.AuthenticationService;
 import ua.softgroup.medreview.service.SearchService;
 import ua.softgroup.medreview.service.SubjectService;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -153,7 +150,7 @@ public class NoteRestController {
     @GetMapping(value = "/notes/search")
     @ResponseBody
     public ResponseEntity<List<Note>> searchNotes(@RequestParam String keyword) {
-        return ResponseEntity.ok(searchService.searchByAllFields(keyword, null, null));
+        return ResponseEntity.ok(searchService.searchNotes(keyword, null, null));
     }
 
     @GetMapping(value = "/notes/results")

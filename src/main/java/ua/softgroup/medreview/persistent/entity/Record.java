@@ -46,9 +46,11 @@ public class Record extends AbstractEntity<Long> {
     private String title;
 
     @Column(columnDefinition = "text")
+    @Field(analyzer = @Analyzer(definition = "en"))
     private String endDescription;
 
     @Column(columnDefinition = "text")
+    @Field(analyzer = @Analyzer(definition = "en"))
     private String endConclusion;
 
     @Column
@@ -81,6 +83,13 @@ public class Record extends AbstractEntity<Long> {
     public Record(String title, String type, User author) {
         this.title = title;
         this.type = type;
+        this.author = author;
+    }
+
+    public Record(String title, String endConclusion, String endDescription, User author) {
+        this.title = title;
+        this.endConclusion = endConclusion;
+        this.endDescription = endDescription;
         this.author = author;
     }
 

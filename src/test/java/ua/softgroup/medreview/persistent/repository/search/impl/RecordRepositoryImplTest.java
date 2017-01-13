@@ -43,11 +43,12 @@ public class RecordRepositoryImplTest {
         userRepository.save(user);
         userRepository.save(admin);
 
-        createRecord("Search_search gay", LocalDateTime.now().minusDays(50), user);
-        createRecord("the Google SEARCH", LocalDateTime.now().minusDays(100), user);
-        createRecord("Hibernate search", LocalDateTime.now().minusDays(5), admin);
-        createRecord("Lucene Search", LocalDateTime.now(), user);
-        createRecord("Medical Cannabis", LocalDateTime.now().minusDays(15), admin);
+        createRecord("Search_search gay", "conclusion1", "description1", LocalDateTime.now().minusDays(50), user);
+        createRecord("the Google SEARCH", "conclusion2", "description2", LocalDateTime.now().minusDays(100), user);
+        createRecord("Hibernate search", "conclusion3", "description3", LocalDateTime.now().minusDays(5), admin);
+        createRecord("Lucene Search", "conclusion4", "description4", LocalDateTime.now(), user);
+        createRecord("Medical Cannabis", "conclusion5", "description5", LocalDateTime.now().minusDays(15), admin);
+        createRecord("No title", "conclusion6", "description6", LocalDateTime.now(), admin);
     }
 
     @After
@@ -58,35 +59,35 @@ public class RecordRepositoryImplTest {
 
     @Test
     public void searchByTitleAndAuthor() {
-        List<Record> userRecords = recordRepository.searchByTitleAndAuthor("user", "search, gays", LocalDate.now().minusDays(60), LocalDate.now());
+        List<Record> userRecords = recordRepository.searchByKeywordsAndAuthor("user", "search, gays", LocalDate.now().minusDays(60), LocalDate.now());
         assertThat(userRecords).hasSize(2);
-        List<Record> adminRecords = recordRepository.searchByTitleAndAuthor("admin", "search", null, null);
-        assertThat(adminRecords).hasSize(1);
+        List<Record> adminRecords = recordRepository.searchByKeywordsAndAuthor("admin", "search, conclusion6", null, null);
+        assertThat(adminRecords).hasSize(2);
     }
 
     @Test
     public void searchByTitle() {
-        assertThat(recordRepository.searchByTitle("search, cannabis", null, null)).hasSize(4);
+        assertThat(recordRepository.searchByKeywords("search, cannabis", null, null)).hasSize(4);
     }
 
     @Test
     public void searchByTitle_withStemming() {
-        assertThat(recordRepository.searchByTitle("gays", null, null)).hasSize(1);
+        assertThat(recordRepository.searchByKeywords("gays", null, null)).hasSize(1);
     }
 
     @Test
     public void searchByTitle_withDate() {
-        List<Record> recordList = recordRepository.searchByTitle("search, cannabis", LocalDate.now().minusDays(20), LocalDate.now());
+        List<Record> recordList = recordRepository.searchByKeywords("search, cannabis", LocalDate.now().minusDays(20), LocalDate.now());
         assertThat(recordList).hasSize(3);
     }
 
     @Test
     public void searchByTitle_notFound() {
-        assertThat(recordRepository.searchByTitle("apple", null, null)).hasSize(0);
+        assertThat(recordRepository.searchByKeywords("apple", null, null)).hasSize(0);
     }
 
-    private void createRecord(String title, LocalDateTime createdAt, User author) {
-        Record record = new Record(title, "Type", author);
+    private void createRecord(String title, String endConclusion, String endDescription, LocalDateTime createdAt, User author) {
+        Record record = new Record(title, endConclusion, endDescription, author);
         recordRepository.save(record);
         record.setCreationDate(createdAt);
         recordRepository.save(record);
