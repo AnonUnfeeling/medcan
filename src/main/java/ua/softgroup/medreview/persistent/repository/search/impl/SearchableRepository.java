@@ -1,5 +1,6 @@
 package ua.softgroup.medreview.persistent.repository.search.impl;
 
+import org.apache.lucene.analysis.core.StopAnalyzer;
 import org.apache.lucene.search.Query;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.query.dsl.BooleanJunction;
@@ -7,6 +8,8 @@ import org.hibernate.search.query.dsl.QueryBuilder;
 
 import java.lang.reflect.ParameterizedType;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,11 +37,10 @@ public abstract class SearchableRepository<T> {
         Optional.ofNullable(from)
                 .map(date -> aboveBelowQuery(queryBuilder, to, dateField))
                 .ifPresent(junction::must);
-        junction.must(queryBuilder
-                .keyword()
-                .onFields(fields.toArray(new String[fields.size()]))
-                .matching(text)
-                .createQuery());
+        text = applyStopWordsFilter(text);
+        junction.must((text == null || text.trim().isEmpty())
+                ? createQueryForSearchingByFieldsWithWildcard(queryBuilder, "*", fields)
+                : createQueryForSearchingByFields(queryBuilder, text, fields));
 
         return fullTextEntityManager
                 .createFullTextQuery(junction.createQuery(), clazz)
@@ -63,6 +65,7 @@ public abstract class SearchableRepository<T> {
         Optional.ofNullable(from)
                 .map(date -> aboveBelowQuery(queryBuilder, to, dateField))
                 .ifPresent(junction::must);
+        text = applyStopWordsFilter(text);
         junction.must((text == null || text.trim().isEmpty())
                 ? createQueryForSearchingByFieldsWithWildcard(queryBuilder, "*", fields)
                 : createQueryForSearchingByFields(queryBuilder, text, fields));
@@ -70,6 +73,18 @@ public abstract class SearchableRepository<T> {
         return fullTextEntityManager
                 .createFullTextQuery(junction.createQuery(), clazz)
                 .getResultList();
+    }
+
+    /**
+     * This method removes stop words from {@code searchText}
+     *
+     * @param searchText the search text
+     * @return the filtered search text
+     */
+    private String applyStopWordsFilter(String searchText) {
+        List<String> wordList = new ArrayList<>(Arrays.asList(searchText.split("\\s")));
+        wordList.removeAll(StopAnalyzer.ENGLISH_STOP_WORDS_SET);
+        return String.join(" ", wordList);
     }
 
     private Query createQueryForSearchingByFields(QueryBuilder queryBuilder, String text, List<String> fields) {

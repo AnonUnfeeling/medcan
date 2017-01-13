@@ -1,7 +1,9 @@
 package ua.softgroup.medreview.persistent.entity;
 
 import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
+import org.apache.lucene.analysis.core.StopFilterFactory;
 import org.apache.lucene.analysis.snowball.SnowballPorterFilterFactory;
+import org.apache.lucene.analysis.standard.StandardFilterFactory;
 import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.search.annotations.Analyze;
@@ -33,7 +35,9 @@ import java.util.List;
 @AnalyzerDef(name = "en",
         tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
         filters = {
+                @TokenFilterDef(factory = StandardFilterFactory.class),
                 @TokenFilterDef(factory = LowerCaseFilterFactory.class),
+                @TokenFilterDef(factory = StopFilterFactory.class),
                 @TokenFilterDef(factory = SnowballPorterFilterFactory.class, params = {
                         @Parameter(name = "language", value = "English")
                 })

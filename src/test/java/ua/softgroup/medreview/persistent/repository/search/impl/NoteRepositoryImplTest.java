@@ -86,7 +86,12 @@ public class NoteRepositoryImplTest {
     }
 
     @Test
-    public void searchByTitle_notFound() {
+    public void searchByAllFields_withStopWords() throws Exception {
+        assertThat(noteRepository.searchByAllFields("the", null, null)).hasSize(5);
+    }
+
+    @Test
+    public void searchByAllFields_notFound() {
         assertThat(noteRepository.searchByAllFields("apple", null, null)).hasSize(0);
     }
 
