@@ -54,11 +54,11 @@ public class RecordServiceImpl implements RecordService {
         logger.debug("getSortedRecordsByAuthor");
         Page<Record> sortedRecords;
         try {
-            sortedRecords = getByAuthor(user, new PageRequest(page - 1, NUMBER_OF_PAGES, new Sort(Sort.Direction.valueOf(sortDirection), sortField)));
+            sortedRecords = getByAuthor(user, new PageRequest(page, NUMBER_OF_PAGES, new Sort(Sort.Direction.valueOf(sortDirection), sortField)));
             logger.debug("successful!");
         } catch (org.springframework.data.mapping.PropertyReferenceException e) {
             logger.debug(":( doesn't work " + e.getMessage());
-            sortedRecords = getByAuthor(user, new PageRequest(page - 1, NUMBER_OF_PAGES));
+            sortedRecords = getByAuthor(user, new PageRequest(page, NUMBER_OF_PAGES));
         }
         return sortedRecords;
     }
@@ -67,6 +67,17 @@ public class RecordServiceImpl implements RecordService {
     public Page<Record> getAll(Pageable pageable) {
         logger.debug("getAll");
         return recordRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<Record> getAllSortedRecords(int page, String sortDirection, String sortField) {
+        Page<Record> sortedRecords;
+        try {
+            sortedRecords = getAll(new PageRequest(page, NUMBER_OF_PAGES, new Sort(Sort.Direction.valueOf(sortDirection), sortField)));
+        } catch (org.springframework.data.mapping.PropertyReferenceException e) {
+            sortedRecords = getAll(new PageRequest(page, NUMBER_OF_PAGES));
+        }
+        return sortedRecords;
     }
 
     @Override
@@ -87,9 +98,9 @@ public class RecordServiceImpl implements RecordService {
     public Page<Record> getSortedRecordsByAuthorities(int page, String sortDirection, String sortField) {
         Page<Record> sortedRecords;
         try {
-            sortedRecords = getRecordsByAuthorities(new PageRequest(page - 1, NUMBER_OF_PAGES, new Sort(Sort.Direction.valueOf(sortDirection), sortField)));
+            sortedRecords = getRecordsByAuthorities(new PageRequest(page, NUMBER_OF_PAGES, new Sort(Sort.Direction.valueOf(sortDirection), sortField)));
         } catch (org.springframework.data.mapping.PropertyReferenceException e) {
-            sortedRecords = getRecordsByAuthorities(new PageRequest(page - 1, NUMBER_OF_PAGES));
+            sortedRecords = getRecordsByAuthorities(new PageRequest(page, NUMBER_OF_PAGES));
         }
         return sortedRecords;
     }
