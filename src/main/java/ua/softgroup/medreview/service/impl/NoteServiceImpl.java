@@ -14,7 +14,9 @@ import ua.softgroup.medreview.service.AuthenticationService;
 import ua.softgroup.medreview.service.NoteService;
 import ua.softgroup.medreview.web.dto.NoteDto;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author Sergiy Perevyazko <sg.sergiyp@gmail.com>
@@ -71,12 +73,12 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public Page<Note> getNotesByRecordTitle(String title, int page) {
+    public Page<Note> getSortedNotesByRecordTitle(String title, int page) {
         return getByRecordTitle(title, page);
     }
 
     @Override
-    public Page<NoteDto> getNoteDtosByRecordTitle(String title, int page) {
+    public Page<NoteDto> getSortedNoteDtosByRecordTitle(String title, int page) {
         return getByRecordTitle(title, page).map(this::convertEntityToDto);
     }
 
@@ -94,6 +96,27 @@ public class NoteServiceImpl implements NoteService {
     @Override
     public Page<NoteDto> getSortedNoteDtosByRecordTitle(String title, int page, String sortDirection, String sortField) {
         return getSortedNotesByRecordTitle(title, page, sortDirection, sortField).map(this::convertEntityToDto);
+    }
+
+    @Override
+    public List<Note> getSortedNotesByRecordTitle(String title, String sortDirection, String sortField) {
+        List<Note> sortedNotes;
+        logger.debug("title={}, sortDirection={}, sortField={}", title, sortDirection, sortField);
+        try {
+            sortedNotes = noteRepository.findByRecordTitle(title, new Sort(Sort.Direction.valueOf(sortDirection), sortField));
+        } catch (org.springframework.data.mapping.PropertyReferenceException e) {
+            logger.debug("bad params: {}", e.getMessage());
+            sortedNotes = (List<Note>) noteRepository.findByRecordTitle(title);
+        }
+        return sortedNotes;
+    }
+
+    @Override
+    public List<NoteDto> getSortedNoteDtosByRecordTitle(String title, String sortDirection, String sortField) {
+        return getSortedNotesByRecordTitle(title, sortDirection, sortField)
+                .stream()
+                .map(this::convertEntityToDto)
+                .collect(Collectors.toList());
     }
 
     private Page<Note> getByRecordTitle(String title, int page) {
