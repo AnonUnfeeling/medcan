@@ -229,6 +229,14 @@ function clickForSort(title, page) {
 }
 //sort by title
 function sortBy(title, page, sortDirection) {
+    var sortField;
+    if ($(title).text().toLowerCase() == "author") {
+        sortField = "authorLogin";
+    } else if ($(title).text().toLowerCase() == "notes") {
+        sortField = "notes.size";
+    } else {
+        sortField = $(title).text().toLowerCase();
+    }
     $.ajax({
         method: "POST",
         url: ($('#userName').val() == "" || $('#userName').val() == null) ? "/records/getSortedRecord" : "/records/getSortedRecordByUser",
@@ -236,7 +244,7 @@ function sortBy(title, page, sortDirection) {
             userName: $('#userName').val(),
             page: (page == null) ? 1 : page,
             sortDirection: sortDirection,
-            sortField: $(title).text().toLowerCase()
+            sortField: sortField
         },
         headers: {
             'X-CSRF-TOKEN': token
