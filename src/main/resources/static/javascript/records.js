@@ -231,7 +231,7 @@ function clickForSort(title, page) {
 function sortBy(title, page, sortDirection) {
     $.ajax({
         method: "POST",
-        url: "/records/getSortedRecordByUser",
+        url: ($('#userName').val() == "" || $('#userName').val() == null) ? "/records/getSortedRecord" : "/records/getSortedRecordByUser",
         data: {
             userName: $('#userName').val(),
             page: (page == null) ? 1 : page,

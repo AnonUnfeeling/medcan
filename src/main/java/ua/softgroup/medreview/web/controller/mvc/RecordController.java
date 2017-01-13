@@ -110,6 +110,16 @@ public class RecordController {
         }
     }
 
+    @PostMapping(value = "/getSortedRecord")
+    public ResponseEntity<Page<Record>> getSortedRecords(
+            @RequestParam int page,
+            @RequestParam String sortDirection,
+            @RequestParam String sortField) {
+        logger.debug("page={}", page);
+        return ResponseEntity.ok(
+                recordService.getAllSortedRecords(page - 1, sortDirection, sortField));
+    }
+
     @PostMapping(value = "/getSortedRecordByUser")
     public ResponseEntity<Page<Record>> getSortedRecordsByUsername(
             @RequestParam String userName,
@@ -124,7 +134,7 @@ public class RecordController {
                 .forEach(record -> logger.debug(record.getTitle()));
 
         return ResponseEntity.ok(
-                recordService.getSortedRecordsByAuthor(user, page, sortDirection, sortField));
+                recordService.getSortedRecordsByAuthor(user, page - 1, sortDirection, sortField));
     }
 
     @GetMapping(value = "/record")
