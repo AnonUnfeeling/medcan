@@ -12,16 +12,16 @@ var defaultOpts = {
 };
 
 $(document).ready(function () {
-    $('#type').on('change',function () {
-        if($(this).val()=='Website'){
-            createAdditionalInput($('#record-data'),'url','website-input');
+    $('#type').on('change', function () {
+        if ($(this).val() == 'Website') {
+            createAdditionalInput($('#record-data'), 'url', 'website-input');
         } else {
             $('#record-data').find('.website-input').remove();
         }
     })
 });
-function createAdditionalInput(place,id,cls) {
-    $(place).append('<div class="form-group ' + cls + '"> <label>'+id.toUpperCase()+':</label><input id="' + id + '" class="form-control ' + cls + '"/><br/></div>');
+function createAdditionalInput(place, id, cls) {
+    $(place).append('<div class="form-group ' + cls + '"> <label>' + id.toUpperCase() + ':</label><input id="' + id + '" class="form-control ' + cls + '"/><br/></div>');
 }
 
 //Load pagination on page loaded
@@ -73,7 +73,7 @@ function gerRecordsByUser(page) {
                 '<td>' + ((record.notes.length !== 0) ? (record.notes[record.notes.length - 1].updateDate.dayOfMonth + ' ' + record.notes[record.notes.length - 1].updateDate.month +
                 ' ' + record.notes[record.notes.length - 1].updateDate.year) : ( record.creationDate.dayOfMonth + ' ' + record.creationDate.month +
                 ' ' + record.creationDate.year)) +
-                '</td><td>'+ record.notes.length +'</td><td>'+ record.status +'</td><td class="cotrol-class text-right">' +
+                '</td><td>' + record.notes.length + '</td><td>' + record.status + '</td><td class="cotrol-class text-right">' +
                 '<span id="' + record.title + '" data-singleton="true" data-toggle="confirmation" ' +
                 'class="glyphicon glyphicon-remove-circle records-control" ' +
                 'aria-hidden="true"></span></td></tr>');
@@ -115,7 +115,7 @@ function getRecords(page) {
                 '<td>' + ((record.notes.length !== 0) ? (record.notes[record.notes.length - 1].updateDate.dayOfMonth + ' ' + record.notes[record.notes.length - 1].updateDate.month +
                 ' ' + record.notes[record.notes.length - 1].updateDate.year) : ( record.creationDate.dayOfMonth + ' ' + record.creationDate.month +
                 ' ' + record.creationDate.year)) +
-                '</td><td>'+ record.notes.length +'</td><td>'+ record.status +'</td><td class="cotrol-class text-right">' +
+                '</td><td>' + record.notes.length + '</td><td>' + record.status + '</td><td class="cotrol-class text-right">' +
                 '<span id="' + record.title + '" data-singleton="true" data-toggle="confirmation"' +
                 ' class="glyphicon glyphicon-remove-circle records-control" aria-hidden="true"></span></td></tr>');
         });
@@ -178,20 +178,20 @@ function createRecord() {
                 title: $('#title').val(),
                 type: $('#type').val(),
                 country: $('#country').val(),
-                url:$('#url').val()
+                url: $('#url').val()
             },
             headers: {
                 'X-CSRF-TOKEN': token
             }
         }).done(function (data) {
             $(message).children().remove();
-            message.append("<div id='success' class='alert alert-success'><strong>Success! </strong>"+ data + "</div>");
+            message.append("<div id='success' class='alert alert-success'><strong>Success! </strong>" + data + "</div>");
             setTimeout(function () {
                 location.reload();
             }, 1000);
         }).fail(function (data) {
             $(message).children().remove();
-            message.append("<div id='error' class='alert alert-danger'><strong>Error! </strong>"+ data.responseText +"</div>");
+            message.append("<div id='error' class='alert alert-danger'><strong>Error! </strong>" + data.responseText + "</div>");
         });
     } else {
         $(message).children().remove();
@@ -217,8 +217,61 @@ function loadType() {
         });
     });
 }
-
+var countClickIntoFailed = 0;
+function clickForSort(title, page) {
+    if (countClickIntoFailed == 0) {
+        countClickIntoFailed = 1;
+        sortBy(title, page, "ASC");
+    } else {
+        countClickIntoFailed = 0;
+        sortBy(title, page, "DESC");
+    }
+}
 //sort by title
-function sortByTitle() {
-    console.log("sort");
+function sortBy(title, page, sortDirection) {
+    $.ajax({
+        method: "POST",
+        url: "/records/getSortedRecordByUser",
+        data: {
+            userName: $('#userName').val(),
+            page: (page == null) ? 1 : page,
+            sortDirection: sortDirection,
+            sortField: $(title).text().toLowerCase()
+        },
+        headers: {
+            'X-CSRF-TOKEN': token
+        }
+    }).done(function (data) {
+        var arr = data.content;
+        var table = $('#table-body');
+        var totalPages = data.totalPages;
+        var currentPage = $pagination.twbsPagination('getCurrentPage');
+        $pagination.twbsPagination('destroy');
+        $pagination.twbsPagination($.extend({}, defaultOpts, {
+            startPage: (currentPage != null) ? currentPage : 0,
+            totalPages: totalPages,
+            initiateStartPageClick: false,
+            onPageClick: function (event, page) {
+                sortBy(title, page, sortDirection);
+            }
+        }))
+        ;
+        table.find('tr').remove();
+        $(arr).each(function () {
+            var record = $(this)[0];
+            table.append('<tr onclick="showNote(event,this)"><td>' + record.title +
+                '</td><td>' + record.type + '</td>' +
+                '<td>' + record.author.login + '</td>' +
+                '<td>' + record.creationDate.dayOfMonth + ' ' + record.creationDate.month +
+                ' ' + record.creationDate.year + '</td>' +
+                '<td>' + ((record.notes.length !== 0) ? (record.notes[record.notes.length - 1].updateDate.dayOfMonth + ' ' + record.notes[record.notes.length - 1].updateDate.month +
+                ' ' + record.notes[record.notes.length - 1].updateDate.year) : ( record.creationDate.dayOfMonth + ' ' + record.creationDate.month +
+                ' ' + record.creationDate.year)) +
+                '</td><td>' + record.notes.length + '</td><td>' + record.status + '</td><td class="cotrol-class text-right">' +
+                '<span id="' + record.title + '" data-singleton="true" data-toggle="confirmation" ' +
+                'class="glyphicon glyphicon-remove-circle records-control" ' +
+                'aria-hidden="true"></span></td></tr>');
+        });
+        manageRecord();
+    });
 }
