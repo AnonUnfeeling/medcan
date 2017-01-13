@@ -19,6 +19,8 @@ public interface RecordService {
 
     Page<Record> getAll(Pageable pageable);
 
+    Page<Record> getAllSortedRecords(int page, String sortDirection, String sortField);
+
     Page<Record> getRecordsByAuthorities(Pageable pageable);
 
     Page<Record> getSortedRecordsByAuthorities(int page, String sortDirection, String sortField);
