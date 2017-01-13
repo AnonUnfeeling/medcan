@@ -219,29 +219,36 @@ function loadType() {
 }
 var countClickIntoFailed = 0;
 function clickForSort(title, page) {
+    var arrow = $(title).find('span').first();
+    if(arrow.length==0) {
+        $(title).append("<span class='glyphicon glyphicon-triangle-bottom'></span>");
+        arrow = $(title).find('span').first();
+    }
     if (countClickIntoFailed == 0) {
+        arrow.switchClass('glyphicon-triangle-top','glyphicon-triangle-bottom',200);
         countClickIntoFailed = 1;
         sortBy(title, page, "ASC");
     } else {
+        arrow.switchClass('glyphicon-triangle-bottom','glyphicon-triangle-top',200);
         countClickIntoFailed = 0;
         sortBy(title, page, "DESC");
     }
 }
-//sort by title
+//  Sort by title
 function sortBy(title, page, sortDirection) {
-    var sortField;
-    if ($(title).text().toLowerCase() == "author") {
+    var sortField = $(title).text().toLowerCase().trim();
+    if (sortField == "author") {
         sortField = "authorLogin";
-    } else if ($(title).text().toLowerCase() == "notes") {
+    } else if (sortField == "notes") {
         sortField = "notes.size";
-    } else {
-        sortField = $(title).text().toLowerCase();
     }
+    //console.log($(title).text().toLowerCase());
+    var userName = $('#userName').val();
     $.ajax({
         method: "POST",
-        url: ($('#userName').val() == "" || $('#userName').val() == null) ? "/records/getSortedRecord" : "/records/getSortedRecordByUser",
+        url: (userName == "" || userName == null) ? "/records/getSortedRecord" : "/records/getSortedRecordByUser",
         data: {
-            userName: $('#userName').val(),
+            userName: userName,
             page: (page == null) ? 1 : page,
             sortDirection: sortDirection,
             sortField: sortField
@@ -262,8 +269,7 @@ function sortBy(title, page, sortDirection) {
             onPageClick: function (event, page) {
                 sortBy(title, page, sortDirection);
             }
-        }))
-        ;
+        }));
         table.find('tr').remove();
         $(arr).each(function () {
             var record = $(this)[0];
