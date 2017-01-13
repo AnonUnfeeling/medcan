@@ -229,6 +229,7 @@ function clickForSort(title, page) {
 }
 //sort by title
 function sortBy(title, page, sortDirection) {
+    console.log($(title).text().toLowerCase());
     $.ajax({
         method: "POST",
         url: ($('#userName').val() == "" || $('#userName').val() == null) ? "/records/getSortedRecord" : "/records/getSortedRecordByUser",
